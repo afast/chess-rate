@@ -1,11 +1,11 @@
 require 'treetop'
-# Find out what our base path is
-base_path = File.expand_path(File.dirname(__FILE__))
+
+$:.unshift File.dirname(__FILE__)
 
 # Require extra files node classes, game and moves
-['node_extensions.rb', 'game.rb', 'move.rb'].each do |file|
-  require File.join base_path, file
-end
+require 'node_extensions'
+require 'game'
+require 'move'
 
 class Parser
   base_path = File.expand_path(File.dirname(__FILE__))
@@ -45,6 +45,7 @@ class Parser
   end
 end
 
+=begin # Usage
 tree = Parser.parse File.read(ARGV[0]) # assume first agument is a path to a file
 
 # Print player ratings for each game
@@ -52,3 +53,4 @@ tree.get_games.each do |g|
   puts g.player_ratings
   puts '==============================='
 end
+=end

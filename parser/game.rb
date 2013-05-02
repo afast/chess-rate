@@ -1,6 +1,7 @@
 class Game
   attr_accessor :white, :black, :annotator, :white_deviation, :black_deviation,
     :event, :site, :date, :round, :result
+  attr_reader :moves
 
   OBLIGATORY_TAGS = ['Event', 'Site', 'Date', 'Round', 'White', 'Black', 'Result']
   AVAILABLE_TAGS = OBLIGATORY_TAGS + ['Annotator']
