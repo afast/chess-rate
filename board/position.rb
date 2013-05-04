@@ -15,7 +15,6 @@ module Board
     }
 
     def initialize(file, rank)
-      #puts "initializing position file >#{file}< rank >#{rank}<"
       @file = file.downcase if file
       @rank = rank.to_i if rank
     end

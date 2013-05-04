@@ -8,7 +8,6 @@ module Board
       else
         false
       end
-      puts "Rook at #{@position} can move to #{position}? - #{can_move}"
       can_move
     end
 

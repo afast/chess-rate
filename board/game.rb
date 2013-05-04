@@ -102,7 +102,6 @@ module Board
     end
 
     def set_piece(piece, file, rank)
-      puts "Moving #{piece} to #{Position::FILES[file-1]}#{rank}"
       @board[file-1][rank-1] = piece
     end
 
@@ -116,10 +115,6 @@ module Board
 
     def empty_ranks_between?(rank_from, rank_to)
       ranks = [rank_from.rank, rank_to.rank]
-      puts ranks.inspect
-      ((ranks.min+1)..(ranks.max-1)).each do |r|
-        puts "board at #{rank_from.file_to_i}#{r} nil? - #{@board[rank_from.file_to_i-1][r-1].nil?}"
-      end
       rank_check = ((ranks.min+1)..(ranks.max-1)).map { |r| @board[rank_from.file_to_i-1][r-1].nil? }.inject(:&)
       rank_check || rank_check.nil?
     end
@@ -134,11 +129,9 @@ module Board
       rank_increment = position_from.rank_increment? position_to # get rank increment
       file_increment = position_from.file_increment? position_to # get file increment
       diag_checks = (position_from.rank - position_to.rank).abs - 1
-      puts "diag_checks #{diag_checks} increments file: #{file_increment} rank: #{rank_increment}"
       rank_i = position_from.rank + rank_increment - 1
       file_i = position_from.file_to_i + file_increment - 1
       diag_checks.times.each do
-        puts "checking #{Position::FILES[file_i]}#{rank_i+1} - #{@board[file_i][rank_i]}"
         return false unless @board[file_i][rank_i].nil?
         file_i += file_increment
         rank_i += rank_increment
@@ -149,7 +142,6 @@ module Board
     private
     def get_piece name, side, destination, dis
       name.downcase!
-      puts "get piece for #{side} ~> #{name} to #{destination}; dis: #{dis}"
       if dis && dis.valid?
         return @board[dis.file_to_i-1, dis.rank-1]
       end

@@ -11,8 +11,6 @@ module Board
         false
       end
 
-      puts "Queen at #{@position} can move to #{position}? - #{can_move}"
-
       can_move
     end
 

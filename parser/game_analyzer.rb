@@ -1,6 +1,7 @@
 require 'optparse'
 
 $:.unshift File.dirname(__FILE__)
+$:.unshift File.expand_path('lib', File.expand_path('uci-0.0.2', File.expand_path('..', File.dirname(__FILE__))))
 
 options = {}
 OptionParser.new do |opts|
@@ -32,7 +33,7 @@ class GameAnalyzer
   end
 
   def analyze_games
-    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, 'UCI_AnalyseMode' => true)
+    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, 'UCI_AnalyseMode' => true, multipv: 2)
 
     while !@uci.ready? do
       puts 'Waiting for motor ready'
@@ -45,16 +46,30 @@ class GameAnalyzer
       @uci.ready?
       board.setup_board
 
-      game.moves.each do |move|
+      board_score = 0
+
+      game.moves.each_with_index do |move, index|
         lan_move = board.move move.move, move.side
-        puts "#{move.side} plays #{lan_move}"
+
+        scores, machine_move = @uci.analyze_move(board_score, move.side == :white)
+        machine_score = scores[machine_move] || board_score
+
+        unless scores[lan_move]
+          scores = @uci.analyze_move(board_score, move.side == :white, lan_move)[0]
+        end
+
+        # use calculated move or use the minimum between previous and new move
+        # (some engines(e.g.: fruit) ignore the "searchmoves" directive
+        board_score = scores[lan_move] || [board_score, machine_score].min
+
+        puts "-------------------------------"
+        puts "#{(index+2)/2}. #{move.side} #{lan_move} | #{machine_move}"
+        puts "  Score (P/M): #{board_score} / #{machine_score}"
+        puts "-------------------------------"
+
+
         @uci.move_piece lan_move
         @uci.send_position_to_engine
-        puts @uci.board
-        unless move == game.moves.last
-          best = @uci.bestmove
-          puts best.inspect
-        end
       end
 
       puts @uci.bestmove

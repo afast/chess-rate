@@ -9,8 +9,6 @@ module Board
       can_move = can_move || rank_dis == 2 && file_dis == 0 && # en passant
         @board.empty_ranks_between?(@position, position)
 
-      puts "Pawn at #{@position} can move to #{position} (file_dis, rank_dis) = (#{file_dis},#{rank_dis})? - #{can_move}"
-
       can_move
     end
 

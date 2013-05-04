@@ -6,7 +6,6 @@ module Board
       else
         false
       end
-      puts "Bishop at #{@position} can move to #{position}? - #{can_move}"
       can_move
     end
 

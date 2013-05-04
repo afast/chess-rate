@@ -14,7 +14,6 @@ module Board
 
     def move_to position
       raise NoPositionError.new unless @position && position
-      puts "Moving #{self} to #{position}"
       from = @position.to_s
       @board.set_piece(nil, @position.file_to_i, rank) # empty from coords
       @board.eliminate @board.piece_at(position) # eliminate piece if there was one
