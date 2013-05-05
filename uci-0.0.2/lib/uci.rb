@@ -106,7 +106,11 @@ class Uci
         scores[move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last] = score.last.to_i/100.0 if move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last
       end
     end
-    bestmove = read_bestmove move_string
+    begin
+      bestmove = read_bestmove move_string
+    rescue NoMoveError
+      bestmove = nil # Player Resigned
+    end
     #puts "#{scores} - #{bestmove}"
     return scores, bestmove
   end

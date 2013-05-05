@@ -139,11 +139,19 @@ module Board
       true
     end
 
+    def print_board
+      puts '  ABCDEFGH'
+      (0..7).each do |i|
+        puts (7-i+1).to_s + ' ' + (0..7).map { |j| @board[j][7-i].nil? ? '.' : @board[j][7-i].board_print }.join + ' ' + (7-i+1).to_s
+      end
+      puts '  ABCDEFGH'
+    end
+
     private
     def get_piece name, side, destination, dis
       name.downcase!
       if dis && dis.valid?
-        return @board[dis.file_to_i-1, dis.rank-1]
+        return @board[dis.file_to_i-1][dis.rank-1]
       end
 
       pieces = case name
@@ -176,14 +184,6 @@ module Board
       end
       print_board unless piece
       piece
-    end
-
-    def print_board
-      puts '  ABCDEFGH'
-      (0..7).each do |i|
-        puts (7-i).to_s + ' ' + (0..7).map { |j| @board[j][7-i].nil? ? '.' : @board[j][7-i].board_print }.join + ' ' + (7-i).to_s
-      end
-      puts '  ABCDEFGH'
     end
 
     # Expand the short algebraic chess notation string +m+ in a hash like this:

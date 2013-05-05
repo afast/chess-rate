@@ -103,6 +103,7 @@ module PGN
   end
 
   class MoveLiteral < Treetop::Runtime::SyntaxNode
+    @@previous_move = 1
     def print
       p self.text_value
       self.elements.each { |x| x.print }
@@ -110,6 +111,11 @@ module PGN
     def set_values(m)
       # Set the values of each component (moveliteral, comment, variation)
       self.elements.each { |x| x.set_values(m) }
+      if m.number
+        @@previous_move = m.number
+      else
+        m.number = @@previous_move
+      end
     end
   end
 
@@ -118,6 +124,14 @@ module PGN
     end
     def set_values(m)
       m.move = self.text_value # Store the move string
+    end
+  end
+
+  class MoveNumberSide < Treetop::Runtime::SyntaxNode
+    def print
+    end
+    def set_values(m)
+      self.elements.each { |x| x.set_values(m) }
     end
   end
 

@@ -40,7 +40,11 @@ grammar PGN
   end
 
   rule move_literal # A move e.g.: 2.Bc3+ $6 $18
-    move_number move_side space move_type check_move? nags <MoveLiteral>
+     move_number_side? move_type check_move? nags <MoveLiteral>
+  end
+
+  rule move_number_side
+    move_number move_side space <MoveNumberSide>
   end
 
   rule move_type

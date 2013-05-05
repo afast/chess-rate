@@ -3,6 +3,7 @@ class Move
 
   def initialize
     @comments = []
+    @side = :black
   end
 
   # A valuation should be a comment with {Annotator: move_value / annotator_value
@@ -33,14 +34,14 @@ class Move
 
   def to_s
     # Show basic move info
-    "#{number}. #{move} - deviation: #{'%.2f' % self.deviation}"
+    "#{number}. #{move} - deviation: #{self.deviation ? '%.2f' % self.deviation : ''} - #{@side}"
   end
 
   def deviation # Calculate deviation for this move
     # SCIDvsPC using Houdini returns the advantage calculation for whites
     # So a greater number is better for white and a lower number is better
     # for black. With 0 being the balance
-    return 'Values not set' unless @annotator_value && @player_value
+    return nil unless @annotator_value && @player_value
     case @side
     when :white then @annotator_value - @player_value
     when :black then @player_value - @annotator_value

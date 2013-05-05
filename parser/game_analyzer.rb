@@ -36,7 +36,7 @@ class GameAnalyzer
     @uci = Uci.new(:engine_path => @motor_path, movetime: @time, 'UCI_AnalyseMode' => true, multipv: 2)
 
     while !@uci.ready? do
-      puts 'Waiting for motor ready'
+      puts 'Waiting for engine ready'
       sleep(1)
     end
     move = @games.first.moves.first
@@ -71,9 +71,6 @@ class GameAnalyzer
         @uci.move_piece lan_move
         @uci.send_position_to_engine
       end
-
-      puts @uci.bestmove
-      # evaluate each move
     end
   end
 end
