@@ -26,10 +26,11 @@ end.parse!
 require 'uci'
 
 class GameAnalyzer
-  def initialize(games, motor_path, time)
+  def initialize(games, motor_path, time, games_path)
     @games = games
     @motor_path = motor_path
     @time = time || 100
+    @games_path = games_path
   end
 
   def analyze_games
@@ -41,12 +42,26 @@ class GameAnalyzer
     end
     move = @games.first.moves.first
     board = Board::Game.new
+
+    fileName = "pgn/games_analyzed_"+@games_path.split("/").last
+    outFile = File.new(fileName,"w")
+
     @games.each do |game|
       @uci.new_game!
       @uci.ready?
       board.setup_board
 
       board_score = 0
+      
+      outFile.puts("[Event "+game.event+"]")
+      outFile.puts("[Site "+game.site+"]")
+      outFile.puts("[Date "+game.date+"]")
+      outFile.puts("[Round "+game.round+"]")   
+      outFile.puts("[White "+game.white+"]")
+      outFile.puts("[Black "+game.black+"]")
+      outFile.puts("[Result "+game.result+"]") 
+      outFile.puts("[Engine "+@uci.engine_name+"]")
+      outFile.puts(" ")
 
       game.moves.each_with_index do |move, index|
         lan_move = board.move move.move, move.side
@@ -67,11 +82,21 @@ class GameAnalyzer
         puts "  Score (P/M): #{board_score} / #{machine_score}"
         puts "-------------------------------"
 
+        if index % 2 == 0
+          sideNotation = '.'
+        else
+          sideNotation = '...'
+        end
+
+        outFile.puts("#{(index+2)/2}#{sideNotation}#{lan_move} {#{board_score},#{machine_move},#{machine_score},#{(machine_score-board_score).abs}}")
 
         @uci.move_piece lan_move
         @uci.send_position_to_engine
       end
+    outFile.puts(game.result)
+    outFile.puts(" ")
     end
+  outFile.close
   end
 end
 
@@ -93,6 +118,6 @@ require_relative '../board/game'
 tree = Parser.parse File.read(options[:file_path])
 
 # Print player ratings for each game
-analyzer = GameAnalyzer.new tree.get_games, options[:motor_path], options[:time]
+analyzer = GameAnalyzer.new tree.get_games, options[:motor_path], options[:time], options[:file_path]
 
 analyzer.analyze_games
