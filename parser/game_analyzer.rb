@@ -66,16 +66,18 @@ class GameAnalyzer
       game.moves.each_with_index do |move, index|
         lan_move = board.move move.move, move.side
 
+        player_scores = @uci.analyze_move(board_score, move.side == :white, lan_move)[0]
+
         scores, machine_move = @uci.analyze_move(board_score, move.side == :white)
         machine_score = scores[machine_move] || board_score
 
-        unless scores[lan_move]
-          scores = @uci.analyze_move(board_score, move.side == :white, lan_move)[0]
-        end
-
         # use calculated move or use the minimum between previous and new move
         # (some engines(e.g.: fruit) ignore the "searchmoves" directive
-        board_score = scores[lan_move] || [board_score, machine_score].min
+        if machine_move == lan_move
+          board_score = machine_score
+        else
+          board_score = [player_scores[lan_move] || board_score, machine_score].min
+        end
 
         puts "-------------------------------"
         puts "#{(index+2)/2}. #{move.side} #{lan_move} | #{machine_move}"

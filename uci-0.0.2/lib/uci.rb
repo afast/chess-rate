@@ -100,15 +100,24 @@ class Uci
       write_to_engine command
     end
     scores = {}
-    until (move_string = read_engine_no_filter).to_s.size > 1 && move_string =~ /^bestmove/
+    until (move_string = read_engine_no_filter).match(/[a-z]/) && move_string =~ /^bestmove/
       score = move_string.scan(/score cp (-?[0-9]+)/).last
       if score && move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last && move_string.match(/upperbound|lowerbound|mate/).nil?
-        scores[move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last] = score.last.to_i/100.0 if move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last
+        if (move = move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last)
+          scores[move] = score.last.to_i/100.0
+        end
+      elsif (mate = move_string.scan(/score mate (-?)[0-9]+/).last)
+        if (mate = mate.last)
+          scores[move] = -327.4
+        else
+          scores[move] = 327.4
+        end
       end
     end
     begin
       bestmove = read_bestmove move_string
     rescue NoMoveError
+      puts 'NullMove mate in ?'
       bestmove = nil # Player Resigned
     end
     #puts "#{scores} - #{bestmove}"
