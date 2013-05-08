@@ -34,17 +34,17 @@ class GameAnalyzer
   end
 
   def analyze_games
-    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, 'UCI_AnalyseMode' => true, multipv: 2)
+    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, 'UCI_AnalyseMode' => true)
 
     while !@uci.ready? do
       puts 'Waiting for engine ready'
       sleep(1)
     end
-    move = @games.first.moves.first
+
     board = Board::Game.new
 
-    fileName = "pgn/games_analyzed_"+@games_path.split("/").last
-    outFile = File.new(fileName,"w")
+    fileName = 'pgn/games_analyzed_' + @games_path.split('/').last
+    outFile = File.new(fileName, "w")
 
     @games.each do |game|
       @uci.new_game!
@@ -52,15 +52,15 @@ class GameAnalyzer
       board.setup_board
 
       board_score = 0
-      
-      outFile.puts("[Event "+game.event+"]")
-      outFile.puts("[Site "+game.site+"]")
-      outFile.puts("[Date "+game.date+"]")
-      outFile.puts("[Round "+game.round+"]")   
-      outFile.puts("[White "+game.white+"]")
-      outFile.puts("[Black "+game.black+"]")
-      outFile.puts("[Result "+game.result+"]") 
-      outFile.puts("[Engine "+@uci.engine_name+"]")
+
+      outFile.puts("[Event #{game.event}]")
+      outFile.puts("[Site #{game.site}]")
+      outFile.puts("[Date #{game.date}]")
+      outFile.puts("[Round #{game.round}]")
+      outFile.puts("[White #{game.white}]")
+      outFile.puts("[Black #{game.black}]")
+      outFile.puts("[Result #{game.result}]")
+      outFile.puts("[Engine #{@uci.engine_name}]")
       outFile.puts(" ")
 
       game.moves.each_with_index do |move, index|
@@ -84,13 +84,11 @@ class GameAnalyzer
         puts "  Score (P/M): #{board_score} / #{machine_score}"
         puts "-------------------------------"
 
-        if index % 2 == 0
-          sideNotation = '.'
-        else
-          sideNotation = '...'
-        end
+        move.player_value = board_score
+        move.annotator_value = machine_score
+        move.annotator_move = machine_move
 
-        outFile.puts("#{(index+2)/2}#{sideNotation}#{lan_move} {#{board_score},#{machine_move},#{machine_score},#{(machine_score-board_score).abs}}")
+        outFile.puts(move.to_s)
 
         @uci.move_piece lan_move
         @uci.send_position_to_engine

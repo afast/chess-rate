@@ -1,5 +1,5 @@
 class Move
-  attr_accessor :side, :move, :player_value, :annotator_value, :number, :comments, :check, :mate
+  attr_accessor :side, :move, :player_value, :annotator_value, :annotator_move, :number, :comments, :check, :mate
 
   def initialize
     @comments = []
@@ -34,7 +34,22 @@ class Move
 
   def to_s
     # Show basic move info
-    "#{number}. #{move} - deviation: #{self.deviation ? '%.2f' % self.deviation : ''} - #{@side}"
+    #"#{(index+2)/2}#{sideNotation}#{lan_move} {#{board_score},#{machine_move},#{machine_score},#{(machine_score-board_score).abs}}"
+    "#{@number}#{side_to_s}#{@move} { #{@player_value}#{machine_info} }"
+  end
+
+  def machine_info
+    if deviation && deviation > 0
+      " / #{@annotator_move}  #{@annotator_value}, #{deviation_to_s}"
+    end
+  end
+
+  def side_to_s
+    white? ? '.' : '...'
+  end
+
+  def deviation_to_s
+    self.deviation ? '%.2f' % self.deviation : ''
   end
 
   def deviation # Calculate deviation for this move
@@ -45,7 +60,7 @@ class Move
     case @side
     when :white then @annotator_value - @player_value
     when :black then @player_value - @annotator_value
-    else 'No side set'
+    else nil
     end
   end
 
