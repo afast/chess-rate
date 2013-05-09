@@ -13,24 +13,26 @@ OptionParser.new do |opts|
     options[:motor_path] = motor
   end
   opts.on("-t", "--time [VALUE]", Integer, "Time to ponder each move") do |time|
-    options[:time] = time || 5
+    options[:time] = time || 300
   end
-  opts.on("-d", "--draw [VALUE]", Float, "Draw tolerance e.g.: 0.56") do |draw|
-    options[:draw_tolerance] = draw || 0.6
+  opts.on("-d", "--draw [VALUE]", Float, "Draw threshold e.g.: 1.56") do |draw|
+    options[:draw_threshold] = draw || 1.56
   end
-  opts.on("-b", "--blunder [VALUE]", Float, "Blunder tolerance e.g.: 0.56") do |blunder|
-    options[:blunder_tolerance] = blunder || 5
+  opts.on("-b", "--blunder [VALUE]", Float, "Blunder threshold e.g.: 2.56") do |blunder|
+    options[:blunder_threshold] = blunder || 2
   end
 end.parse!
 
 require 'uci'
 
 class GameAnalyzer
-  def initialize(games, motor_path, time, games_path)
+  def initialize(games, motor_path, time, games_path, tie_threshold, blunder_threshold)
     @games = games
     @motor_path = motor_path
     @time = time || 100
     @games_path = games_path
+    @tie_threshold = tie_threshold || 1.56
+    @blunder_threshold = blunder_threshold || 2
   end
 
   def analyze_games
@@ -61,7 +63,6 @@ class GameAnalyzer
       outFile.puts("[Black #{game.black}]")
       outFile.puts("[Result #{game.result}]")
       outFile.puts("[Engine #{@uci.engine_name}]")
-      outFile.puts(" ")
 
       game.moves.each_with_index do |move, index|
         lan_move = board.move move.move, move.side
@@ -88,11 +89,20 @@ class GameAnalyzer
         move.annotator_value = machine_score
         move.annotator_move = machine_move
 
-        outFile.puts(move.to_s)
-
         @uci.move_piece lan_move
         @uci.send_position_to_engine
       end
+
+    outFile.puts("[WhiteAvgError #{'%.2f' % game.white_avg_deviation}]")
+    outFile.puts("[WhiteStdDeviation #{'%.2f' % game.white_standard_deviation}]")
+    outFile.puts("[WhitePerfectMoves #{'%.2f' % game.white_perfect_moves}]")
+    outFile.puts("[WhiteBlunders #{'%.2f' % game.white_blunders(@tie_threshold, @blunder_threshold)}]")
+    outFile.puts("[BlackAvgError #{'%.2f' % game.black_avg_deviation}]")
+    outFile.puts("[BlackStdDeviation #{'%.2f' % game.black_standard_deviation}]")
+    outFile.puts("[BlackPerfectMoves #{'%.2f' % game.black_perfect_moves}]")
+    outFile.puts("[BlackBlunders #{'%.2f' % game.black_blunders(@tie_threshold, @blunder_threshold)}]")
+    outFile.puts(" ")
+    game.moves.each { |m| outFile.puts m.to_s }
     outFile.puts(game.result)
     outFile.puts(" ")
     end
@@ -118,6 +128,7 @@ require_relative '../board/game'
 tree = Parser.parse File.read(options[:file_path])
 
 # Print player ratings for each game
-analyzer = GameAnalyzer.new tree.get_games, options[:motor_path], options[:time], options[:file_path]
+analyzer = GameAnalyzer.new tree.get_games, options[:motor_path], options[:time], options[:file_path],
+  options[:draw_threshold], options[:blunder_threshold]
 
 analyzer.analyze_games

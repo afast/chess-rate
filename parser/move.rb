@@ -44,12 +44,22 @@ class Move
     end
   end
 
+  def blunder?(tie_threshold, blunder_threshold)
+    deviation > blunder_threshold &&
+      (@annotator_value > tie_threshold && @player_value < tie_threshold ||
+      @annotator_value > -tie_threshold && @player_value < -tie_threshold)
+  end
+
   def side_to_s
     white? ? '.' : '...'
   end
 
   def deviation_to_s
     self.deviation ? '%.2f' % self.deviation : ''
+  end
+
+  def standard_deviation(avg)
+    (deviation - avg) ** 2
   end
 
   def deviation # Calculate deviation for this move

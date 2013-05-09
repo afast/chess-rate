@@ -23,11 +23,35 @@ class Game
   end
 
   def white_avg_deviation
-    white_moves.collect(&:deviation).inject(:+) / white_moves.size
+    avg_deviation white_moves
   end
 
   def black_avg_deviation
-    black_moves.collect(&:deviation).inject(:+) / black_moves.size
+    avg_deviation black_moves
+  end
+
+  def white_standard_deviation
+    standard_deviation white_moves
+  end
+
+  def black_standard_deviation
+    standard_deviation black_moves
+  end
+
+  def white_perfect_moves
+    perfect_moves white_moves
+  end
+
+  def black_perfect_moves
+    perfect_moves black_moves
+  end
+
+  def white_blunders tie_threshold, blunder_threshold
+    blunders white_moves, tie_threshold, blunder_threshold
+  end
+
+  def black_blunders tie_threshold, blunder_threshold
+    blunders black_moves, tie_threshold, blunder_threshold
   end
 
   def black_moves
@@ -46,5 +70,24 @@ class Game
   def player_ratings
     "White - #{@white} - #{'%.2f' % white_avg_deviation}\n" +
     "Black - #{@black} - #{'%.2f' % black_avg_deviation}\n"
+  end
+
+  private
+  def avg_deviation(moves)
+    moves.collect(&:deviation).inject(:+) / moves.size.to_f
+  end
+
+  def standard_deviation moves
+    avg = avg_deviation moves
+    sigma = moves.map { |m| m.standard_deviation(avg) }.inject(:+) / (moves.size - 1).to_f
+    Math.sqrt sigma
+  end
+
+  def perfect_moves moves
+    moves.select { |m| m.deviation == 0 }.size / moves.size.to_f
+  end
+
+  def blunders moves, tie_threshold, blunder_threshold
+    moves.select { |m| m.blunder?(tie_threshold, blunder_threshold) }.size / moves.size.to_f
   end
 end
