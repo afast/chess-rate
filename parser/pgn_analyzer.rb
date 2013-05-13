@@ -9,7 +9,7 @@ class PGN_Analyzer
     # open the file
     inFile = File.open(@file_path,"r")
 
-    # here are defined all regular expressions used forward
+    # here are defined all regular expressions used next
     event_exp = /\[Event /
     date_exp = /\[Date /
     white_pl_exp = /\[White /
