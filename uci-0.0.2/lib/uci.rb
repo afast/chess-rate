@@ -91,7 +91,7 @@ class Uci
 
     until (move_string = read_engine_no_filter).match(/[a-z]/) && move_string =~ /^bestmove/
       #puts move_string if move_string.match(/[a-z]/)
-      puts move_string if move_string.match(/ERROR/)
+      puts move_string if move_string.match(/ERROR/) && @debug
       score = move_string.scan(/score cp (-?[0-9]+)/).last
       if score && move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last && move_string.match(/upperbound|lowerbound|mate/).nil?
         if (move = move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last)
@@ -121,7 +121,7 @@ class Uci
   def read_engine_no_filter
     if @engine_stdout.ready?
       response = @engine_stdout.readline
-      puts "Engine: #{response}"
+      puts "Engine: #{response}" if @debug
     else
       response = ''
     end
@@ -466,7 +466,7 @@ protected
   def write_to_engine(message, send_cr=true)
     log("\twrite_to_engine")
     log("\t\tME:    \t'#{message}'")
-    puts "ChessRate: #{message}"
+    puts "ChessRate: #{message}" if @debug
     if send_cr && message.split('').last != "\n"
       @engine_stdin.puts message
     else
@@ -480,9 +480,9 @@ protected
     while @engine_stdout.ready?
       unless (response = @engine_stdout.readline) =~ /^info/
         log("\t\tENGINE:\t'#{response}'")
-        puts "Engine: #{response}"
+        puts "Engine: #{response}" if @debug
       else
-        puts "Engine: #{response}" if response.size > 0
+        puts "Engine: #{response}" if response.size > 0 && @debug
       end
     end
     if strip_cr && response.split('').last == "\n"

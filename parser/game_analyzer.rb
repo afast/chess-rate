@@ -36,7 +36,7 @@ class GameAnalyzer
   end
 
   def analyze_games
-    @uci = Uci.new(:engine_path => @motor_path, movetime: @time)
+    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, debug: false)
 
     @uci.wait_for_readyok
     board = Board::Game.new
@@ -68,13 +68,20 @@ class GameAnalyzer
 
       game.moves.each_with_index do |move, index|
         lan_move = board.move move.move, move.side
+        old_lan_move = lan_move if old_lan_move.nil?
 
         score, best_move = @uci.analyse_position
-        score *= -1 if move.side == :black
+        if score.nil?
+          score = old_score
+        else
+          score *= -1 if move.side == :black
+        end
+        old_score = score if old_score.nil?
         if old_lan_move == old_bestmove
           old_score = score
-        elsif score > old_score
+        elsif score > old_score && old_move.side == :white || score < old_score && old_move.side == :black
           old_bestmove = old_lan_move
+          old_score = score
         end
 
         if index > 0
