@@ -46,14 +46,23 @@ class Uci
     check_engine(options) unless options[:engine_path] =~ /^wine/
     set_engine_name(options)
     open_engine_connection(options[:engine_path])
+    write_to_engine('uci')
     set_engine_options(options[:options]) if !options[:options].nil?
-    new_game!
+    #new_game!
   end
 
   # true if engine is ready, false if not yet ready
   def ready?
     write_to_engine('isready')
     read_from_engine == "readyok"
+  end
+
+  def wait_for_readyok
+    write_to_engine('isready')
+    loop do
+      sleep 0.5
+      break if read_from_engine == "readyok"
+    end
   end
 
   # send "ucinewgame" to engine, reset interal board to standard starting
@@ -63,7 +72,7 @@ class Uci
     reset_board!
     set_startpos!
     @fen = nil
-    until ready?; end
+    wait_for_readyok
   end
 
   # true if no moves have been recorded yet
@@ -72,13 +81,47 @@ class Uci
   end
 
   def go_infinite
-    write_to_engine 'setoption name UCI_AnalyseMode value true'
     write_to_engine("go infinite")
+  end
+
+  def analyse_position
+    scores = {}
+    machine_move= nil
+    write_to_engine "go movetime #{@movetime}"
+
+    until (move_string = read_engine_no_filter).match(/[a-z]/) && move_string =~ /^bestmove/
+      #puts move_string if move_string.match(/[a-z]/)
+      puts move_string if move_string.match(/ERROR/)
+      score = move_string.scan(/score cp (-?[0-9]+)/).last
+      if score && move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last && move_string.match(/upperbound|lowerbound|mate/).nil?
+        if (move = move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last)
+          scores[move] = score.last.to_i/100.0
+        end
+      elsif (mate = move_string.scan(/score mate (-?)[0-9]+/).last)
+        if mate.last && mate.last == '-'
+          scores[move] = -327.4
+        else
+          scores[move] = 327.4
+        end
+      end
+    end
+    begin
+      machine_move = read_bestmove move_string
+    rescue NoMoveError
+      puts 'NullMove mate in ?'
+      puts $!
+      machine_move = nil # Player Resigned
+    end
+    if scores.size == 1 && scores.keys.first.nil?
+      scores = {machine_move => scores[nil]}
+    end
+    return scores[machine_move], machine_move
   end
 
   def read_engine_no_filter
     if @engine_stdout.ready?
       response = @engine_stdout.readline
+      puts "Engine: #{response}"
     else
       response = ''
     end
@@ -101,13 +144,15 @@ class Uci
     end
     scores = {}
     until (move_string = read_engine_no_filter).match(/[a-z]/) && move_string =~ /^bestmove/
+      #puts move_string if move_string.match(/[a-z]/)
+      puts move_string if move_string.match(/ERROR/)
       score = move_string.scan(/score cp (-?[0-9]+)/).last
       if score && move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last && move_string.match(/upperbound|lowerbound|mate/).nil?
         if (move = move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last)
           scores[move] = score.last.to_i/100.0
         end
       elsif (mate = move_string.scan(/score mate (-?)[0-9]+/).last)
-        if (mate = mate.last)
+        if mate.last && mate.last == '-'
           scores[move] = -327.4
         else
           scores[move] = 327.4
@@ -118,9 +163,12 @@ class Uci
       bestmove = read_bestmove move_string
     rescue NoMoveError
       puts 'NullMove mate in ?'
+      puts $!
       bestmove = nil # Player Resigned
     end
-    #puts "#{scores} - #{bestmove}"
+    if scores.size == 1 && scores.keys.first.nil?
+      scores = {bestmove => scores[nil]}
+    end
     return scores, bestmove
   end
 
@@ -418,6 +466,7 @@ protected
   def write_to_engine(message, send_cr=true)
     log("\twrite_to_engine")
     log("\t\tME:    \t'#{message}'")
+    puts "ChessRate: #{message}"
     if send_cr && message.split('').last != "\n"
       @engine_stdin.puts message
     else
@@ -430,8 +479,10 @@ protected
     response = ""
     while @engine_stdout.ready?
       unless (response = @engine_stdout.readline) =~ /^info/
-        puts "inside log engine response >#{response}<" if response.include?('score')
         log("\t\tENGINE:\t'#{response}'")
+        puts "Engine: #{response}"
+      else
+        puts "Engine: #{response}" if response.size > 0
       end
     end
     if strip_cr && response.split('').last == "\n"

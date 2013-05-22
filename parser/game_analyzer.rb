@@ -36,21 +36,17 @@ class GameAnalyzer
   end
 
   def analyze_games
-    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, 'UCI_AnalyseMode' => true)
+    @uci = Uci.new(:engine_path => @motor_path, movetime: @time)
 
-    while !@uci.ready? do
-      puts 'Waiting for engine ready'
-      sleep(1)
-    end
-
+    @uci.wait_for_readyok
     board = Board::Game.new
 
     fileName = 'pgn/games_analyzed_' + @games_path.split('/').last
     outFile = File.new(fileName, "w")
 
     @games.each do |game|
-      @uci.new_game!
-      @uci.ready?
+      #@uci.new_game!
+      @uci.wait_for_readyok
       board.setup_board
 
       board_score = 0
@@ -63,50 +59,61 @@ class GameAnalyzer
       outFile.puts("[Black #{game.black}]")
       outFile.puts("[Result #{game.result}]")
       outFile.puts("[Engine #{@uci.engine_name}]")
+      old_move = game.moves.first
+      old_lan_move = nil
+      old_bestmove = nil
+      old_score = nil
+
+      @uci.send_position_to_engine
 
       game.moves.each_with_index do |move, index|
         lan_move = board.move move.move, move.side
 
-        player_scores = @uci.analyze_move(board_score, move.side == :white, lan_move)[0]
-
-        scores, machine_move = @uci.analyze_move(board_score, move.side == :white)
-        machine_score = scores[machine_move] || board_score
-
-        # use calculated move or use the minimum between previous and new move
-        # (some engines(e.g.: fruit) ignore the "searchmoves" directive
-        if machine_move == lan_move
-          board_score = machine_score
-        else
-          board_score = [player_scores[lan_move] || board_score, machine_score].min
+        score, best_move = @uci.analyse_position
+        score *= -1 if move.side == :black
+        if old_lan_move == old_bestmove
+          old_score = score
+        elsif score > old_score
+          old_bestmove = old_lan_move
         end
 
-        puts "-------------------------------"
-        puts "#{(index+2)/2}. #{move.side} #{lan_move} | #{machine_move}"
-        puts "  Score (P/M): #{board_score} / #{machine_score}"
-        puts "-------------------------------"
+        if index > 0
+          puts "-------------------------------"
+          puts "#{(index+1)/2}. #{old_move.side} #{old_lan_move} | #{old_bestmove}"
+          puts "  Score (P/M): #{score} / #{old_score}"
+          puts "-------------------------------"
 
-        move.player_value = board_score
-        move.annotator_value = machine_score
-        move.annotator_move = machine_move
+          old_move.player_value = score
+          old_move.annotator_value = old_score
+          old_move.annotator_move = old_bestmove
+        end
 
+
+        old_score = score
+        old_move = move
+        old_lan_move = lan_move
+        old_bestmove = best_move
         @uci.move_piece lan_move
         @uci.send_position_to_engine
       end
+      old_move.player_value = old_score
+      old_move.annotator_value = old_score
+      old_move.annotator_move = old_bestmove
 
-    outFile.puts("[WhiteAvgError #{'%.2f' % game.white_avg_deviation}]")
-    outFile.puts("[WhiteStdDeviation #{'%.2f' % game.white_standard_deviation}]")
-    outFile.puts("[WhitePerfectMoves #{'%.2f' % game.white_perfect_moves}]")
-    outFile.puts("[WhiteBlunders #{'%.2f' % game.white_blunders(@tie_threshold, @blunder_threshold)}]")
-    outFile.puts("[BlackAvgError #{'%.2f' % game.black_avg_deviation}]")
-    outFile.puts("[BlackStdDeviation #{'%.2f' % game.black_standard_deviation}]")
-    outFile.puts("[BlackPerfectMoves #{'%.2f' % game.black_perfect_moves}]")
-    outFile.puts("[BlackBlunders #{'%.2f' % game.black_blunders(@tie_threshold, @blunder_threshold)}]")
-    outFile.puts(" ")
-    game.moves.each { |m| outFile.puts m.to_s }
-    outFile.puts(game.result)
-    outFile.puts(" ")
+      outFile.puts("[WhiteAvgError #{'%.2f' % game.white_avg_deviation}]")
+      outFile.puts("[WhiteStdDeviation #{'%.2f' % game.white_standard_deviation}]")
+      outFile.puts("[WhitePerfectMoves #{'%.2f' % game.white_perfect_moves}]")
+      outFile.puts("[WhiteBlunders #{'%.2f' % game.white_blunders(@tie_threshold, @blunder_threshold)}]")
+      outFile.puts("[BlackAvgError #{'%.2f' % game.black_avg_deviation}]")
+      outFile.puts("[BlackStdDeviation #{'%.2f' % game.black_standard_deviation}]")
+      outFile.puts("[BlackPerfectMoves #{'%.2f' % game.black_perfect_moves}]")
+      outFile.puts("[BlackBlunders #{'%.2f' % game.black_blunders(@tie_threshold, @blunder_threshold)}]")
+      outFile.puts(" ")
+      game.moves.each { |m| outFile.puts m.to_s }
+      outFile.puts(game.result)
+      outFile.puts(" ")
     end
-  outFile.close
+    outFile.close
   end
 end
 

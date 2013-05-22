@@ -5,7 +5,9 @@ module Board
       rank_dis = @position.rank_distance(position) # rank distance
       file_dis = @position.file_distance(position) # file distance
 
-      can_move = rank_dis == 1 && (file_dis == 0 && @board.square_empty?(position) || file_dis == 1 && !@board.square_empty?(position) ) # can move forward
+      can_move = (position.rank - @position.rank) == (side == :black ? -1 : 1)
+      can_move = can_move && rank_dis == 1 && (file_dis == 0 && @board.square_empty?(position) ||
+                                               file_dis == 1 && !@board.square_empty?(position)) # can move forward
       can_move = can_move || rank_dis == 2 && file_dis == 0 && # en passant
         @board.empty_ranks_between?(@position, position)
 
