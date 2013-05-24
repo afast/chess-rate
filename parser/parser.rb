@@ -28,6 +28,7 @@ class Parser
       puts data[@@parser.index] # Character with problem
       puts ">#{data[@@parser.index, 3]}<" # three characters of context
       from = @@parser.index-10
+      from = 0 if from < 0
       puts "-->#{data[from, 20]}<--" # 20 characters of context
       raise Exception, "Parse error at offset: #{@@parser.index}"
     end

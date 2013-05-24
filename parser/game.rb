@@ -1,13 +1,23 @@
 class Game
   attr_accessor :white, :black, :annotator, :white_deviation, :black_deviation,
-    :event, :site, :date, :round, :result
+    :event, :site, :date, :round, :result, :enddate, :whitestddeviation, :whiteperfectmoves,
+    :whiteblunders, :whiteavgerror, :blackavgerror, :blackstddeviation, :blackperfectmoves,
+    :blackblunders
   attr_reader :moves
 
   OBLIGATORY_TAGS = ['Event', 'Site', 'Date', 'Round', 'White', 'Black', 'Result']
-  AVAILABLE_TAGS = OBLIGATORY_TAGS + ['Annotator']
+  AVAILABLE_TAGS = OBLIGATORY_TAGS + ['Annotator', 'EndDate', 'WhiteAvgError',
+                                      'WhiteStdDeviation', 'WhitePerfectMoves', 'WhiteBlunders',
+                                      'BlackAvgError', 'BlackStdDeviation', 'BlackPerfectMoves', 'BlackBlunders']
 
   def initialize
     @moves = []
+  end
+
+  def tie_threshold
+  end
+
+  def blunder_threshold
   end
 
   def add_move move
@@ -18,7 +28,7 @@ class Game
 
   def set_tag(tag, value)
     if AVAILABLE_TAGS.include?(tag)
-      send "#{tag.downcase}=", value
+      send "#{tag.downcase}=", value[1..-2] # Remove "
     end
   end
 
@@ -70,6 +80,22 @@ class Game
   def player_ratings
     "White - #{@white} - #{'%.2f' % white_avg_deviation}\n" +
     "Black - #{@black} - #{'%.2f' % black_avg_deviation}\n"
+  end
+
+  def get_info_for player_name
+    result = {}
+    if @white == player_name
+      result[:avg_err] = @whiteavgerror.to_f
+      result[:std_dev] = @whitestddeviation.to_f
+      result[:perfect] = @whiteperfectmoves.to_f
+      result[:blunders] = @whiteblunders.to_f
+    elsif @black == player_name
+      result[:avg_err] = @blackavgerror.to_f
+      result[:std_dev] = @blackstddeviation.to_f
+      result[:perfect] = @blackperfectmoves.to_f
+      result[:blunders] = @blackblunders.to_f
+    end
+    result
   end
 
   private

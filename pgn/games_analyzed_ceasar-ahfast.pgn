@@ -1,0 +1,53 @@
+[Event "Open invite"]
+[Site "http://www.redhotpawn.com"]
+[Date "2013.04.17"]
+[Round "?"]
+[White "thethirteenthcaesar"]
+[Black "ahfast"]
+[Result "0-1"]
+[Engine Houdini_15a_x64.exe]
+[WhiteAvgError 0.58]
+[WhiteStdDeviation 1.30]
+[WhitePerfectMoves 0.47]
+[WhiteBlunders 0.06]
+[BlackAvgError 0.10]
+[BlackStdDeviation 0.20]
+[BlackPerfectMoves 0.53]
+[BlackBlunders 0.00]
+ 
+1.e4 { 0.16 }
+1...e5 { 0.29 / d7d5  0.16, 0.13 }
+2.Ng1f3 { 0.1 / b1c3  0.29, 0.19 }
+2...Ng8f6 { 0.19 / b8c6  0.1, 0.09 }
+3.Nb1c3 { 0.15 / d2d4  0.19, 0.04 }
+3...Nb8c6 { 0.16 }
+4.Bf1b5 { 0.01 / d2d4  0.16, 0.15 }
+4...Bf8c5 { 0.01 }
+5.h3 { -0.12 / d2d3  0.01, 0.13 }
+5...a6 { 0.07 / c6d4  -0.12, 0.19 }
+6.Bb5xc6 { 0.07 }
+6...dxc6 { 0.05 }
+7.d3 { 0.05 }
+7...O-O { 0.05 }
+8.Bc1g5 { -0.07 / e1g1  0.05, 0.12 }
+8...Qd8d6 { 0.0 / h7h6  -0.07, 0.07 }
+9.Qd1d2 { 0.05 }
+9...b5 { 0.13 / h7h6  0.05, 0.08 }
+10.O-O-O { -0.15 / e1g1  0.13, 0.28 }
+10...Bc5b4 { 0.13 / h7h6  -0.15, 0.28 }
+11.d4 { -0.81 / c1b1  0.13, 0.94 }
+11...Bb4xc3 { 0.0 / f6e4  -0.81, 0.81 }
+12.Qd2xc3 { 0.07 }
+12...Nf6xe4 { 0.02 }
+13.Qc3e3 { -0.02 }
+13...Bc8f5 { 0.03 / d6g6  -0.02, 0.05 }
+14.dxe5 { -0.03 }
+14...Qd6e6 { -0.03 }
+15.Bg5f4 { -3.61 / c1b1  -0.03, 3.58 }
+15...Qe6xa2 { -3.58 }
+16.c3 { -7.94 / f3d2  -3.58, 4.36 }
+16...Qa2a1 { -8.22 }
+17.Kc1c2 { -9.35 }
+17...Ne4xf2 { -9.35 }
+"0-1"
+ 

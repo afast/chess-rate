@@ -1,0 +1,56 @@
+[Event "Open invite"]
+[Site "http://www.redhotpawn.com"]
+[Date "2013.04.15"]
+[Round "?"]
+[White "ahfast"]
+[Black "Bobla45"]
+[Result "1-0"]
+[Engine Houdini_15a_x64.exe]
+[WhiteAvgError 0.04]
+[WhiteStdDeviation 0.09]
+[WhitePerfectMoves 0.63]
+[WhiteBlunders 0.00]
+[BlackAvgError -18.23]
+[BlackStdDeviation 77.05]
+[BlackPerfectMoves 0.44]
+[BlackBlunders 0.00]
+ 
+1.e4 { 0.14 / d2d4  0.25, 0.11 }
+1...e6 { -0.16 }
+2.Ng1f3 { 0.21 }
+2...d5 { -0.14 }
+3.Nb1c3 { 0.14 }
+3...Ng8f6 { -0.21 }
+4.exd5 { 0.22 / e4e5  0.24, 0.02 }
+4...exd5 { -0.1 }
+5.d4 { 0.11 }
+5...Bf8e7 { -0.24 }
+6.Bf1d3 { 0.27 }
+6...O-O { -0.28 }
+7.O-O { 0.28 }
+7...Bc8g4 { -0.38 }
+8.h3 { 0.43 }
+8...Bg4h5 { -0.44 }
+9.g4 { 0.28 / d1e2  0.35, 0.07 }
+9...Bh5g6 { -0.31 }
+10.Rf1e1 { 0.31 / d3g6  0.33, 0.02 }
+10...c6 { -0.43 }
+11.Bd3xg6 { 0.3 / c1f4  0.42, 0.12 }
+11...fxg6 { -0.51 }
+12.Nf3g5 { 0.21 / d1e2  0.6, 0.39 }
+12...Rf8e8 { -0.46 }
+13.Bc1f4 { 0.48 }
+13...Be7d6 { -0.55 }
+14.Re1xe8 { 0.42 / f4d6  0.44, 0.02 }
+14...Nf6xe8 { -0.39 }
+15.Qd1e2 { 0.4 }
+15...Bd6xf4 { -327.4 }
+16.Qe2e6 { 327.4 }
+16...Kg8h8 { -327.4 }
+17.Ng5f7 { 327.4 }
+17...Kh8g8 { -327.4 }
+18.Nf7xd8 { 327.4 }
+18...Kg8h8 { -327.4 }
+19.Qe6xe8 { 327.4 }
+"1-0"
+ 

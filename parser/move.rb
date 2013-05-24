@@ -17,6 +17,11 @@ class Move
       @player_value = values[0].to_f
       @annotator_value = (values[1] ? values[1] : values[0]).to_f
     end
+    # match lan move suggested by the engine
+    engine_moves = comment.scan(/[a-h][1-8][a-h][1-8]/)
+    if engine_moves.size > 0
+      @annotator_move = engine_moves[0]
+    end
   end
 
   def set_check
@@ -66,7 +71,7 @@ class Move
     # SCIDvsPC using Houdini returns the advantage calculation for whites
     # So a greater number is better for white and a lower number is better
     # for black. With 0 being the balance
-    return nil unless @annotator_value && @player_value
+    return @player_value || 0 unless @annotator_value
     case @side
     when :white then @annotator_value - @player_value
     when :black then @player_value - @annotator_value

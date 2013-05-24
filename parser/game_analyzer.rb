@@ -51,14 +51,15 @@ class GameAnalyzer
 
       board_score = 0
 
-      outFile.puts("[Event #{game.event}]")
-      outFile.puts("[Site #{game.site}]")
-      outFile.puts("[Date #{game.date}]")
-      outFile.puts("[Round #{game.round}]")
-      outFile.puts("[White #{game.white}]")
-      outFile.puts("[Black #{game.black}]")
-      outFile.puts("[Result #{game.result}]")
-      outFile.puts("[Engine #{@uci.engine_name}]")
+      outFile.puts("[Event \"#{game.event}\"]")
+      outFile.puts("[Site \"#{game.site}\"]")
+      outFile.puts("[Date \"#{game.date}\"]")
+      outFile.puts("[EndDate \"#{game.enddate}\"]")
+      outFile.puts("[Round \"#{game.round}\"]")
+      outFile.puts("[White \"#{game.white}\"]")
+      outFile.puts("[Black \"#{game.black}\"]")
+      outFile.puts("[Result \"#{game.result}\"]")
+      outFile.puts("[Engine \"#{@uci.engine_name}\"]")
       old_move = game.moves.first
       old_lan_move = nil
       old_bestmove = nil
@@ -107,14 +108,14 @@ class GameAnalyzer
       old_move.annotator_value = old_score
       old_move.annotator_move = old_bestmove
 
-      outFile.puts("[WhiteAvgError #{'%.2f' % game.white_avg_deviation}]")
-      outFile.puts("[WhiteStdDeviation #{'%.2f' % game.white_standard_deviation}]")
-      outFile.puts("[WhitePerfectMoves #{'%.2f' % game.white_perfect_moves}]")
-      outFile.puts("[WhiteBlunders #{'%.2f' % game.white_blunders(@tie_threshold, @blunder_threshold)}]")
-      outFile.puts("[BlackAvgError #{'%.2f' % game.black_avg_deviation}]")
-      outFile.puts("[BlackStdDeviation #{'%.2f' % game.black_standard_deviation}]")
-      outFile.puts("[BlackPerfectMoves #{'%.2f' % game.black_perfect_moves}]")
-      outFile.puts("[BlackBlunders #{'%.2f' % game.black_blunders(@tie_threshold, @blunder_threshold)}]")
+      outFile.puts("[WhiteAvgError \"#{'%.2f' % game.white_avg_deviation}\"]")
+      outFile.puts("[WhiteStdDeviation \"#{'%.2f' % game.white_standard_deviation}\"]")
+      outFile.puts("[WhitePerfectMoves \"#{'%.2f' % game.white_perfect_moves}\"]")
+      outFile.puts("[WhiteBlunders \"#{'%.2f' % game.white_blunders(@tie_threshold, @blunder_threshold)}\"]")
+      outFile.puts("[BlackAvgError \"#{'%.2f' % game.black_avg_deviation}\"]")
+      outFile.puts("[BlackStdDeviation \"#{'%.2f' % game.black_standard_deviation}\"]")
+      outFile.puts("[BlackPerfectMoves \"#{'%.2f' % game.black_perfect_moves}\"]")
+      outFile.puts("[BlackBlunders \"#{'%.2f' % game.black_blunders(@tie_threshold, @blunder_threshold)}\"]")
       outFile.puts(" ")
       game.moves.each { |m| outFile.puts m.to_s }
       outFile.puts(game.result)
