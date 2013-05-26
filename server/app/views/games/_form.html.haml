@@ -1,0 +1,64 @@
+= form_for @game do |f|
+  - if @game.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@game.errors.count, "error")} prohibited this game from being saved:"
+      %ul
+        - @game.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :white_id
+    = f.number_field :white_id
+  .field
+    = f.label :black_id
+    = f.number_field :black_id
+  .field
+    = f.label :annotator
+    = f.text_field :annotator
+  .field
+    = f.label :white_avg_error
+    = f.text_field :white_avg_error
+  .field
+    = f.label :black_avg_error
+    = f.text_field :black_avg_error
+  .field
+    = f.label :tournament_id
+    = f.number_field :tournament_id
+  .field
+    = f.label :site_id
+    = f.number_field :site_id
+  .field
+    = f.label :start_date
+    = f.datetime_select :start_date
+  .field
+    = f.label :round
+    = f.number_field :round
+  .field
+    = f.label :result
+    = f.number_field :result
+  .field
+    = f.label :status
+    = f.number_field :status
+  .field
+    = f.label :end_date
+    = f.datetime_select :end_date
+  .field
+    = f.label :white_std_deviation
+    = f.text_field :white_std_deviation
+  .field
+    = f.label :black_std_deviation
+    = f.text_field :black_std_deviation
+  .field
+    = f.label :white_perfect_rate
+    = f.text_field :white_perfect_rate
+  .field
+    = f.label :black_perfect_rate
+    = f.text_field :black_perfect_rate
+  .field
+    = f.label :black_blunder_rate
+    = f.text_field :black_blunder_rate
+  .field
+    = f.label :white_blunder_rate
+    = f.text_field :white_blunder_rate
+  .actions
+    = f.submit 'Save'

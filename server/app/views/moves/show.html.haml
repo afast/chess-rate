@@ -1,0 +1,36 @@
+%p#notice= notice
+
+%p
+  %b Side:
+  = @move.side
+%p
+  %b Pgn:
+  = @move.pgn
+%p
+  %b Lan:
+  = @move.lan
+%p
+  %b Player value:
+  = @move.player_value
+%p
+  %b Annotator move:
+  = @move.annotator_move
+%p
+  %b Annotator value:
+  = @move.annotator_value
+%p
+  %b Number:
+  = @move.number
+%p
+  %b Comments:
+  = @move.comments
+%p
+  %b Check:
+  = @move.check
+%p
+  %b Mate:
+  = @move.mate
+
+= link_to 'Edit', edit_move_path(@move)
+\|
+= link_to 'Back', moves_path

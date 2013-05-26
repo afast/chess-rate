@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  white_id: 1
+  black_id: 1
+  annotator: MyString
+  white_avg_error: 1.5
+  black_avg_error: 1.5
+  tournament_id: 1
+  site_id: 1
+  start_date: 2013-05-25 11:13:35
+  round: 1
+  result: 1
+  status: 1
+  end_date: 2013-05-25 11:13:35
+  white_std_deviation: 1.5
+  black_std_deviation: 1.5
+  white_perfect_rate: 1.5
+  black_perfect_rate: 1.5
+  black_blunder_rate: 1.5
+  white_blunder_rate: 1.5
+
+two:
+  white_id: 1
+  black_id: 1
+  annotator: MyString
+  white_avg_error: 1.5
+  black_avg_error: 1.5
+  tournament_id: 1
+  site_id: 1
+  start_date: 2013-05-25 11:13:35
+  round: 1
+  result: 1
+  status: 1
+  end_date: 2013-05-25 11:13:35
+  white_std_deviation: 1.5
+  black_std_deviation: 1.5
+  white_perfect_rate: 1.5
+  black_perfect_rate: 1.5
+  black_blunder_rate: 1.5
+  white_blunder_rate: 1.5

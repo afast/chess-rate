@@ -1,0 +1,137 @@
+# This is a grammar matching PGN syntax for representing Chess games
+grammar PGN
+  rule games # top rule, match a list of games in a file
+    game spaced_games space <GameList>
+  end
+
+  rule spaced_games # used if many games present in one file
+    spaced_game* <SpacedGames>
+  end
+
+  rule spaced_game # When >1 game present, require space between games
+    oblig_space game <SpacedGame>
+  end
+  rule game # This matches and entire game tags, move sequences and result
+    tag_expressions space move_sequence game_result <GameNode>
+  end
+
+  rule tag_expressions # Require at least one tag
+    tag_expression+ <TagExpressions>
+  end
+
+  rule tag_expression # match a tag [Identifier "value"]
+    '[' tag_identifier space string ']' space <TagExpression>
+  end
+
+  rule tag_identifier
+    [A-Z] [A-Za-z]+ <TagIdentifier>
+  end
+
+  rule game_result
+    ( space ( '1-0' / '0-1' / '1/2-1/2' / '*' ) )?
+  end
+
+  rule move_sequence # The whole move sequence list
+    annotated_move+ <MoveSequence>
+  end
+
+  rule annotated_move # One annotated move e.g.: 2.Bc3 $6 {comment} (variation)
+    move_literal space comment? space variation? space <AnnotatedMove>
+  end
+
+  rule move_literal # A move e.g.: 2.Bc3+ $6 $18
+     move_number_side? move_type check_move? nags <MoveLiteral>
+  end
+
+  rule move_number_side
+    move_number move_side space <MoveNumberSide>
+  end
+
+  rule move_type
+    promotion / castling / pawnmove / standard_move
+  end
+
+  rule comment # Match Comment
+    '{' [^}]* '}' <Comment>
+  end
+
+  rule variation # Match Variant
+    '(' [^)]* ')' <Variant>
+  end
+
+  rule promotion # Match promotion
+    'x'? 'P'? file [18] '=' ('?' / '!' / 'K') piece <MoveType>
+  end
+
+  rule castling
+    kingside / queenside
+  end
+
+  rule queenside
+    'O-O' <MoveType>
+  end
+
+  rule kingside
+    'O-O-O' <MoveType>
+  end
+
+  rule pawnmove
+    (file? 'x')? file rank <MoveType>
+  end
+
+  rule standard_move # This represents a normal move eg.: Ng1xf3, Ngxf3, Nxf3, Ng1f3, Ngf3, Nf3
+    piece ( file rank 'x'? file rank / file 'x'? file rank / 'x'? file rank ) <MoveType>
+  end
+
+  rule piece # Matches a piece name P should not appear but some motors do include it
+    [KNBQRP]
+  end
+
+  rule file # Match the file (table coords)
+    [a-h]
+  end
+
+  rule rank # Match the rank (table coords)
+    [1-8]
+  end
+
+  rule check_move # Check or Checkmate annotated move
+    check / checkmate
+  end
+
+  rule check
+    '+' <Check>
+  end
+
+  rule checkmate
+    '#' <Checkmate>
+  end
+  
+  rule move_number # Parse the move number
+    [0-9]+ <MoveNumber>
+  end
+
+  rule move_side # detect the side that did the move '.' ~> white, '...' ~> black
+    '.'+ <MoveSide>
+  end
+
+  rule nags # Match Numeric Annotation Glyphs
+    (space nag)* <Nags>
+  end
+
+  rule nag # Match one Numeric Annotation Glyph
+    '$' [0-9]+ <Nag>
+  end
+
+  rule string
+    '"' [^"]* '"' <StringLiteral>
+  end
+
+  rule space
+    [ \n]*
+  end
+
+  rule oblig_space
+    [ \n]+
+  end
+end

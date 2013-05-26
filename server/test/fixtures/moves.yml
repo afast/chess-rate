@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  side: false
+  pgn: MyString
+  lan: MyString
+  player_value: 1.5
+  annotator_move: MyString
+  annotator_value: 1.5
+  number: 1
+  comments: MyText
+  check: false
+  mate: false
+
+two:
+  side: false
+  pgn: MyString
+  lan: MyString
+  player_value: 1.5
+  annotator_move: MyString
+  annotator_value: 1.5
+  number: 1
+  comments: MyText
+  check: false
+  mate: false

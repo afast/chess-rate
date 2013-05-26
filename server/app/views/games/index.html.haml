@@ -1,0 +1,54 @@
+%h1 Listing games
+
+%table.table.table-condensed.table-striped.table-hover
+  %tr
+    %th White
+    %th Black
+    %th Annotator
+    %th White avg error
+    %th Black avg error
+    %th Tournament
+    %th Site
+    %th Start date
+    %th Round
+    %th Result
+    %th Status
+    %th End date
+    %th White std deviation
+    %th Black std deviation
+    %th White perfect rate
+    %th Black perfect rate
+    %th Black blunder rate
+    %th White blunder rate
+    %th Progress
+    %th
+
+  - @games.each do |game|
+    %tr
+      %td= game.white.try(:name)
+      %td= game.black.try(:name)
+      %td= game.annotator
+      %td= '%.2f' % game.white_avg_error
+      %td= '%.2f' % game.black_avg_error
+      %td= game.tournament.try(:name)
+      %td= game.site.try(:name)
+      %td= game.start_date.try(:to_date)
+      %td= game.round
+      %td= game.result
+      %td= game.status
+      %td= game.end_date.try(:to_date)
+      %td= '%.2f' % game.white_std_deviation
+      %td= '%.2f' % game.black_std_deviation
+      %td= '%.2f%' % game.white_perfect_rate
+      %td= '%.2f%' % game.black_perfect_rate
+      %td= '%.2f%' % game.black_blunder_rate
+      %td= '%.2f%' % game.white_blunder_rate
+      %td= '%.2f%' % ((game.progress || 0) * 100)
+      %td
+        = link_to 'Show', game, class: 'btn'
+        = link_to 'Edit', edit_game_path(game), class: 'btn'
+        = link_to 'Destroy', game, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn'
+
+%br
+
+= link_to 'New Game', new_game_path, class: 'btn btn-primary'

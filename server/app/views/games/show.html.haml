@@ -1,0 +1,60 @@
+%p#notice= notice
+
+%p
+  %b White:
+  = @game.white_id
+%p
+  %b Black:
+  = @game.black_id
+%p
+  %b Annotator:
+  = @game.annotator
+%p
+  %b White avg error:
+  = @game.white_avg_error
+%p
+  %b Black avg error:
+  = @game.black_avg_error
+%p
+  %b Tournament:
+  = @game.tournament_id
+%p
+  %b Site:
+  = @game.site_id
+%p
+  %b Start date:
+  = @game.start_date
+%p
+  %b Round:
+  = @game.round
+%p
+  %b Result:
+  = @game.result
+%p
+  %b Status:
+  = @game.status
+%p
+  %b End date:
+  = @game.end_date
+%p
+  %b White std deviation:
+  = @game.white_std_deviation
+%p
+  %b Black std deviation:
+  = @game.black_std_deviation
+%p
+  %b White perfect rate:
+  = @game.white_perfect_rate
+%p
+  %b Black perfect rate:
+  = @game.black_perfect_rate
+%p
+  %b Black blunder rate:
+  = @game.black_blunder_rate
+%p
+  %b White blunder rate:
+  = @game.white_blunder_rate
+
+= link_to 'Edit', edit_game_path(@game)
+\|
+= link_to 'Back', games_path

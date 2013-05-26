@@ -1,0 +1,20 @@
+%h1 Listing pgn_files
+
+%table.table.table-condensed.table-striped.table-hover
+  %tr
+    %th Description
+    %th Status
+    %th
+
+  - @pgn_files.each do |pgn_file|
+    %tr
+      %td= pgn_file.description
+      %td= pgn_file.status_to_s
+      %td
+        = link_to 'Process', analyze_pgn_file_path(pgn_file), class: 'btn' if pgn_file.not_processed?
+        = link_to 'Edit', edit_pgn_file_path(pgn_file), class: 'btn'
+        = link_to 'Destroy', pgn_file, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn'
+
+%br
+
+= link_to 'New Pgn file', new_pgn_file_path, class: 'btn btn-primary'

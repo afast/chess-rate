@@ -1,0 +1,37 @@
+%h1 Listing moves
+
+%table
+  %tr
+    %th Side
+    %th Pgn
+    %th Lan
+    %th Player value
+    %th Annotator move
+    %th Annotator value
+    %th Number
+    %th Comments
+    %th Check
+    %th Mate
+    %th
+    %th
+    %th
+
+  - @moves.each do |move|
+    %tr
+      %td= move.side
+      %td= move.pgn
+      %td= move.lan
+      %td= move.player_value
+      %td= move.annotator_move
+      %td= move.annotator_value
+      %td= move.number
+      %td= move.comments
+      %td= move.check
+      %td= move.mate
+      %td= link_to 'Show', move
+      %td= link_to 'Edit', edit_move_path(move)
+      %td= link_to 'Destroy', move, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Move', new_move_path

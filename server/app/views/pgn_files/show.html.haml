@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Description:
+  = @pgn_file.description
+%p
+  %b Status:
+  = @pgn_file.status
+
+= link_to 'Edit', edit_pgn_file_path(@pgn_file), class: 'btn btn-primary'
+\|
+= link_to 'Back', pgn_files_path, class: 'btn'

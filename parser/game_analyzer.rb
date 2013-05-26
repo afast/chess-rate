@@ -45,7 +45,6 @@ class GameAnalyzer
     outFile = File.new(fileName, "w")
 
     @games.each do |game|
-      #@uci.new_game!
       @uci.wait_for_readyok
       board.setup_board
 

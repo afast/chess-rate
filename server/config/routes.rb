@@ -1,0 +1,21 @@
+ChessRate::Application.routes.draw do
+  root to: 'games#index'
+
+  devise_for :users
+
+  resources :players
+  resources :sites
+  resources :tournaments
+  resources :moves
+  resources :games
+  resources :users
+  resources :pgn_files do
+    member do
+      get :analyze, 'setup_analysis'
+      post :analyze
+    end
+  end
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+end
