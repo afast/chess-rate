@@ -92,6 +92,33 @@ class Game < ActiveRecord::Base
     result
   end
 
+  def set_statistics!
+    self.white_avg_error = avg_error(moves.white)
+    self.black_avg_error = avg_error(moves.black)
+    self.white_std_deviation = standard_deviation(moves.white)
+    self.black_std_deviation = standard_deviation(moves.black)
+    self.white_perfect_rate = perfect_rate(moves.white)
+    self.black_perfect_rate = perfect_rate(moves.black)
+    self.white_blunder_rate = blunder_rate(moves.white, tie_threshold, blunder_threshold)
+    self.black_blunder_rate = blunder_rate(moves.black, tie_threshold, blunder_threshold)
+    self.save!
+  end
+
+  def reset_statistics!
+    white_avg_error = nil
+    black_avg_error = nil
+    white_std_deviation = nil
+    black_std_deviation = nil
+    white_perfect_rate = nil
+    black_perfect_rate = nil
+    white_blunder_rate = nil
+    black_blunder_rate = nil
+    save!
+  end
+
+  def analyze
+  end
+
   private
   def avg_error(moves)
     (moves.collect(&:deviation).inject(:+) || 0) / moves.size.to_f

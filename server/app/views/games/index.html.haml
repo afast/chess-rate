@@ -45,7 +45,7 @@
       %td= '%.2f%' % game.white_blunder_rate
       %td= '%.2f%' % ((game.progress || 0) * 100)
       %td
-        = link_to 'Show', game, class: 'btn'
+        = link_to 'Re-Analyze', analyze_game_path(game), class: 'btn'
         = link_to 'Edit', edit_game_path(game), class: 'btn'
         = link_to 'Destroy', game, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn'
 

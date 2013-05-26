@@ -21,8 +21,8 @@ class GameAnalyzer
         game.destroy
         next
       end
-      game.save!
       game.update_attributes! tie_threshold: @tie_threshold, blunder_threshold: @blunder_threshold
+      game.reset_statistics!
 
       board.setup_board # Reset our custom board
       @uci.wait_for_readyok
@@ -84,6 +84,7 @@ class GameAnalyzer
           old_move.update_attributes! player_value: old_score, annotator_value: old_score, annotator_move: old_bestmove
         end
       end
+      game.set_statistics!
     end
   end
 end

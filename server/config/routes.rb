@@ -7,11 +7,17 @@ ChessRate::Application.routes.draw do
   resources :sites
   resources :tournaments
   resources :moves
-  resources :games
+  resources :games do
+    member do
+      get :analyze, to: :setup_analysis
+      post :analyze
+    end
+  end
+
   resources :users
   resources :pgn_files do
     member do
-      get :analyze, 'setup_analysis'
+      get :analyze, to: :setup_analysis
       post :analyze
     end
   end

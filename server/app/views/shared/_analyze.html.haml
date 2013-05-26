@@ -1,9 +1,9 @@
 .span4
   %h3
-    Analyze: #{@pgn_file.description}
+    Analyze: #{description}
   %h4
-    = @pgn_file.pgn_file.identifier
-  = form_tag path: analyze_pgn_file_path(@pgn_file) do
+    = name
+  = form_tag path: path do
     .field
       = label_tag :time
       = number_field_tag :time, 5000, step: :any, min: 300

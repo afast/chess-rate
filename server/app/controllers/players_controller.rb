@@ -14,6 +14,9 @@ class PlayersController < ApplicationController
   # GET /players/1.json
   def show
     @player = Player.find(params[:id])
+    @tournaments = @player.tournaments.map do |t|
+      t.get_info_for(@player.id)
+    end
 
     respond_to do |format|
       format.html # show.html.erb

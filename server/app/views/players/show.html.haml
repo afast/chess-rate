@@ -4,6 +4,25 @@
   %b Name:
   = @player.name
 
+%table.table.table-condensed.table-striped.table-hover
+  %tr
+    %th Tournament
+    %th Start
+    %th End
+    %th Avg Error
+    %th Avg Deviation
+    %th Perfect Rate
+    %th Blunder Rate
+  - @tournaments.each do |t|
+    %tr
+      %td= t[:name]
+      %td= t[:start_date]
+      %td= t[:end_date]
+      %td= t[:avg_error]
+      %td= t[:avg_deviation]
+      %td= t[:perfect_rate]
+      %td= t[:blunder_rate]
+
 = link_to 'Edit', edit_player_path(@player)
 \|
 = link_to 'Back', players_path

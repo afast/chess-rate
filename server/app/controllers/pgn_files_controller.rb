@@ -90,5 +90,6 @@ class PgnFilesController < ApplicationController
   def analyze
     @pgn_file = PgnFile.find(params[:id])
     AnalyzeWorker.perform_async(params[:id], params[:time].to_i, params[:tie_threshold].to_f, params[:blunder_threshold].to_f)
+    redirect_to pgn_files_path
   end
 end
