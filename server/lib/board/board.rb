@@ -69,9 +69,7 @@ module Board
     end
 
     def move(m, side) # move string and side (white, black)
-      puts "Move #{m}"
       move_hash = expand_move m, side
-      puts "Move hash #{move_hash}"
       position_to = Position.from_algebraic_notation(move_hash[:to])
       piece = get_piece move_hash[:name], side,
                         position_to, Position.from_algebraic_notation(move_hash[:dis])
@@ -149,7 +147,6 @@ module Board
 
     private
     def get_piece name, side, destination, dis
-      puts "Get piece #{name} from #{side} to #{destination} dis- #{dis}"
       name.downcase!
       if dis && dis.valid?
         return @board[dis.file_to_i-1][dis.rank-1]
