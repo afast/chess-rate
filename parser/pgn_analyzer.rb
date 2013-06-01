@@ -173,4 +173,4 @@ end
 analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.txt'
 analyzer.add_game_number 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_LineNumber.txt'
 analyzer.add_result
-puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R ', "w"
+puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R ', "b"
