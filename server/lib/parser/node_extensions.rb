@@ -4,37 +4,46 @@ module PGN
     def print
       self.elements.each { |x| x.print }
     end
-    def get_games
+    def get_games(pgn_file)
       # Create Game objects, populate values and return them
-      self.elements.map { |x| x.get_game }.flatten.compact
+      puts 'get games'
+      self.elements.map { |x| x.get_game(pgn_file) }
+      puts 'finished getting games'
     end
   end
   class SpacedGames < Treetop::Runtime::SyntaxNode
     def print
       self.elements.each { |x| x.print }
     end
-    def get_game
+    def get_game(pgn_file)
+      puts 'spaced games'
       # Create Game objects, populate values and return them
-      self.elements.map { |x| x.get_game }
+      self.elements.map { |x| x.get_game(pgn_file) }
     end
   end
   class SpacedGame < Treetop::Runtime::SyntaxNode
     def print
       self.elements.each { |x| x.print }
     end
-    def get_game
+    def get_game(pgn_file)
+      puts 'spaced game'
       # Create Game objects, populate values and return them
-      self.elements.select{ |el| el.is_a?(GameNode) }.map { |x| x.get_game }
+      self.elements.select{ |el| el.is_a?(GameNode) }.map { |x| x.get_game(pgn_file) }
     end
   end
   class GameNode < Treetop::Runtime::SyntaxNode
     def print
       self.elements.each { |x| x.print }
     end
-    def get_game
+    def get_game(pgn_file)
       g = Game.new # new game
+      puts 'getting game'
       self.elements.each { |x| x.set_values(g) } #set game values
-      g
+      puts 'saving game'
+      g.save_moves
+      puts 'moves saved'
+      g.save
+      pgn_file.games << g
     end
   end
 

@@ -23,7 +23,4 @@ ChessRate::Application.routes.draw do
       post :analyze
     end
   end
-
-  require 'sidekiq/web'
-  mount Sidekiq::Web => '/sidekiq'
 end

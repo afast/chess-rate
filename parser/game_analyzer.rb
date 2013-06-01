@@ -1,7 +1,10 @@
 require 'optparse'
+require 'fileutils'
 
 $:.unshift File.dirname(__FILE__)
 $:.unshift File.expand_path('lib', File.expand_path('uci-0.0.2', File.expand_path('..', File.dirname(__FILE__))))
+
+require 'uci'
 
 options = {}
 OptionParser.new do |opts|
@@ -21,27 +24,32 @@ OptionParser.new do |opts|
   opts.on("-b", "--blunder [VALUE]", Float, "Blunder threshold e.g.: 2.56") do |blunder|
     options[:blunder_threshold] = blunder || 2
   end
+  opts.on("--debug", "Debug") do |draw|
+    options[:debug] = true
+  end
 end.parse!
 
-require 'uci'
-
 class GameAnalyzer
-  def initialize(games, motor_path, time, games_path, tie_threshold, blunder_threshold)
+  def initialize(games, motor_path, time, games_path, tie_threshold, blunder_threshold, debug=nil)
     @games = games
     @motor_path = motor_path
     @time = time || 100
     @games_path = games_path
     @tie_threshold = tie_threshold || 1.56
     @blunder_threshold = blunder_threshold || 2
+    @debug = debug || false
   end
 
   def analyze_games
-    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, debug: true)
+    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, debug: @debug)
 
     @uci.wait_for_readyok
     board = Board::Game.new
 
     fileName = 'pgn/games_analyzed_' + @games_path.split('/').last
+    unless File.directory?('pgn')
+      FileUtils.mkdir_p('pgn')
+    end
     outFile = File.new(fileName, "w")
 
     @games.each do |game|
@@ -144,6 +152,6 @@ tree = Parser.parse File.read(options[:file_path])
 
 # Print player ratings for each game
 analyzer = GameAnalyzer.new tree.get_games, options[:motor_path], options[:time], options[:file_path],
-  options[:draw_threshold], options[:blunder_threshold]
+  options[:draw_threshold], options[:blunder_threshold], options[:debug]
 
 analyzer.analyze_games

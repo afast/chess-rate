@@ -19,4 +19,4 @@ $ ->
       id = $div.closest('tr').prop('id')
       timeouts[id] = setInterval ()->
         updateProgress $div, id
-      , 500
+      , 2000

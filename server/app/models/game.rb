@@ -1,4 +1,6 @@
 class Game < ActiveRecord::Base
+  include Background
+
   attr_accessible :annotator, :black_avg_error, :black_blunder_rate, :black_id, :black_perfect_rate, :black_std_deviation,
     :end_date, :result, :round, :site_id, :start_date, :status, :tournament_id, :white_avg_error, :white_blunder_rate,
     :white_id, :white_perfect_rate, :white_std_deviation, :progress, :tie_threshold, :blunder_threshold
@@ -21,7 +23,18 @@ class Game < ActiveRecord::Base
   belongs_to :pgn_file
 
   def add_move(move)
-    moves << move
+    puts 'adding move'
+    @cache_moves = [] if @cache_moves.nil?
+    @cache_moves << move
+    puts 'move added'
+  end
+
+  def save_moves
+    transaction do
+      @cache_moves.each do |m|
+        m.update_attributes game: self
+      end
+    end
   end
 
   def set_tag(tag, value)
@@ -118,7 +131,24 @@ class Game < ActiveRecord::Base
     save!
   end
 
-  def analyze
+  def analyze(time, tie_threshold, blunder_threshold)
+    puts 'Analyzing!'
+    puts "game #{self.id}"
+    puts "time #{time}"
+    puts "tie_threshold #{tie_threshold}"
+    puts "blunder_threshold #{blunder_threshold}"
+
+    analyzer = GameAnalyzer.new [self], time, tie_threshold, blunder_threshold
+
+    start_processing
+    analyzer.analyze_games
+    finished_processing
+  end
+
+  def background_analyze(time, tie_threshold, blunder_threshold)
+    background do
+      analyze time, tie_threshold, blunder_threshold
+    end
   end
 
   def processing?
@@ -130,7 +160,7 @@ class Game < ActiveRecord::Base
   end
 
   def start_processing
-    update_attributes status: STATUS[:processing]
+    update_attributes status: STATUS[:processing], progress: 0
   end
 
   def finished_processing

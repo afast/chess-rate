@@ -1,5 +1,5 @@
 class Move < ActiveRecord::Base
-  attr_accessible :annotator_move, :annotator_value, :check, :comments, :lan, :mate, :number, :pgn, :player_value, :side
+  attr_accessible :annotator_move, :annotator_value, :check, :comments, :lan, :mate, :number, :pgn, :player_value, :side, :game
 
   serialize :comments, Array
 

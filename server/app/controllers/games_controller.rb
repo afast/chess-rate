@@ -91,7 +91,7 @@ class GamesController < ApplicationController
 
   # POST /game/1/analyze
   def analyze
-    AnalyzeGameWorker.perform_async(params[:id], params[:time].to_i, params[:tie_threshold].to_f, params[:blunder_threshold].to_f)
+    Game.find(params[:id]).background_analyze params[:time].to_i, params[:tie_threshold].to_f, params[:blunder_threshold].to_f
     redirect_to games_path
   end
 
