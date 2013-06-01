@@ -1,8 +1,9 @@
 class GamesController < ApplicationController
+  include GamesHelper
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all
+    @games = Game.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -92,5 +93,13 @@ class GamesController < ApplicationController
   def analyze
     AnalyzeGameWorker.perform_async(params[:id], params[:time].to_i, params[:tie_threshold].to_f, params[:blunder_threshold].to_f)
     redirect_to games_path
+  end
+
+  def progress
+    render text: '%.2f' % (Game.find(params[:id]).progress_percentage)
+  end
+
+  def statistics
+    render partial: 'statistics', locals: { game: Game.find(params[:id]) }
   end
 end

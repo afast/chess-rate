@@ -93,8 +93,6 @@ class Move < ActiveRecord::Base
             when '.' then true
             when '...' then false
             end
-    puts "self side #{self.side}"
-    puts "self side #{self.side_sym}"
   end
 
   def black?

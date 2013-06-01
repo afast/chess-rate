@@ -4,9 +4,11 @@ class PgnFile < ActiveRecord::Base
 
   mount_uploader :pgn_file, PgnFileUploader
 
+  has_many :games
+
   before_create :init_status
 
-  attr_accessible :description, :pgn_file
+  attr_accessible :description, :pgn_file, :status
 
   def init_status
     status = STATUS[:not_processed]
@@ -18,5 +20,13 @@ class PgnFile < ActiveRecord::Base
 
   def not_processed?
     status.nil? || status == STATUS[:not_processed]
+  end
+
+  def start_processing
+    update_attributes status: STATUS[:processing]
+  end
+
+  def finished_processing
+    update_attributes status: STATUS[:processed]
   end
 end

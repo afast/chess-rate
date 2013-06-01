@@ -11,12 +11,14 @@ class Game < ActiveRecord::Base
                                       'BlackStdDeviation' => :black_std_deviation, 'BlackPerfectMoves' => :black_perfect_rate,
                                       'BlackBlunders' => :black_blunder_rate}
   AVAILABLE_TAGS = OBLIGATORY_TAGS.merge OPTIONAL_TAGS
+  STATUS = {not_processed: 0, processing: 1, processed: 2}
 
   has_many :moves, dependent: :destroy
   belongs_to :tournament
   belongs_to :site
   belongs_to :white, class_name: 'Player'
   belongs_to :black, class_name: 'Player'
+  belongs_to :pgn_file
 
   def add_move(move)
     moves << move
@@ -117,6 +119,22 @@ class Game < ActiveRecord::Base
   end
 
   def analyze
+  end
+
+  def processing?
+    self.status == STATUS[:processing]
+  end
+
+  def progress_percentage
+    (progress || 0) * 100
+  end
+
+  def start_processing
+    update_attributes status: STATUS[:processing]
+  end
+
+  def finished_processing
+    update_attributes status: STATUS[:processed]
   end
 
   private

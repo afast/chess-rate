@@ -20,11 +20,10 @@
     %th Black perfect rate
     %th Black blunder rate
     %th White blunder rate
-    %th Progress
     %th
 
   - @games.each do |game|
-    %tr
+    %tr{id: game.id}
       %td= game.white.try(:name)
       %td= game.black.try(:name)
       %td= game.annotator
@@ -37,18 +36,19 @@
       %td= game.result
       %td= game.status
       %td= game.end_date.try(:to_date)
-      %td= '%.2f' % game.white_std_deviation
-      %td= '%.2f' % game.black_std_deviation
-      %td= '%.2f%' % game.white_perfect_rate
-      %td= '%.2f%' % game.black_perfect_rate
-      %td= '%.2f%' % game.black_blunder_rate
-      %td= '%.2f%' % game.white_blunder_rate
-      %td= '%.2f%' % ((game.progress || 0) * 100)
+      - unless game.processing?
+        = render 'statistics', game: game
+      - else
+        %td{colspan: 6}
+          .progress.progress-striped.active
+            .bar{style: "width: #{'%.2f' % game.progress_percentage}%;"}
       %td
         = link_to 'Re-Analyze', analyze_game_path(game), class: 'btn'
         = link_to 'Edit', edit_game_path(game), class: 'btn'
         = link_to 'Destroy', game, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn'
 
+.digg_pagination
+  = will_paginate @games
 %br
 
 = link_to 'New Game', new_game_path, class: 'btn btn-primary'

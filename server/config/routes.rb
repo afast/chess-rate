@@ -10,6 +10,8 @@ ChessRate::Application.routes.draw do
   resources :games do
     member do
       get :analyze, to: :setup_analysis
+      get :progress
+      get :statistics
       post :analyze
     end
   end

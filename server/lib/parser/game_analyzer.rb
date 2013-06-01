@@ -86,5 +86,6 @@ class GameAnalyzer
       end
       game.set_statistics!
     end
+    @uci.close_engine_connection
   end
 end

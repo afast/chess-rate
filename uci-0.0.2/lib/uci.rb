@@ -51,6 +51,15 @@ class Uci
     #new_game!
   end
 
+  def close_engine_connection
+    @engine_stdin.close
+    @engine_stdout.close
+    puts @wait_thr.public_methods
+    puts @wait_thr.class
+    Process.kill 'INT', @wait_thr.pid
+    #`kill -9 #{@wait_thr.pid}` # Kill the spawned process
+  end
+
   # true if engine is ready, false if not yet ready
   def ready?
     write_to_engine('isready')
@@ -119,12 +128,12 @@ class Uci
   end
 
   def read_engine_no_filter
-    if @engine_stdout.ready?
+    #if @engine_stdout.ready?
       response = @engine_stdout.readline
       puts "Engine: #{response}" if @debug
-    else
-      response = ''
-    end
+    #else
+      #response = ''
+    #end
     if response.split('').last == "\n"
       response.chop
     else
@@ -147,7 +156,7 @@ class Uci
       #puts move_string if move_string.match(/[a-z]/)
       puts move_string if move_string.match(/ERROR/)
       score = move_string.scan(/score cp (-?[0-9]+)/).last
-      if score && move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last && move_string.match(/upperbound|lowerbound|mate/).nil?
+      if score && move_string.scan(/ pv ([a-h][1-8][a-h][1-8][+#qnrb]?) /).last && move_string.match(/upperbound|lowerbound|mate/).nil?
         if (move = move_string.scan(/ pv ([a-h][1-8][a-h][1-8]) /).last.last)
           scores[move] = score.last.to_i/100.0
         end
@@ -477,14 +486,14 @@ protected
   def read_from_engine(strip_cr=true)
     log("\tread_from_engine") #XXX
     response = ""
-    while @engine_stdout.ready?
+    #while @engine_stdout.ready?
       unless (response = @engine_stdout.readline) =~ /^info/
         log("\t\tENGINE:\t'#{response}'")
         puts "Engine: #{response}" if @debug
       else
         puts "Engine: #{response}" if response.size > 0 && @debug
       end
-    end
+    #end
     if strip_cr && response.split('').last == "\n"
       response.chop
     else
@@ -552,7 +561,7 @@ private
   end
 
   def open_engine_connection(engine_path)
-    @engine_stdin, @engine_stdout = Open3.popen2e(engine_path)
+    @engine_stdin, @engine_stdout, @wait_thr = Open3.popen2e(engine_path)
   end
 
   def require_keys!(hash, *required_keys)
