@@ -36,7 +36,7 @@ class GameAnalyzer
   end
 
   def analyze_games
-    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, debug: false)
+    @uci = Uci.new(:engine_path => @motor_path, movetime: @time, debug: true)
 
     @uci.wait_for_readyok
     board = Board::Game.new
@@ -121,6 +121,7 @@ class GameAnalyzer
       outFile.puts(" ")
     end
     outFile.close
+    @uci.close_engine_connection
   end
 end
 
