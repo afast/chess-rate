@@ -41,7 +41,7 @@ class GameAnalyzer
     @uci.wait_for_readyok
     board = Board::Game.new
 
-    fileName = '../pgn/games_analyzed_' + @games_path.split('/').last
+    fileName = 'pgn/games_analyzed_' + @games_path.split('/').last
     outFile = File.new(fileName, "w")
 
     @games.each do |game|
