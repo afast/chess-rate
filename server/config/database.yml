@@ -9,7 +9,7 @@ development:
   pool: 5
   timeout: 5000
   username: root
-  password: root
+  password: toor
   reconnect: false
 
 # Warning: The database defined as "test" will be erased and

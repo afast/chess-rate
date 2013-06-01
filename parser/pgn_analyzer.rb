@@ -4,6 +4,34 @@ class PGN_Analyzer
     @file_path = file_path
   end
 
+  def count_coincidences(to_analyze)
+    inFile = File.open(@file_path,"r")
+    coincidences = 0
+    inFile.each do |line|
+      if line.start_with? to_analyze
+        coincidences += 1
+      end
+    end
+    inFile.close
+    coincidences
+  end
+
+  def add_game_number (outPath)
+    inFile = File.open(@file_path,"r")
+    outFile = File.open(outPath,"w")
+    gameNumber = 0
+    inFile.each do |line|
+      fenArray = line.split(' ')
+      if (fenArray[1].eql? 'w') && (fenArray[5].to_i==1)
+        gameNumber += 1
+      end
+      newLine = line.chop + " " + gameNumber.to_s
+      outFile.puts(newLine)
+    end
+    inFile.close
+    outFile.close
+  end
+
   # analyze the file defined by file_path
   def file_analyzer
     # open the file
@@ -91,5 +119,7 @@ class PGN_Analyzer
 
 end
 
-analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
-analyzer.file_analyzer
+#analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
+analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.txt'
+puts analyzer.count_coincidences 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R '
+analyzer.add_game_number 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_LineNumber.txt'
