@@ -54,10 +54,7 @@ class Uci
   def close_engine_connection
     @engine_stdin.close
     @engine_stdout.close
-    puts @wait_thr.public_methods
-    puts @wait_thr.class
     Process.kill 'INT', @wait_thr.pid
-    #`kill -9 #{@wait_thr.pid}` # Kill the spawned process
   end
 
   # true if engine is ready, false if not yet ready
