@@ -32,6 +32,56 @@ class PGN_Analyzer
     outFile.close
   end
 
+  def add_result ()
+    pgnFile = File.open('D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn',"r")
+    fenFile = File.open('D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_LineNumber.txt',"r")
+    finalFile = File.open('D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_FEN.txt',"w")
+
+    winner = "d"
+    fenFile.each do |fenLine|
+      match = fenLine.split(' ').last
+      fenArray = fenLine.split(' ')
+      if (fenArray[1].eql? 'w') && (fenArray[5].to_i==1)
+        until (pgnLine = pgnFile.readline).start_with? '[Result '; end
+        result = pgnLine.split('"')[1]
+        if result.eql? '1-0'
+          winner = "w"
+        elsif result.eql? '0-1'
+          winner = "b"
+        else
+          winner = "d"
+        end
+      end
+      newLine = fenLine.chop + " " + winner
+      finalFile.puts(newLine)
+    end
+
+    finalFile.close
+    fenFile.close
+    pgnFile.close
+  end
+
+  def getPercentage(to_analyze,player)
+    inFile = File.open('D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_FEN.txt',"r")
+    coincidences = 0
+    points = 0
+    inFile.each do |line|
+      if line.start_with? to_analyze
+        coincidences += 1
+        if line.split(' ').last.eql? 'd'
+          points += 0.5
+        elsif line.split(' ').last.eql?(player)
+          points += 1
+        end
+      end
+    end
+    inFile.close
+    if coincidences == 0
+      return -1
+    end
+    points/coincidences*100
+  end
+
   # analyze the file defined by file_path
   def file_analyzer
     # open the file
@@ -121,5 +171,6 @@ end
 
 #analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
 analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.txt'
-puts analyzer.count_coincidences 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R '
 analyzer.add_game_number 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_LineNumber.txt'
+analyzer.add_result
+puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R ', "w"
