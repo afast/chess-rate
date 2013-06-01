@@ -54,6 +54,7 @@ class Uci
   def close_engine_connection
     @engine_stdin.close
     @engine_stdout.close
+    puts 'Killing engine' if @debug
     Process.kill 'KILL', @wait_thr.pid
   end
 
@@ -66,7 +67,6 @@ class Uci
   def wait_for_readyok
     write_to_engine('isready')
     loop do
-      sleep 0.5
       break if read_from_engine == "readyok"
     end
   end

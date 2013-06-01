@@ -4,13 +4,10 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 development:
-  adapter: mysql2
-  database: chess_rate
+  adapter: sqlite3
+  database: db/chess_rate.sqlite3
   pool: 5
-  timeout: 5000
-  username: root
-  password: toor
-  reconnect: false
+  timeout: 10000
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
