@@ -1,6 +1,11 @@
 class PGN_Analyzer
 
   def initialize(file_path)
+    originalPath = String.new(file_path)
+    originalPath.slice! ".txt"
+    @game_number_path = originalPath + "_GameNumber.txt"
+    @bd_ref_path = originalPath + "_BD-REF.txt"
+    @pgn_path = originalPath + ".pgn"
     @file_path = file_path
   end
 
@@ -16,9 +21,9 @@ class PGN_Analyzer
     coincidences
   end
 
-  def add_game_number (outPath)
+  def add_game_number
     inFile = File.open(@file_path,"r")
-    outFile = File.open(outPath,"w")
+    outFile = File.open(@game_number_path,"w")
     gameNumber = 0
     inFile.each do |line|
       fenArray = line.split(' ')
@@ -32,10 +37,10 @@ class PGN_Analyzer
     outFile.close
   end
 
-  def add_result ()
-    pgnFile = File.open('D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn',"r")
-    fenFile = File.open('D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_LineNumber.txt',"r")
-    finalFile = File.open('D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_FEN.txt',"w")
+  def generate_BD_REF
+    pgnFile = File.open(@pgn_path,"r")
+    fenFile = File.open(@game_number_path,"r")
+    finalFile = File.open(@bd_ref_path,"w")
 
     winner = "d"
     fenFile.each do |fenLine|
@@ -61,8 +66,8 @@ class PGN_Analyzer
     pgnFile.close
   end
 
-  def getPercentage(to_analyze,player)
-    inFile = File.open('D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_FEN.txt',"r")
+  def getPercentage(bd_path, to_analyze)
+    inFile = File.open(bd_path,"r")
     coincidences = 0
     points = 0
     inFile.each do |line|
@@ -70,7 +75,7 @@ class PGN_Analyzer
         coincidences += 1
         if line.split(' ').last.eql? 'd'
           points += 0.5
-        elsif line.split(' ').last.eql?(player)
+        elsif line.split(' ').last.eql? 'w'
           points += 1
         end
       end
@@ -171,6 +176,6 @@ end
 
 #analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
 analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.txt'
-analyzer.add_game_number 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_LineNumber.txt'
-analyzer.add_result
-puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R ', "b"
+analyzer.add_game_number
+analyzer.generate_BD_REF
+puts analyzer.getPercentage 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_BD-REF.txt', 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R '
