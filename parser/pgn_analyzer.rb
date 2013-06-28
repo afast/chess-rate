@@ -1,3 +1,5 @@
+require 'open3'
+
 class PGN_Analyzer
 
   def initialize(file_path)
@@ -7,6 +9,16 @@ class PGN_Analyzer
     @bd_ref_path = originalPath + "_BD-REF.txt"
     @pgn_path = originalPath + ".pgn"
     @file_path = file_path
+  end
+
+  def pgn2fen(pgn2fen_path, pgn_path)
+    file = `"#{pgn2fen_path}" "#{pgn_path}"`
+    txt_path_aux = String.new(pgn_path)
+    txt_path_aux.slice! ".pgn"
+    txt_path = txt_path_aux + ".txt"
+    outFile = File.open("#{txt_path}","w")
+    outFile.puts(file)
+    outFile.close
   end
 
   def count_coincidences(to_analyze)
@@ -86,6 +98,7 @@ class PGN_Analyzer
     end
     points/coincidences*100
   end
+
 
   # analyze the file defined by file_path
   def file_analyzer
@@ -176,6 +189,7 @@ end
 
 #analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
 analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.txt'
+analyzer.pgn2fen "D:/Facultad/Proyecto de Grado/pgn2fen/pgn2fen.exe", "D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn"
 analyzer.add_game_number
 analyzer.generate_BD_REF
 puts analyzer.getPercentage 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_BD-REF.txt', 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R '
