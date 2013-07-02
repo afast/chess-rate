@@ -6,11 +6,11 @@ class PGN_Analyzer
 
   def initialize(file_path)
     originalPath = String.new(file_path)
-    originalPath.slice! ".txt"
+    originalPath.slice! ".pgn"
     @game_number_path = originalPath + "_GameNumber.txt"
     @bd_ref_path = originalPath + "_BD-REF.txt"
     @pgn_path = originalPath + ".pgn"
-    @file_path = file_path
+    @file_path = originalPath + ".txt"
     @db_ref_full = []
   end
 
@@ -184,7 +184,7 @@ class PGN_Analyzer
 end
 
 #analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
-analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.txt'
+analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn'
 analyzer.pgn2fen "D:/Facultad/Proyecto de Grado/pgn2fen/pgn2fen.exe", "D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn"
 analyzer.add_game_number
 analyzer.generate_BD_REF
