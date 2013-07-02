@@ -1,4 +1,6 @@
 require 'open3'
+require_relative 'db_ref'
+require_relative 'fen_move.rb'
 
 class PGN_Analyzer
 
@@ -9,6 +11,7 @@ class PGN_Analyzer
     @bd_ref_path = originalPath + "_BD-REF.txt"
     @pgn_path = originalPath + ".pgn"
     @file_path = file_path
+    @db_ref_full = []
   end
 
   def pgn2fen(pgn2fen_path, pgn_path)
@@ -54,6 +57,11 @@ class PGN_Analyzer
     fenFile = File.open(@game_number_path,"r")
     finalFile = File.open(@bd_ref_path,"w")
 
+    nameDb = String.new(@pgn_path)
+    nameDb.slice! ".pgn"
+    nameDb = nameDb.split('/').last
+    @db_ref = DbRef.new nameDb
+
     winner = "d"
     fenFile.each do |fenLine|
       match = fenLine.split(' ').last
@@ -71,32 +79,20 @@ class PGN_Analyzer
       end
       newLine = fenLine.chop + " " + winner
       finalFile.puts(newLine)
+
+      fenmove = FenMove.new newLine.split(' ')[0], newLine.split(' ')[6], winner
+      @db_ref.add_fen_move fenmove
     end
+
+    @db_ref_full << @db_ref
 
     finalFile.close
     fenFile.close
     pgnFile.close
   end
 
-  def getPercentage(bd_path, to_analyze)
-    inFile = File.open(bd_path,"r")
-    coincidences = 0
-    points = 0
-    inFile.each do |line|
-      if line.start_with? to_analyze
-        coincidences += 1
-        if line.split(' ').last.eql? 'd'
-          points += 0.5
-        elsif line.split(' ').last.eql? 'w'
-          points += 1
-        end
-      end
-    end
-    inFile.close
-    if coincidences == 0
-      return -1
-    end
-    points/coincidences*100
+  def getPercentage(to_analyze)
+    return @db_ref.getPercentage to_analyze
   end
 
 
@@ -192,4 +188,4 @@ analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.tx
 analyzer.pgn2fen "D:/Facultad/Proyecto de Grado/pgn2fen/pgn2fen.exe", "D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn"
 analyzer.add_game_number
 analyzer.generate_BD_REF
-puts analyzer.getPercentage 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca_BD-REF.txt', 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R '
+puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R'
