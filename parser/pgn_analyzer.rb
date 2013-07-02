@@ -14,9 +14,9 @@ class PGN_Analyzer
     @db_ref_full = []
   end
 
-  def pgn2fen(pgn2fen_path, pgn_path)
-    file = `"#{pgn2fen_path}" "#{pgn_path}"`
-    txt_path_aux = String.new(pgn_path)
+  def pgn2fen(pgn2fen_path)
+    file = `"#{pgn2fen_path}" "#{@pgn_path}"`
+    txt_path_aux = String.new(@pgn_path)
     txt_path_aux.slice! ".pgn"
     txt_path = txt_path_aux + ".txt"
     outFile = File.open("#{txt_path}","w")
@@ -185,7 +185,7 @@ end
 
 #analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
 analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn'
-analyzer.pgn2fen "D:/Facultad/Proyecto de Grado/pgn2fen/pgn2fen.exe", "D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn"
+analyzer.pgn2fen "D:/Facultad/Proyecto de Grado/pgn2fen/pgn2fen.exe"
 analyzer.add_game_number
 analyzer.generate_BD_REF
 puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R'
