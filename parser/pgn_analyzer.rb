@@ -58,46 +58,62 @@ class PGN_Analyzer
     pgn2fen file_path
     add_game_number
 
-    pgnFile = File.open(@pgn_path,"r")
-    fenFile = File.open(@game_number_path,"r")
-    finalFile = File.open(@bd_ref_path,"w")
-
     nameDb = String.new(@pgn_path)
     nameDb.slice! ".pgn"
     nameDb = nameDb.split('/').last
-    @db_ref = DbRef.new nameDb
 
-    winner = "d"
-    fenFile.each do |fenLine|
-      match = fenLine.split(' ').last
-      fenArray = fenLine.split(' ')
-      if (fenArray[1].eql? 'w') && (fenArray[5].to_i==1)
-        until (pgnLine = pgnFile.readline).start_with? '[Result '; end
-        result = pgnLine.split('"')[1]
-        if result.eql? '1-0'
-          winner = "w"
-        elsif result.eql? '0-1'
-          winner = "b"
-        else
-          winner = "d"
+    @db_ref = @db_ref_full.select{ |db| db.amI? nameDb }.first
+    if @db_ref.nil?
+      @db_ref = DbRef.new nameDb
+
+      pgnFile = File.open(@pgn_path,"r")
+      fenFile = File.open(@game_number_path,"r")
+      finalFile = File.open(@bd_ref_path,"w")
+
+      winner = "d"
+      fenFile.each do |fenLine|
+        match = fenLine.split(' ').last
+        fenArray = fenLine.split(' ')
+        if (fenArray[1].eql? 'w') && (fenArray[5].to_i==1)
+          until (pgnLine = pgnFile.readline).start_with? '[Result '; end
+          result = pgnLine.split('"')[1]
+          if result.eql? '1-0'
+            winner = "w"
+          elsif result.eql? '0-1'
+            winner = "b"
+          else
+            winner = "d"
+          end
         end
+        newLine = fenLine.chop + " " + winner
+        finalFile.puts(newLine)
+
+        fenmove = FenMove.new newLine.split(' ')[0], newLine.split(' ')[6], winner
+        @db_ref.add_fen_move fenmove
       end
-      newLine = fenLine.chop + " " + winner
-      finalFile.puts(newLine)
 
-      fenmove = FenMove.new newLine.split(' ')[0], newLine.split(' ')[6], winner
-      @db_ref.add_fen_move fenmove
+      @db_ref_full << @db_ref
+
+      finalFile.close
+      fenFile.close
+      pgnFile.close
+      return 'DB creada correctamente'
+    else
+      return 'DB ya existente'
     end
-
-    @db_ref_full << @db_ref
-
-    finalFile.close
-    fenFile.close
-    pgnFile.close
   end
 
-  def getPercentage(to_analyze,db_name)
+  def deleteDB(db_name)
     @db_ref = @db_ref_full.select{ |db| db.amI? db_name }.first
+    @db_ref_full.delete @db_ref
+    return true
+  end
+
+  def setDB(db_name)
+    @db_ref = @db_ref_full.select{ |db| db.amI? db_name }.first
+  end
+
+  def getPercentage(to_analyze)
     if @db_ref.nil?
       return -1, 0
     end
@@ -194,5 +210,8 @@ end
 
 #analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
 analyzer = PGN_Analyzer.new "D:/Facultad/Proyecto de Grado/pgn2fen/pgn2fen.exe"
-analyzer.generate_DB_REF 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn'
-puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R', 'Capablanca'
+puts analyzer.generate_DB_REF 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn'
+puts analyzer.generate_DB_REF 'D:/Facultad/Proyecto de Grado/pgn2fen/Power2013_2800plus.pgn'
+analyzer.setDB 'Capablanca'
+puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R'
+analyzer.deleteDB 'Power2013_2800plus'
