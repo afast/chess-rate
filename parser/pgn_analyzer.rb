@@ -4,18 +4,20 @@ require_relative 'fen_move.rb'
 
 class PGN_Analyzer
 
-  def initialize(file_path)
+  def initialize(pgn2fen_path)
+    @pgn2fen_path = pgn2fen_path
+    @db_ref_full = []
+  end
+
+  def pgn2fen(file_path)
     originalPath = String.new(file_path)
     originalPath.slice! ".pgn"
     @game_number_path = originalPath + "_GameNumber.txt"
     @bd_ref_path = originalPath + "_BD-REF.txt"
     @pgn_path = originalPath + ".pgn"
     @file_path = originalPath + ".txt"
-    @db_ref_full = []
-  end
 
-  def pgn2fen(pgn2fen_path)
-    file = `"#{pgn2fen_path}" "#{@pgn_path}"`
+    file = `"#{@pgn2fen_path}" "#{@pgn_path}"`
     txt_path_aux = String.new(@pgn_path)
     txt_path_aux.slice! ".pgn"
     txt_path = txt_path_aux + ".txt"
@@ -52,7 +54,10 @@ class PGN_Analyzer
     outFile.close
   end
 
-  def generate_BD_REF
+  def generate_DB_REF(file_path)
+    pgn2fen file_path
+    add_game_number
+
     pgnFile = File.open(@pgn_path,"r")
     fenFile = File.open(@game_number_path,"r")
     finalFile = File.open(@bd_ref_path,"w")
@@ -91,7 +96,11 @@ class PGN_Analyzer
     pgnFile.close
   end
 
-  def getPercentage(to_analyze)
+  def getPercentage(to_analyze,db_name)
+    @db_ref = @db_ref_full.select{ |db| db.amI? db_name }.first
+    if @db_ref.nil?
+      return -1, 0
+    end
     return @db_ref.getPercentage to_analyze
   end
 
@@ -184,8 +193,6 @@ class PGN_Analyzer
 end
 
 #analyzer = PGN_Analyzer.new '../pgn/games_analyzed_analyzed.pgn'
-analyzer = PGN_Analyzer.new 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn'
-analyzer.pgn2fen "D:/Facultad/Proyecto de Grado/pgn2fen/pgn2fen.exe"
-analyzer.add_game_number
-analyzer.generate_BD_REF
-puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R'
+analyzer = PGN_Analyzer.new "D:/Facultad/Proyecto de Grado/pgn2fen/pgn2fen.exe"
+analyzer.generate_DB_REF 'D:/Facultad/Proyecto de Grado/pgn2fen/Capablanca.pgn'
+puts analyzer.getPercentage 'r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R', 'Capablanca'

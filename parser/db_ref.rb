@@ -31,4 +31,8 @@ class DbRef
     return points/coincidences*100, coincidences
   end
 
+  def amI?(db_name)
+    return @name == db_name
+  end
+
 end
