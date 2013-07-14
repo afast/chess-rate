@@ -1,4 +1,7 @@
 ChessRate::Application.routes.draw do
+  resources :reference_databases
+
+
   root to: 'games#index'
 
   devise_for :users

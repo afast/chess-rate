@@ -1,0 +1,2 @@
+module DbReferenceHelper
+end

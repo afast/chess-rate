@@ -1,7 +1,5 @@
 class GameAnalyzer
 
-  MOTOR_PATH = 'wine /home/andreas/Downloads/Houdini_15a/Houdini_15a_x64.exe'
-
   def initialize(games, time, tie_threshold, blunder_threshold)
     @games = games
     @motor_path = MOTOR_PATH

@@ -10,6 +10,8 @@ gem 'sqlite3'
 gem 'devise'
 gem 'haml-rails'
 
+gem 'spawnling'
+
 # Inline edition
 gem 'best_in_place'
 # Validating url attributes

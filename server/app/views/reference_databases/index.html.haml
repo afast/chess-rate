@@ -1,0 +1,21 @@
+%h1 Listing reference_databases
+
+%table
+  %tr
+    %th Name
+    %th Path
+    %th
+    %th
+    %th
+
+  - @reference_databases.each do |reference_database|
+    %tr
+      %td= reference_database.name
+      %td= reference_database.path
+      %td= link_to 'Show', reference_database
+      %td= link_to 'Edit', edit_reference_database_path(reference_database)
+      %td= link_to 'Destroy', reference_database, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Reference database', new_reference_database_path

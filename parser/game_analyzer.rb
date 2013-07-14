@@ -170,7 +170,7 @@ class GameAnalyzer
     @pgn_path = originalPath + ".pgn"
     @file_path = originalPath + ".txt"
 
-    file = `"#{@pgn2fen_path}" "#{@pgn_path}"`
+    file = `wine "#{@pgn2fen_path}" "#{@pgn_path}"`
     txt_path_aux = String.new(@pgn_path)
     txt_path_aux.slice! ".pgn"
     txt_path = txt_path_aux + ".txt"
@@ -284,7 +284,7 @@ tree = Parser.parse File.read(options[:file_path])
 analyzer = GameAnalyzer.new tree.get_games, options[:motor_path], options[:pgn2fen_path], options[:time], options[:file_path],
   options[:draw_threshold], options[:blunder_threshold], options[:debug]
 
-puts analyzer.generate_DB_REF 'D:/Facultad/Proyecto de Grado/pgn2fen/Power2013_2800plus.pgn'
+puts analyzer.generate_DB_REF '/home/andreas/personal/chess-rate/pgn/Power2013_2800plus.pgn'
 analyzer.setDB 'Power2013_2800plus'
 
 analyzer.analyze_games

@@ -1,6 +1,6 @@
 module Background
   def background(&block)
-    Thread.new do
+    Spawnling.new do
       begin
         yield
       rescue
@@ -11,7 +11,6 @@ module Background
           f.puts $!.backtrace
         end
       end
-      ActiveRecord::Base.connection.close
     end
   end
 end

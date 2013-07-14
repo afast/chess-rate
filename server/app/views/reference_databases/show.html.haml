@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @reference_database.name
+%p
+  %b Path:
+  = @reference_database.path
+
+= link_to 'Edit', edit_reference_database_path(@reference_database)
+\|
+= link_to 'Back', reference_databases_path
