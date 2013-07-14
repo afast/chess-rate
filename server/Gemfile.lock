@@ -78,7 +78,6 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.7.7)
-    kgio (2.8.0)
     libv8 (3.11.8.17)
     mail (2.5.3)
       i18n (>= 0.4.0)
@@ -87,6 +86,8 @@ GEM
     mime-types (1.22)
     multi_json (1.7.2)
     orm_adapter (0.4.0)
+    pkgr (0.3.4)
+      rake
     polyglot (0.3.3)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
@@ -112,7 +113,6 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    raindrops (0.11.0)
     rake (10.0.4)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -149,12 +149,6 @@ GEM
     uglifier (2.0.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
-    unicorn (4.6.2)
-      kgio (~> 2.6)
-      rack
-      raindrops (~> 0.7)
-    validate_url (0.2.0)
-      activemodel (>= 3.0.0)
     warden (1.2.1)
       rack (>= 1.0)
     will_paginate (3.0.4)
@@ -170,6 +164,7 @@ DEPENDENCIES
   factory_girl_rails
   haml-rails
   jquery-rails
+  pkgr
   quiet_assets
   rails (= 3.2.13)
   sass-rails (~> 3.2.3)
@@ -181,6 +176,4 @@ DEPENDENCIES
   treetop
   uci!
   uglifier (>= 1.0.3)
-  unicorn
-  validate_url
   will_paginate (~> 3.0)
