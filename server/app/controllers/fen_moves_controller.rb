@@ -21,6 +21,7 @@ class FenMovesController < ApplicationController
     end
   end
 
+
   # GET /fen_moves/new
   # GET /fen_moves/new.json
   def new
