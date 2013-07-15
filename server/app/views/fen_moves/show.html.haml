@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Db ref:
+  = @fen_move.reference_database.name
+%p
+  %b Move:
+  = @fen_move.move
+%p
+  %b White:
+  = @fen_move.white
+%p
+  %b Black:
+  = @fen_move.black
+%p
+  %b Draw:
+  = @fen_move.draw
+
+= link_to 'Edit', edit_fen_move_path(@fen_move)
+\|
+= link_to 'Back', fen_moves_path

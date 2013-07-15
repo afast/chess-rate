@@ -1,0 +1,28 @@
+%h1 Listing fen_moves
+
+%table
+  %tr
+    %th Db ref
+    %th Move
+    %th White
+    %th Black
+    %th Draw
+    %th
+    %th
+    %th
+
+  - @fen_moves.each do |fen_move|
+    %tr
+      %td= fen_move.reference_database.name
+      %td= fen_move.move
+      %td= fen_move.white
+      %td= fen_move.black
+      %td= fen_move.draw
+      %td= link_to 'Show', fen_move
+      %td= link_to 'Edit', edit_fen_move_path(fen_move)
+      %td= link_to 'Destroy', fen_move, :method => :delete, :data => { :confirm => 'Are you sure?' }
+.digg_pagination
+  = will_paginate @fen_moves
+%br
+
+= link_to 'New Fen move', new_fen_move_path
