@@ -1,4 +1,7 @@
 ChessRate::Application.routes.draw do
+  resources :fen_moves
+
+
   resources :reference_databases
 
 

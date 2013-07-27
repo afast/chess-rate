@@ -3,7 +3,8 @@ class Game < ActiveRecord::Base
 
   attr_accessible :annotator, :black_avg_error, :black_blunder_rate, :black_id, :black_perfect_rate, :black_std_deviation,
     :end_date, :result, :round, :site_id, :start_date, :status, :tournament_id, :white_avg_error, :white_blunder_rate,
-    :white_id, :white_perfect_rate, :white_std_deviation, :progress, :tie_threshold, :blunder_threshold
+    :white_id, :white_perfect_rate, :white_std_deviation, :progress, :tie_threshold, :blunder_threshold,
+    :player_out_db_ref, :move_out_db_ref, :value_out_db_ref, :best_value_out_db_ref, :deviation_out_db_ref
 
   OBLIGATORY_TAGS = {'Event' => :tournament, 'Site' => :site, 'Date' => :start_date, 'Round' => :round,
                      'White' => :white, 'Black' => :black, 'Result' => :result}
@@ -128,17 +129,22 @@ class Game < ActiveRecord::Base
     black_perfect_rate = nil
     white_blunder_rate = nil
     black_blunder_rate = nil
+    player_out_db_ref = nil
+    move_out_db_ref = nil
+    value_out_db_ref = nil
+    best_value_out_db_ref = nil
+    deviation_out_db_ref = nil
     save!
   end
 
-  def analyze(time, tie_threshold, blunder_threshold)
+  def analyze(time, tie_threshold, blunder_threshold, ref_db)
     puts 'Analyzing!'
     puts "game #{self.id}"
     puts "time #{time}"
     puts "tie_threshold #{tie_threshold}"
     puts "blunder_threshold #{blunder_threshold}"
 
-    analyzer = GameAnalyzer.new [self], time, tie_threshold, blunder_threshold
+    analyzer = GameAnalyzer.new [self], time, tie_threshold, blunder_threshold, ref_db
 
     start_processing
     analyzer.analyze_games

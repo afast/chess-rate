@@ -16,6 +16,10 @@
       = label_tag :blunder_threshold
       = number_field_tag :blunder_threshold, 3, step: :any, min: 1
       %p.help float
+    .field
+      = label_tag :reference_database_id
+      = select_tag :reference_database_id, options_from_collection_for_select(ReferenceDatabase.all, :id, :name)
+      %p.help string
     .actions
       = submit_tag 'Process', class: 'btn'
 

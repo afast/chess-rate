@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130714184055) do
+ActiveRecord::Schema.define(:version => 20130727190109) do
+
+  create_table "fen_moves", :force => true do |t|
+    t.integer  "reference_database_id"
+    t.string   "move"
+    t.integer  "white"
+    t.integer  "black"
+    t.integer  "draw"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
 
   create_table "games", :force => true do |t|
     t.integer  "white_id"
@@ -33,11 +43,16 @@ ActiveRecord::Schema.define(:version => 20130714184055) do
     t.float    "black_perfect_rate"
     t.float    "black_blunder_rate"
     t.float    "white_blunder_rate"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
     t.float    "progress"
     t.float    "tie_threshold"
     t.float    "blunder_threshold"
+    t.string   "player_out_db_ref"
+    t.integer  "move_out_db_ref"
+    t.decimal  "value_out_db_ref"
+    t.decimal  "best_value_out_db_ref"
+    t.decimal  "deviation_out_db_ref"
   end
 
   create_table "moves", :force => true do |t|

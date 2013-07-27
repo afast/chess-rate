@@ -20,6 +20,11 @@
     %th Black perfect rate
     %th Black blunder rate
     %th White blunder rate
+    %th Player out DBRef
+    %th Move out DBRef
+    %th Value out DBRef
+    %th Best Value out DBRef
+    %th Deviation out DBRef
     %th
 
   - @games.each do |game|
@@ -42,6 +47,11 @@
         %td{colspan: 6}
           .progress.progress-striped.active
             .bar{style: "width: #{'%.2f' % game.progress_percentage}%;"}
+      %td= game.player_out_db_ref
+      %td= game.move_out_db_ref
+      %td= game.value_out_db_ref
+      %td= game.best_value_out_db_ref
+      %td= game.deviation_out_db_ref
       %td
         = link_to 'Re-Analyze', analyze_game_path(game), class: 'btn'
         = link_to 'Edit', edit_game_path(game), class: 'btn'

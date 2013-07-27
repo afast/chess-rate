@@ -1,8 +1,9 @@
 class GameAnalyzer
 
-  def initialize(games, time, tie_threshold, blunder_threshold)
+  def initialize(games, time, tie_threshold, blunder_threshold, db_ref)
     @games = games
     @motor_path = MOTOR_PATH
+    @db_ref = db_ref
     @time = time || 100
     @tie_threshold = tie_threshold || 1.56
     @blunder_threshold = blunder_threshold || 2
@@ -31,6 +32,8 @@ class GameAnalyzer
       old_move = game.moves.first
       old_lan_move = old_bestmove = old_score = nil
       move_count = game.moves.size
+
+      first_time_here = true
 
       @uci.send_position_to_engine
 
@@ -67,6 +70,21 @@ class GameAnalyzer
 
         if index > 0 # Start assigning after first move was scored
           old_move.update_attributes! player_value: score, annotator_value: old_score, annotator_move: old_bestmove
+
+          percentage, coincidences = @db_ref.getPercentage @uci.fenstring
+          if coincidences == 0 && first_time_here
+            player = nil
+            if old_move.side.eql? 'white'
+              player = Player.where(id: game.white).first
+            else
+              player = Player.where(id: game.black).first
+            end
+            game.update_attributes! player_out_db_ref: player.name, move_out_db_ref: (index+1)/2, value_out_db_ref: score,
+                                    best_value_out_db_ref: old_score, deviation_out_db_ref: (score-old_score).abs
+            first_time_here = false
+          elsif coincidences > 0
+            first_time_here = true
+          end
         end
 
         old_score = score
@@ -83,6 +101,7 @@ class GameAnalyzer
         end
       end
       game.set_statistics!
+
     end
     @uci.close_engine_connection
   end

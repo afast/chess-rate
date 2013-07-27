@@ -1,6 +1,6 @@
 %h1 Listing reference_databases
 
-%table
+%table.table.table-condensed.table-striped.table-hover
   %tr
     %th Name
     %th Path
@@ -12,9 +12,9 @@
     %tr
       %td= reference_database.name
       %td= reference_database.path
-      %td= link_to 'Show', reference_database
-      %td= link_to 'Edit', edit_reference_database_path(reference_database)
-      %td= link_to 'Destroy', reference_database, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to 'Show', reference_database, class: 'btn'
+      %td= link_to 'Edit', edit_reference_database_path(reference_database), class: 'btn btn-primary'
+      %td= link_to 'Destroy', reference_database, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn'
 
 %br
 

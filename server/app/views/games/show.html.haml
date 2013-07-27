@@ -54,6 +54,21 @@
 %p
   %b White blunder rate:
   = @game.white_blunder_rate
+%p
+  %b Player out DBRef:
+  = @game.player_out_db_ref
+%p
+  %b Move out DBRef:
+  = @game.move_out_db_ref
+%p
+  %b Value out DBRef:
+  = @game.value_out_db_ref
+%p
+  %b Best value out DBRef:
+  = @game.best_value_out_db_ref
+%p
+  %b Deviation out DBRef:
+  = @game.deviation_out_db_ref
 
 = link_to 'Edit', edit_game_path(@game)
 \|

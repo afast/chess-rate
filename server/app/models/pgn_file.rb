@@ -11,6 +11,7 @@ class PgnFile < ActiveRecord::Base
   before_create :init_status
 
   attr_accessible :description, :pgn_file, :status
+  attr_accessor :reference_database
 
   def init_status
     status = STATUS[:not_processed]
@@ -21,7 +22,7 @@ class PgnFile < ActiveRecord::Base
   end
 
   def not_processed?
-    status.nil? || status == STATUS[:not_processed]
+    status.nil? #|| status == STATUS[:not_processed]
   end
 
   def start_processing
@@ -41,7 +42,7 @@ class PgnFile < ActiveRecord::Base
 
       tree.get_games self
       games.each do |g|
-        g.analyze(time, tie_threshold, blunder_threshold)
+        g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
       end
       finished_processing
     end

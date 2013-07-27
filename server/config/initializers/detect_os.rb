@@ -23,4 +23,4 @@ else
 end
 
 MOTOR_PATH = "#{prefix}#{File.join(Rails.root, 'bin', "Houdini_15a_#{arch}.exe")}"
-PGN_TO_FEN = "#{prefix}#{File.join(Rails.root, 'bin', "pgn2fen.exe")}"
+PGN_TO_FEN = "#{prefix}#{File.join(Rails.root, 'bin', 'pgn2fen.exe')}"
