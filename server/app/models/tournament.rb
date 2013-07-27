@@ -1,5 +1,5 @@
 class Tournament < ActiveRecord::Base
-  attr_accessible :end_date, :name, :site_id, :start_date
+  attr_accessible :end_date, :name, :site_id, :start_date, :games
 
   belongs_to :site
   has_many :games

@@ -22,6 +22,16 @@
       %td= t[:avg_deviation]
       %td= t[:perfect_rate]
       %td= t[:blunder_rate]
+  - @games.each do |g|
+    %tr
+      %td
+      %td
+      %td
+      %td= g[:avg_err]
+      %td= g[:std_dev]
+      %td= g[:perfect]
+      %td= g[:blunders]
+
 
 = link_to 'Edit', edit_player_path(@player)
 \|

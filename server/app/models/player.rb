@@ -10,4 +10,5 @@ class Player < ActiveRecord::Base
   def tournaments
     games.collect(&:tournament).uniq
   end
+
 end

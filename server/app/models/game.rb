@@ -94,12 +94,12 @@ class Game < ActiveRecord::Base
 
   def get_info_for(player_name)
     result = {}
-    if white == player_name
+    if white.name == player_name
       result[:avg_err] = white_avg_error
       result[:std_dev] = white_std_deviation
       result[:perfect] = white_perfect_rate
       result[:blunders] = white_blunder_rate
-    elsif black == player_name
+    elsif black.name == player_name
       result[:avg_err] = black_avg_error
       result[:std_dev] = black_std_deviation
       result[:perfect] = black_perfect_rate

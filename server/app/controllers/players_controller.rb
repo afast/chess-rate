@@ -18,6 +18,10 @@ class PlayersController < ApplicationController
       t.get_info_for(@player.id)
     end
 
+    @games = @player.games.map do |g|
+      g.get_info_for(@player.name)
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @player }
