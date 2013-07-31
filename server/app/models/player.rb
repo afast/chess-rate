@@ -11,4 +11,7 @@ class Player < ActiveRecord::Base
     games.collect(&:tournament).uniq
   end
 
+  def pgn_files
+    PgnFile.where(id: games.collect(&:pgn_file_id).compact)
+  end
 end

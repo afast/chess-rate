@@ -14,6 +14,8 @@ class PlayersController < ApplicationController
   # GET /players/1.json
   def show
     @player = Player.find(params[:id])
+    @collections = @player.pgn_files
+    @collection = PgnFile.find_by_id(params[:collection]) || @collections.first
     @tournaments = @player.tournaments.map do |t|
       t.get_info_for(@player.id)
     end

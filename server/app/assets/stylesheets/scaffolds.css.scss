@@ -29,6 +29,12 @@ a {
   }
 }
 
+a.btn.btn-primary, a.btn.btn-danger {
+  &:visited {
+    color: #fff;
+  }
+}
+
 div {
   &.field, &.actions {
     margin-bottom: 10px;

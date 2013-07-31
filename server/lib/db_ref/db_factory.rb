@@ -9,7 +9,7 @@ class DbRef::DbFactory
     @@file_path = file_path.gsub('.pgn', '.txt')
 
     puts "exec ~> #{PGN_TO_FEN} '#{@@pgn_path}'"
-    file = `"#{PGN_TO_FEN}" "#{@@pgn_path}"`
+    file = `#{PGN_TO_FEN} '#{@@pgn_path}'`
     File.open(@@file_path, 'w') do |f|
       f.puts(file)
     end

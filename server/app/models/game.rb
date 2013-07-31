@@ -4,15 +4,17 @@ class Game < ActiveRecord::Base
   attr_accessible :annotator, :black_avg_error, :black_blunder_rate, :black_id, :black_perfect_rate, :black_std_deviation,
     :end_date, :result, :round, :site_id, :start_date, :status, :tournament_id, :white_avg_error, :white_blunder_rate,
     :white_id, :white_perfect_rate, :white_std_deviation, :progress, :tie_threshold, :blunder_threshold,
-    :player_out_db_ref, :move_out_db_ref, :value_out_db_ref, :best_value_out_db_ref, :deviation_out_db_ref
+    :player_out_db_ref, :move_out_db_ref, :value_out_db_ref, :best_value_out_db_ref, :deviation_out_db_ref,
+    :white_elo, :black_elo
 
   OBLIGATORY_TAGS = {'Event' => :tournament, 'Site' => :site, 'Date' => :start_date, 'Round' => :round,
                      'White' => :white, 'Black' => :black, 'Result' => :result}
   OPTIONAL_TAGS = {'Annotator' => :annotator, 'EndDate' => :end_date, 'WhiteAvgError' => :white_avg_error,
-                                      'WhiteStdDeviation' => :white_std_deviation, 'WhitePerfectMoves' => :white_perfect_rate,
-                                      'WhiteBlunders' => :white_blunder_rate,'BlackAvgError' => :black_avg_error,
-                                      'BlackStdDeviation' => :black_std_deviation, 'BlackPerfectMoves' => :black_perfect_rate,
-                                      'BlackBlunders' => :black_blunder_rate}
+                   'WhiteElo' => :white_elo, 'BlackElo' => :black_elo,
+                   'WhiteStdDeviation' => :white_std_deviation, 'WhitePerfectMoves' => :white_perfect_rate,
+                   'WhiteBlunders' => :white_blunder_rate,'BlackAvgError' => :black_avg_error,
+                   'BlackStdDeviation' => :black_std_deviation, 'BlackPerfectMoves' => :black_perfect_rate,
+                   'BlackBlunders' => :black_blunder_rate}
   AVAILABLE_TAGS = OBLIGATORY_TAGS.merge OPTIONAL_TAGS
   STATUS = {not_processed: 0, processing: 1, processed: 2}
 
@@ -39,6 +41,7 @@ class Game < ActiveRecord::Base
   end
 
   def set_tag(tag, value)
+    puts "setting tag: #{tag} => #{value}"
     if AVAILABLE_TAGS.keys.include?(tag)
       case AVAILABLE_TAGS[tag]
       when :tournament
@@ -50,7 +53,8 @@ class Game < ActiveRecord::Base
       when :white
         self.white = Player.find_or_create_by_name(value[1..-2])
       else
-        public_send "#{AVAILABLE_TAGS[tag]}=", value[1..-2] # Remove "
+        puts "#{AVAILABLE_TAGS[tag]}=#{value[1..-2]}"
+        public_send "#{AVAILABLE_TAGS[tag]}=", value[1..-2]
       end
     end
   end
@@ -94,16 +98,29 @@ class Game < ActiveRecord::Base
 
   def get_info_for(player_name)
     result = {}
+    result[:name] = tournament.try :name
+    result[:start_date] = start_date
+    result[:end_date] = end_date
     if white.name == player_name
       result[:avg_err] = white_avg_error
       result[:std_dev] = white_std_deviation
       result[:perfect] = white_perfect_rate
       result[:blunders] = white_blunder_rate
+      result[:color] = 'color.white'
+      result[:elo] = white_elo
+      result[:rival] = black.name
+      result[:rival_elo] = black_elo
+      result[:result] = self.result.split('-').first
     elsif black.name == player_name
       result[:avg_err] = black_avg_error
       result[:std_dev] = black_std_deviation
       result[:perfect] = black_perfect_rate
       result[:blunders] = black_blunder_rate
+      result[:color] = 'color.black'
+      result[:elo] = black_elo
+      result[:rival] = white.name
+      result[:rival_elo] = white_elo
+      result[:result] = self.result.split('-').last
     end
     result
   end

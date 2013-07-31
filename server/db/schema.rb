@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130727190109) do
+ActiveRecord::Schema.define(:version => 20130731043723) do
 
   create_table "fen_moves", :force => true do |t|
     t.integer  "reference_database_id"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(:version => 20130727190109) do
     t.integer  "site_id"
     t.datetime "start_date"
     t.integer  "round"
-    t.integer  "result"
+    t.string   "result"
     t.integer  "status"
     t.datetime "end_date"
     t.float    "white_std_deviation"
@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(:version => 20130727190109) do
     t.decimal  "value_out_db_ref"
     t.decimal  "best_value_out_db_ref"
     t.decimal  "deviation_out_db_ref"
+    t.string   "white_elo"
+    t.string   "black_elo"
   end
 
   create_table "moves", :force => true do |t|

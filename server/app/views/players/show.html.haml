@@ -4,35 +4,86 @@
   %b Name:
   = @player.name
 
-%table.table.table-condensed.table-striped.table-hover
-  %tr
-    %th Tournament
-    %th Start
-    %th End
-    %th Avg Error
-    %th Avg Deviation
-    %th Perfect Rate
-    %th Blunder Rate
-  - @tournaments.each do |t|
-    %tr
-      %td= t[:name]
-      %td= t[:start_date]
-      %td= t[:end_date]
-      %td= t[:avg_error]
-      %td= t[:avg_deviation]
-      %td= t[:perfect_rate]
-      %td= t[:blunder_rate]
-  - @games.each do |g|
-    %tr
-      %td
-      %td
-      %td
-      %td= g[:avg_err]
-      %td= g[:std_dev]
-      %td= g[:perfect]
-      %td= g[:blunders]
+%ul.nav.nav-tabs
+  %li.active
+    %a{data: {toggle: 'tab'}, href: '#tournaments'} Tournaments
+  %li
+    %a{data: {toggle: 'tab'}, href: '#collection'} Collection
+  %li
+    %a{data: {toggle: 'tab'}, href: '#games'} All Games
 
 
-= link_to 'Edit', edit_player_path(@player)
+.tab-content
+  #tournaments.tab-pane.active
+    %table.table.table-condensed.table-striped.table-hover
+      %tr
+        %th Tournament
+        %th Start
+        %th End
+        %th Avg Error
+        %th Avg Deviation
+        %th Perfect Rate
+        %th Blunder Rate
+      - @tournaments.each do |t|
+        %tr
+          %td= t[:name]
+          %td= t[:start_date]
+          %td= t[:end_date]
+          %td= t[:avg_error]
+          %td= t[:avg_deviation]
+          %td= t[:perfect_rate]
+          %td= t[:blunder_rate]
+  #collection.tab-pane
+    = select_tag :collection, options_from_collection_for_select(@collections, :id, :description, @collection.id)
+    %table.table.table-condensed.table-striped.table-hover
+      %tr
+        %th Tournament
+        %th Start
+        %th End
+        %th Color
+        %th Elo
+        %th Rival
+        %th Rival Elo
+        %th Result
+        %th Avg Error
+        %th Avg Deviation
+        %th Perfect Rate
+        %th Blunder Rate
+      - @collection.games.each do |game|
+        - g = game.get_info_for(@player.name)
+        %tr
+          %td= g[:name]
+          %td= g[:start_date]
+          %td= g[:end_date]
+          %td= g[:color]
+          %td= g[:elo]
+          %td= g[:rival]
+          %td= g[:rival_elo]
+          %td= g[:result]
+          %td= g[:avg_err]
+          %td= g[:std_dev]
+          %td= g[:perfect]
+          %td= g[:blunders]
+  #games.tab-pane
+    %table.table.table-condensed.table-striped.table-hover
+      %tr
+        %th Tournament
+        %th Start
+        %th End
+        %th Avg Error
+        %th Avg Deviation
+        %th Perfect Rate
+        %th Blunder Rate
+      - @games.each do |g|
+        %tr
+          %td= g[:name]
+          %td= g[:start_date]
+          %td= g[:end_date]
+          %td= g[:avg_err]
+          %td= g[:std_dev]
+          %td= g[:perfect]
+          %td= g[:blunders]
+
+= link_to 'Edit', edit_player_path(@player), class: 'btn'
 \|
-= link_to 'Back', players_path
+= link_to 'Back', players_path, class: 'btn'
