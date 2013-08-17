@@ -1,7 +1,7 @@
-%h1 Editing pgn_file
+%h1= t('pgn_file.edit')
 
 = render 'form'
 
-= link_to 'Show', @pgn_file, class: 'btn'
+= link_to t('show'), @pgn_file, class: 'btn'
 \|
-= link_to 'Back', pgn_files_path, class: 'btn'
+= link_to t('back'), pgn_files_path, class: 'btn'

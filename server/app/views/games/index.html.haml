@@ -1,30 +1,30 @@
-%h1 Listing games
+%h1= t('game.list')
 
 %table.table.table-condensed.table-striped.table-hover
   %tr
-    %th White
-    %th Black
-    %th Annotator
-    %th White avg error
-    %th Black avg error
-    %th Tournament
-    %th Site
-    %th Start date
-    %th Round
-    %th Result
-    %th Status
-    %th End date
-    %th White std deviation
-    %th Black std deviation
-    %th White perfect rate
-    %th Black perfect rate
-    %th Black blunder rate
-    %th White blunder rate
-    %th Player out DBRef
-    %th Move out DBRef
-    %th Value out DBRef
-    %th Best Value out DBRef
-    %th Deviation out DBRef
+    %th= t('white')
+    %th= t('black')
+    %th= t('annotator')
+    %th= t('white_avg_error')
+    %th= t('black_avg_error')
+    %th= t('tournament')
+    %th= t('site')
+    %th= t('start_date')
+    %th= t('round')
+    %th= t('result')
+    %th= t('status')
+    %th= t('end_date')
+    %th= t('white_std_deviation')
+    %th= t('black_std_deviation') %th= t('white_perfect_rate')
+    %th= t('black_perfect_rate')
+    %th= t('black_blunder_rate')
+    %th= t('white_blunder_rate')
+    %th= t('black_blunder_rate')
+    %th= t('player_out_dbref')
+    %th= t('move_out_dbref')
+    %th= t('value_out_dbref')
+    %th= t('best_value_out_dbref')
+    %th= t('deviation_out_dbref')
     %th
 
   - @games.each do |game|
@@ -53,12 +53,12 @@
       %td= game.best_value_out_db_ref
       %td= game.deviation_out_db_ref
       %td
-        = link_to 'Re-Analyze', analyze_game_path(game), class: 'btn'
-        = link_to 'Edit', edit_game_path(game), class: 'btn'
-        = link_to 'Destroy', game, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn'
+        = link_to t('re_analyze'), analyze_game_path(game), class: 'btn'
+        = link_to t('edit'), edit_game_path(game), class: 'btn'
+        = link_to t('destroy'), game, :method => :delete, :data => { :confirm => I18n.t('sure') }, class: 'btn'
 
 .digg_pagination
   = will_paginate @games
 %br
 
-= link_to 'New Game', new_game_path, class: 'btn btn-primary'
+= link_to t('game.new'), new_game_path, class: 'btn btn-primary'

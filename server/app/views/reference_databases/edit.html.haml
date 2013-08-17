@@ -1,7 +1,7 @@
-%h1 Editing reference_database
+%h1= t('reference_database.edit')
 
 = render 'form'
 
-= link_to 'Show', @reference_database, class: 'btn btn-primary'
+= link_to t('show'), @reference_database, class: 'btn btn-primary'
 \|
-= link_to 'Back', reference_databases_path, class: 'btn'
+= link_to t('back'), reference_databases_path, class: 'btn'

@@ -1,75 +1,75 @@
 %p#notice= notice
 
 %p
-  %b White:
+  %b= t('white')
   = @game.white_id
 %p
-  %b Black:
+  %b= t('black')
   = @game.black_id
 %p
-  %b Annotator:
+  %b= t('annotator')
   = @game.annotator
 %p
-  %b White avg error:
+  %b= t('white_avg_error')
   = @game.white_avg_error
 %p
-  %b Black avg error:
+  %b= t('black_avg_error')
   = @game.black_avg_error
 %p
-  %b Tournament:
+  %b= t('tournament')
   = @game.tournament_id
 %p
-  %b Site:
+  %b= t('site')
   = @game.site_id
 %p
-  %b Start date:
+  %b= t('start_date')
   = @game.start_date
 %p
-  %b Round:
+  %b= t('round')
   = @game.round
 %p
-  %b Result:
+  %b= t('result')
   = @game.result
 %p
-  %b Status:
+  %b= t('status')
   = @game.status
 %p
-  %b End date:
+  %b= t('end_date')
   = @game.end_date
 %p
-  %b White std deviation:
+  %b= t('white_std_deviation')
   = @game.white_std_deviation
 %p
-  %b Black std deviation:
+  %b= t('black_std_deviation')
   = @game.black_std_deviation
 %p
-  %b White perfect rate:
+  %b= t('white_perfect_rate')
   = @game.white_perfect_rate
 %p
-  %b Black perfect rate:
+  %b= t('black_perfect_rate')
   = @game.black_perfect_rate
 %p
-  %b Black blunder rate:
+  %b= t('black_blunder_rate')
   = @game.black_blunder_rate
 %p
-  %b White blunder rate:
+  %b= t('white_blunder_rate')
   = @game.white_blunder_rate
 %p
-  %b Player out DBRef:
+  %b= t('player_out_dbref')
   = @game.player_out_db_ref
 %p
-  %b Move out DBRef:
+  %b= t('move_out_dbref')
   = @game.move_out_db_ref
 %p
-  %b Value out DBRef:
+  %b= t('value_out_dbref')
   = @game.value_out_db_ref
 %p
-  %b Best value out DBRef:
+  %b= t('best_value_out_dbref')
   = @game.best_value_out_db_ref
 %p
-  %b Deviation out DBRef:
+  %b= t('deviation_out_dbref')
   = @game.deviation_out_db_ref
 
-= link_to 'Edit', edit_game_path(@game)
+= link_to t('edit'), edit_game_path(@game)
 \|
-= link_to 'Back', games_path
+= link_to t('back'), games_path

@@ -12,3 +12,8 @@
  *= require bootstrap.min
  *= require_tree .
  */
+
+span.user-name {
+  margin-top: 10px;
+  display: block;
+}

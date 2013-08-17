@@ -12,17 +12,17 @@
       .navbar-inner
         %a.brand{href: "#"}
         %ul.nav
-          %li= link_to 'Home', :root
-          %li= link_to 'Users', users_path
-          %li= link_to 'Games', games_path
-          %li= link_to 'Moves', moves_path
-          %li= link_to 'PGN Files', pgn_files_path
-          %li= link_to 'Players', players_path
-          %li= link_to 'Ref-DB', reference_databases_path
+          %li= link_to t('home'), :root
+          %li= link_to t('users'), users_path
+          %li= link_to t('games'), games_path
+          %li= link_to t('moves.list'), moves_path
+          %li= link_to t('pgn_files'), pgn_files_path
+          %li= link_to t('players'), players_path
+          %li= link_to t('ref_db'), reference_databases_path
         %ul.nav.pull-right
           %li
             %span.user-name= current_user.full_name
-          %li= link_to 'Sign Out', destroy_session_path(current_user), method: :delete
+          %li= link_to t('sign_out'), destroy_session_path(current_user), method: :delete
   .row.row-fluid.span9
     - if notice
       %p.alert.alert-info= notice

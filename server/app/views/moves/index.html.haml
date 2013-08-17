@@ -1,17 +1,17 @@
-%h1 Listing moves
+%h1= t('moves.list')
 
 %table
   %tr
-    %th Side
-    %th Pgn
-    %th Lan
-    %th Player value
-    %th Annotator move
-    %th Annotator value
-    %th Number
-    %th Comments
-    %th Check
-    %th Mate
+    %th= t('side')
+    %th= t('pgn')
+    %th= t('lan')
+    %th= t('player_value')
+    %th= t('annotator_move')
+    %th= t('annotator_value')
+    %th= t('number')
+    %th= t('comments')
+    %th= t('check')
+    %th= t('mate')
     %th
     %th
     %th
@@ -28,10 +28,10 @@
       %td= move.comments
       %td= move.check
       %td= move.mate
-      %td= link_to 'Show', move
-      %td= link_to 'Edit', edit_move_path(move)
-      %td= link_to 'Destroy', move, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to t('show'), move
+      %td= link_to t('edit'), edit_move_path(move)
+      %td= link_to t('destroy'), move, :method => :delete, :data => { :confirm => t('sure') }
 
 %br
 
-= link_to 'New Move', new_move_path
+= link_to t('moves.new'), new_move_path

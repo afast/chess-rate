@@ -1,25 +1,25 @@
 .span4
   %h3
-    Analyze: #{description}
+    = t('analyze') + ": #{description}"
   %h4
     = name
   = form_tag path: path do
     .field
-      = label_tag :time
+      = label_tag :time, t('time')
       = number_field_tag :time, 5000, step: :any, min: 300
-      %p.help miliseconds
+      %p.help= t('miliseconds')
     .field
-      = label_tag :tie_threshold
+      = label_tag :tie_threshold, t('tie_threshold')
       = number_field_tag :tie_threshold, 1, step: :any, min: 0.01
-      %p.help float
+      %p.help= t('float')
     .field
-      = label_tag :blunder_threshold
+      = label_tag :blunder_threshold, t('blunder_threshold')
       = number_field_tag :blunder_threshold, 3, step: :any, min: 1
-      %p.help float
+      %p.help= t('float')
     .field
-      = label_tag :reference_database_id
+      = label_tag :reference_database_id, t('reference_database')
       = select_tag :reference_database_id, options_from_collection_for_select(ReferenceDatabase.all, :id, :name)
-      %p.help string
+      %p.help= t('string')
     .actions
-      = submit_tag 'Process', class: 'btn'
+      = submit_tag t('process'), class: 'btn'
 

@@ -7,73 +7,73 @@
           %li= msg
 
   .field
-    = f.label :white_id
+    = f.label :white_id, t('white')
     = f.number_field :white_id
   .field
-    = f.label :black_id
+    = f.label :black_id, t('black')
     = f.number_field :black_id
   .field
-    = f.label :annotator
+    = f.label :annotator, t('annotator')
     = f.text_field :annotator
   .field
-    = f.label :white_avg_error
+    = f.label :white_avg_error, t('white_avg_error')
     = f.text_field :white_avg_error
   .field
-    = f.label :black_avg_error
+    = f.label :black_avg_error, t('black_avg_error')
     = f.text_field :black_avg_error
   .field
-    = f.label :tournament_id
+    = f.label :tournament_id, t('tournament')
     = f.number_field :tournament_id
   .field
-    = f.label :site_id
+    = f.label :site_id, t('site')
     = f.number_field :site_id
   .field
-    = f.label :start_date
+    = f.label :start_date, t('start_date')
     = f.datetime_select :start_date
   .field
-    = f.label :round
+    = f.label :round, t('round')
     = f.number_field :round
   .field
-    = f.label :result
+    = f.label :result, t('result')
     = f.number_field :result
   .field
-    = f.label :status
+    = f.label :status, t('status')
     = f.number_field :status
   .field
-    = f.label :end_date
+    = f.label :end_date, t('end_date')
     = f.datetime_select :end_date
   .field
-    = f.label :white_std_deviation
+    = f.label :white_std_deviation, t('white_std_deviation')
     = f.text_field :white_std_deviation
   .field
-    = f.label :black_std_deviation
+    = f.label :black_std_deviation, t('black_std_deviation')
     = f.text_field :black_std_deviation
   .field
-    = f.label :white_perfect_rate
+    = f.label :white_perfect_rate, t('white_perfect_rate')
     = f.text_field :white_perfect_rate
   .field
-    = f.label :black_perfect_rate
+    = f.label :black_perfect_rate, t('black_perfect_rate')
     = f.text_field :black_perfect_rate
   .field
-    = f.label :black_blunder_rate
+    = f.label :black_blunder_rate, t('black_blunder_rate')
     = f.text_field :black_blunder_rate
   .field
-    = f.label :white_blunder_rate
+    = f.label :white_blunder_rate, t('white_blunder_rate')
     = f.text_field :white_blunder_rate
   .field
-    = f.label :player_out_db_ref
+    = f.label :player_out_db_ref, t('player_out_db_ref')
     = f.text_field :player_out_db_ref
   .field
-    = f.label :move_out_db_ref
+    = f.label :move_out_db_ref, t('move_out_db_ref')
     = f.text_field :move_out_db_ref
   .field
-    = f.label :value_out_db_ref
+    = f.label :value_out_db_ref, t('value_out_db_ref')
     = f.text_field :value_out_db_ref
   .field
-    = f.label :best_value_out_db_ref
+    = f.label :best_value_out_db_ref, t('best_value_out_db_ref')
     = f.text_field :best_value_out_db_ref
   .field
-    = f.label :deviation_out_db_ref
+    = f.label :deviation_out_db_ref, t('deviation_out_db_ref')
     = f.text_field :deviation_out_db_ref
   .actions
-    = f.submit 'Save'
+    = f.submit t('save')

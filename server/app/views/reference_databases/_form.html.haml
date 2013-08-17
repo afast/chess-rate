@@ -6,11 +6,8 @@
         - @reference_database.errors.full_messages.each do |msg|
           %li= msg
 
-  -#.field
-  -#  = f.label :name
-  -#  = f.text_field :name
   .field
-    = f.label :path
+    = f.label :path, t('path')
     = f.text_field :path
   .actions
-    = f.submit 'Save', class: 'btn btn-primary'
+    = f.submit t('save'), class: 'btn btn-primary'

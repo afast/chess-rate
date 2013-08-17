@@ -1,7 +1,7 @@
-%h1 Editing game
+%h1= t('game.edit')
 
 = render 'form'
 
-= link_to 'Show', @game, class: 'btn'
+= link_to t('show'), @game, class: 'btn'
 \|
-= link_to 'Back', games_path, class: 'btn'
+= link_to t('back'), games_path, class: 'btn'

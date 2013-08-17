@@ -7,34 +7,34 @@
           %li= msg
 
   .field
-    = f.label :side
+    = f.label :side, t('side')
     = f.check_box :side
   .field
-    = f.label :pgn
+    = f.label :pgn, t('pgn')
     = f.text_field :pgn
   .field
-    = f.label :lan
+    = f.label :lan, t('lan')
     = f.text_field :lan
   .field
-    = f.label :player_value
+    = f.label :player_value, t('player_value')
     = f.text_field :player_value
   .field
-    = f.label :annotator_move
+    = f.label :annotator_move, t('annotator_move')
     = f.text_field :annotator_move
   .field
-    = f.label :annotator_value
+    = f.label :annotator_value, t('annotator_value')
     = f.text_field :annotator_value
   .field
-    = f.label :number
+    = f.label :number, t('number')
     = f.number_field :number
   .field
-    = f.label :comments
+    = f.label :comments, t('comments')
     = f.text_area :comments
   .field
-    = f.label :check
+    = f.label :check, t('check')
     = f.check_box :check
   .field
-    = f.label :mate
+    = f.label :mate, t('mate')
     = f.check_box :mate
   .actions
-    = f.submit 'Save'
+    = f.submit t('save')

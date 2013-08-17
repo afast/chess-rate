@@ -1,0 +1,94 @@
+es:
+  back: Volver
+  home: Inicio
+  users: Usuarios
+  games: Partidas
+  moves: Movidas
+  pgn_files: PGN
+  players: Jugadores
+  player:
+    new: Nuevo Jugador
+    list: Listando Jugadores
+  ref_db: Referencias
+  game:
+    list: Listando Partidas
+    new: Nueva Partida
+    all: Todas las Partidas
+  reference_database:
+    edit: Editando Referencia
+    list: Listando Referencias
+    title: Base de Referencia
+    new: Nueva Base de Referencia
+  user:
+    list: Listando Usuarios
+    edit: Editar Usuario
+    new: Nuevo Usuario
+  moves:
+    new: Nueva Movida
+    list: Movidas
+  pgn_file:
+    new: Nuevo Archivo PGN
+    list: Archivos PGN
+    edit: Editar archivo PGN
+  description: Descripción
+  file: Archivo
+  sure: Estas seguro?
+  white: Blanco
+  black: Negro
+  annotator: Anotador
+  white_avg_error: Error Prom Blanco
+  black_avg_error: Error Prom Negro
+  avg_error: Error Promedio
+  avg_deviation: Desviación Promedio
+  perfect_rate: '% Perfectas'
+  blunder_rate: '% Blunder'
+  tournament: Torneo
+  tournaments: Torneos
+  collection: Colección
+  start: Inicio
+  end: Fin
+  site: Sitio
+  start_date: Comienzo
+  round: Ronda
+  result: Resultado
+  status: Estado
+  end_date: Fin
+  white_std_deviation: Desv. Est Blanco
+  black_std_deviation: Desv. Est Negro
+  white_perfect_rate: '% Perfectas Blanco'
+  black_perfect_rate: '% Perfectas negro'
+  black_blunder_rate: '% Blunder Negro'
+  white_blunder_rate: '% Blunder Blanco'
+  player_out_dbref: Jugador Salio DB-Ref
+  move_out_dbref: Movida Salio
+  value_out_dbref: Valor de Salida
+  best_value_out_dbref: Mejor Valor Salida
+  deviation_out_dbref: Desviacion Salida
+  re_analyze: Re Analizar
+  analyze: Analizar
+  reference_databases: Bases de Referencia
+  time: Tiempo
+  tie_threshold: Limite de empate
+  blunder_threshold: Limite de blunder
+  process: Procesar
+  float: Decimal
+  string: Texto
+  miliseconds: Milisegundos
+  destroy: Eliminar
+  edit: Editar
+  email: Email
+  name: Nombre
+  path: Ruta
+  sign_out: Cerrar Sesión
+  side: Lado
+  pgn: PGN
+  lan: LAN
+  player_value: Valor Jugada
+  annotator_move: Mejor Jugada
+  annotator_value: Valor Mejor Jugada
+  number: Numero
+  comments: Comentarios
+  check: Jaque
+  mate: Mate
+  show: Ver
+  save: Guardar

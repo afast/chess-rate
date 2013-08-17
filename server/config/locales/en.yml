@@ -1,5 +1,14 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
-  hello: "Hello world"
+  back: Back
+  home: Home
+  users: Users
+  games: Games
+  moves: Moves
+  pgn_files: PGN Files
+  players: Players
+  ref_db: Ref-DB
+  game:
+    list: Listing games
+    new: New Game
+    edit: Edit Game
+  sure: Are you sure?

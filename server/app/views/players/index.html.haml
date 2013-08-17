@@ -1,8 +1,8 @@
-%h1 Listing players
+%h1= t('player.list')
 
 %table.table.table-condensed.table-striped.table-hover
   %tr
-    %th Name
+    %th= t('name')
     %th
     %th
     %th
@@ -10,10 +10,10 @@
   - @players.each do |player|
     %tr
       %td= player.name
-      %td= link_to 'Show', player, class: 'btn btn-primary'
-      %td= link_to 'Edit', edit_player_path(player), class: 'btn'
-      %td= link_to 'Destroy', player, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-danger'
+      %td= link_to t('show'), player, class: 'btn btn-primary'
+      %td= link_to t('edit'), edit_player_path(player), class: 'btn'
+      %td= link_to t('destroy'), player, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn btn-danger'
 
 %br
 
-= link_to 'New Player', new_player_path, class: 'btn btn-primary'
+= link_to t('player.new'), new_player_path, class: 'btn btn-primary'

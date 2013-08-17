@@ -7,10 +7,10 @@
           %li= msg
 
   .field
-    = f.label :description
+    = f.label :description, t('description')
     = f.text_field :description
   .field
-    = f.label :pgn_file, 'File'
+    = f.label :pgn_file, t('file')
     = f.file_field :pgn_file
   .actions
-    = f.submit 'Save', class: 'btn'
+    = f.submit t('save'), class: 'btn'

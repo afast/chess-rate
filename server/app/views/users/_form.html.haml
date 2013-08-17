@@ -2,7 +2,7 @@
   - if @user.errors.any?
     #error_explanation
       %h2
-        = pluralize(@user.errors.count, "error")
+        = pluralize(@user.errors.count, t('error'), t('errors'))
         prohibited this user from being saved:
 
       %ul
@@ -10,11 +10,11 @@
           %li= msg
 
   .field
-    = f.label :email
+    = f.label :email, t('email')
     %br
     = f.text_field :email
   .field
-    = f.label :name
+    = f.label :name, t('name')
     %br
     = f.text_field :name
   .actions

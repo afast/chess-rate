@@ -1,9 +1,9 @@
-%h1 Listing pgn_files
+%h1= t('pgn_file.list')
 
 %table.table.table-condensed.table-striped.table-hover
   %tr
-    %th Description
-    %th Status
+    %th= t('description')
+    %th= t('status')
     %th
 
   - @pgn_files.each do |pgn_file|
@@ -11,10 +11,10 @@
       %td= pgn_file.description
       %td= pgn_file.status_to_s
       %td
-        = link_to 'Process', analyze_pgn_file_path(pgn_file), class: 'btn' if pgn_file.not_processed?
-        = link_to 'Edit', edit_pgn_file_path(pgn_file), class: 'btn'
-        = link_to 'Destroy', pgn_file, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn'
+        = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn' if pgn_file.not_processed?
+        = link_to t('edit'), edit_pgn_file_path(pgn_file), class: 'btn'
+        = link_to t('destroy'), pgn_file, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn'
 
 %br
 
-= link_to 'New Pgn file', new_pgn_file_path, class: 'btn btn-primary'
+= link_to t('pgn_file.new'), new_pgn_file_path, class: 'btn btn-primary'

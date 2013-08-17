@@ -1,7 +1,7 @@
-%h1 Editing player
+%h1= t('player.edit')
 
 = render 'form'
 
-= link_to 'Show', @player, class: 'btn'
+= link_to t('show'), @player, class: 'btn'
 \|
-= link_to 'Back', players_path, class: 'btn'
+= link_to t('back'), players_path, class: 'btn'
