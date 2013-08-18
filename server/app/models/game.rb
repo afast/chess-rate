@@ -6,6 +6,7 @@ class Game < ActiveRecord::Base
     :white_id, :white_perfect_rate, :white_std_deviation, :progress, :tie_threshold, :blunder_threshold,
     :player_out_db_ref, :move_out_db_ref, :value_out_db_ref, :best_value_out_db_ref, :deviation_out_db_ref,
     :white_elo, :black_elo
+  attr_accessor :en_passant
 
   OBLIGATORY_TAGS = {'Event' => :tournament, 'Site' => :site, 'Date' => :start_date, 'Round' => :round,
                      'White' => :white, 'Black' => :black, 'Result' => :result}

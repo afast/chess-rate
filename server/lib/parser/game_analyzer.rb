@@ -24,6 +24,7 @@ class GameAnalyzer
       game.reset_statistics!
 
       board.setup_board # Reset our custom board
+      @uci.new_game!
       @uci.wait_for_readyok
 
       # Set game properties

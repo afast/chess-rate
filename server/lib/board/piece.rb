@@ -17,6 +17,7 @@ module Board
       from = @position.to_s
       @board.set_piece(nil, @position.file_to_i, rank) # empty from coords
       @board.eliminate @board.piece_at(position) # eliminate piece if there was one
+      @board.en_passant = nil
 
       @position = position
       @board.set_piece(self, position.file_to_i, rank) # place piece in new coords

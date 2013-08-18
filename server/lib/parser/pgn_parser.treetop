@@ -60,7 +60,7 @@ grammar PGN
   end
 
   rule promotion # Match promotion
-    pawnmove '=' piece <MoveType>
+    'x'? 'P'? file [18] '=' piece <MoveType>
   end
 
   rule castling
@@ -80,7 +80,7 @@ grammar PGN
   end
 
   rule standard_move # This represents a normal move eg.: Ng1xf3, Ngxf3, Nxf3, Ng1f3, Ngf3, Nf3
-    piece ( file rank 'x'? file rank / file 'x'? file rank / rank 'x'? file rank / 'x'? file rank ) <MoveType>
+    piece ( file rank 'x'? file rank / rank 'x'? file rank / file 'x'? file rank / 'x'? file rank ) <MoveType>
   end
 
   rule piece # Matches a piece name P should not appear but some motors do include it
@@ -108,7 +108,7 @@ grammar PGN
   end
   
   rule move_number # Parse the move number
-    [1-9] [0-9]* <MoveNumber>
+    [0-9]+ <MoveNumber>
   end
 
   rule move_side # detect the side that did the move '.' ~> white, '...' ~> black
@@ -128,7 +128,7 @@ grammar PGN
   end
 
   rule space
-    [ \n\r]*
+    [ \r\n]*
   end
 
   rule oblig_space

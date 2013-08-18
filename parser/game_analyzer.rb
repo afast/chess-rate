@@ -62,6 +62,7 @@ class GameAnalyzer
 
     @games.each do |game|
       @uci.wait_for_readyok
+      @uci.new_game!
       board.setup_board
 
       board_score = 0
