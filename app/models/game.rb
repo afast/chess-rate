@@ -41,6 +41,10 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def name
+    "toma barni.pgn"
+  end
+
   def set_tag(tag, value)
     puts "setting tag: #{tag} => #{value}"
     if AVAILABLE_TAGS.keys.include?(tag)
@@ -60,12 +64,37 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def get_tag(tag)
+    if AVAILABLE_TAGS.keys.include?(tag)
+      case AVAILABLE_TAGS[tag]
+      when :tournament
+        self.tournament.try(:name)
+      when :site
+        self.site.try(:name)
+      when :black
+        self.black.try(:name)
+      when :white
+        self.white.try(:name)
+      else
+        public_send AVAILABLE_TAGS[tag]
+      end
+    end
+  end
+
   def white_avg_error
     white_avg_error ||= avg_error(moves.white)
   end
 
   def black_avg_error
     black_avg_error ||= avg_error(moves.black)
+  end
+
+  def total_avg_error
+    avg_error(moves)
+  end
+
+  def total_perfect_rate
+    perfect_rate(moves)
   end
 
   def white_std_deviation
@@ -155,7 +184,7 @@ class Game < ActiveRecord::Base
     save!
   end
 
-  def analyze(time, tie_threshold, blunder_threshold, ref_db)
+  def analyze(time, tie_threshold, blunder_threshold, ref_db=nil)
     puts 'Analyzing!'
     puts "game #{self.id}"
     puts "time #{time}"
@@ -189,6 +218,25 @@ class Game < ActiveRecord::Base
 
   def finished_processing
     update_attributes status: STATUS[:processed]
+  end
+
+  def to_pgn
+    pgn = ''
+    AVAILABLE_TAGS.keys.each do |tag|
+      value = get_tag(tag)
+      if value
+        pgn += "[#{tag} \"#{value}\"]\n"
+      end
+    end
+    pgn += "[PlayerOutOfDB-Ref \"#{player_out_db_ref}\"]\n"
+    pgn += "[MoveNumberOutOfDB-Ref \"#{move_out_db_ref}\"]\n"
+    pgn += "[ValueOutOfDB-Ref \"#{'%.2f' % value_out_db_ref}\"]\n"
+    pgn += "[ValueBestMoveOutOfDB-Ref \"#{'%.2f' % best_value_out_db_ref}\"]\n"
+    pgn += "[DeviationOutOfDB-Ref \"#{'%.2f' % deviation_out_db_ref}\"]\n"
+    pgn += "\n"
+    pgn += moves.map { |m| m.to_pgn }.join("\n")
+    pgn += " #{self.result}"
+    pgn
   end
 
   private

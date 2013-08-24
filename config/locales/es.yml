@@ -92,3 +92,5 @@ es:
   mate: Mate
   show: Ver
   save: Guardar
+  time:
+    label: Tiempo

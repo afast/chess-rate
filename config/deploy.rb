@@ -8,13 +8,17 @@ set :repository,  "git@github.com:afast/chess-rate.git"
 set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 set :ssh_options, {keys: ["/home/andreas/afast"], forward_agent: true}
+#set :ssh_options, {forward_agent: true}
 
 set :user, "afast"
-set :use_sudo, false
 set :scm_passphrase, "eliseo"
+#set :user, "andreas"
+
+set :use_sudo, false
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :branch, "server"
 server "ec2-54-213-7-243.us-west-2.compute.amazonaws.com", :app, :web, :db, :primary => true
+#server "192.168.1.103", :app, :web, :db, :primary => true
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true

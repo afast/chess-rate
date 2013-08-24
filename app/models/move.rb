@@ -46,7 +46,7 @@ class Move < ActiveRecord::Base
   def to_s
     # Show basic move info
     #"#{(index+2)/2}#{sideNotation}#{lan_move} {#{board_score},#{machine_move},#{machine_score},#{(machine_score-board_score).abs}}"
-    "#{number}#{side_to_s}#{pgn} { #{player_value}#{machine_info} }"
+    "#{number}#{side_to_s} #{pgn} { #{player_value}#{machine_info} }"
   end
 
   def machine_info
@@ -101,5 +101,9 @@ class Move < ActiveRecord::Base
 
   def white?
     self.side_sym == :white
+  end
+
+  def to_pgn
+    self.to_s
   end
 end

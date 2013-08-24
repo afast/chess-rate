@@ -22,6 +22,11 @@ class GamesController < ApplicationController
     end
   end
 
+  def download
+    game = Game.find(params[:id])
+    send_data game.to_pgn, filename: game.name
+  end
+
   # GET /games/new
   # GET /games/new.json
   def new

@@ -22,6 +22,12 @@ class Parser
       from = @@parser.index-10
       from = 0 if from < 0
       puts "-->#{data[from, 20]}<--" # 20 characters of context
+      from = @@parser.index-20
+      from = 0 if from < 0
+      puts "-->#{data[from, 40]}<--" # 20 characters of context
+      from = @@parser.index-40
+      from = 0 if from < 0
+      puts "-->#{data[from, 80]}<--" # 20 characters of context
       raise Exception, "Parse error at offset: #{@@parser.index}"
     end
 

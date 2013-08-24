@@ -17,6 +17,24 @@ class PgnFile < ActiveRecord::Base
     status = STATUS[:not_processed]
   end
 
+  def avg_distance
+    arr = games.collect(&:total_avg_error)
+    if arr.size > 0
+      arr.sum / arr.size
+    else
+      0
+    end
+  end
+
+  def avg_perfect
+    arr = games.collect(&:total_perfect_rate)
+    if arr.size > 0
+      arr.sum / arr.size
+    else
+      0
+    end
+  end
+
   def status_to_s
     STATUS_TEXT[status || 0]
   end

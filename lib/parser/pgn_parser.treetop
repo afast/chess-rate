@@ -12,7 +12,7 @@ grammar PGN
     oblig_space game <SpacedGame>
   end
   rule game # This matches and entire game tags, move sequences and result
-    tag_expressions space move_sequence game_result <GameNode>
+    tag_expressions space move_sequence? game_result <GameNode>
   end
 
   rule tag_expressions # Require at least one tag
@@ -60,7 +60,7 @@ grammar PGN
   end
 
   rule promotion # Match promotion
-    'x'? 'P'? file [18] '=' piece <MoveType>
+    'P'? ( file rank 'x'? file [18] / rank 'x'? file [18] / file 'x'? file [18] / 'x'? file [18] )  '=' piece <MoveType>
   end
 
   rule castling
@@ -124,7 +124,7 @@ grammar PGN
   end
 
   rule string
-    '"' [^"]* '"' <StringLiteral>
+    '"' [^"]* '"'+ <StringLiteral>
   end
 
   rule space

@@ -5,8 +5,8 @@
     = name
   = form_tag path: path do
     .field
-      = label_tag :time, t('time')
-      = number_field_tag :time, 5000, step: :any, min: 300
+      = label_tag :time, t('time.label')
+      = number_field_tag :time, 3000, step: :any, min: 300
       %p.help= t('miliseconds')
     .field
       = label_tag :tie_threshold, t('tie_threshold')

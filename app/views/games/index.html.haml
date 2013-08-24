@@ -15,7 +15,8 @@
     %th= t('status')
     %th= t('end_date')
     %th= t('white_std_deviation')
-    %th= t('black_std_deviation') %th= t('white_perfect_rate')
+    %th= t('black_std_deviation')
+    %th= t('white_perfect_rate')
     %th= t('black_perfect_rate')
     %th= t('black_blunder_rate')
     %th= t('white_blunder_rate')
@@ -56,6 +57,7 @@
         = link_to t('re_analyze'), analyze_game_path(game), class: 'btn'
         = link_to t('edit'), edit_game_path(game), class: 'btn'
         = link_to t('destroy'), game, :method => :delete, :data => { :confirm => I18n.t('sure') }, class: 'btn'
+        = link_to t('download_pgn'), download_game_path(game), class: 'btn'
 
 .digg_pagination
   = will_paginate @games

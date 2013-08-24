@@ -1,4 +1,3 @@
-require 'pry'
 module Board
   class Pawn < Piece
     def can_move_to? position

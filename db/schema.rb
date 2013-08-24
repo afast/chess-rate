@@ -13,16 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20130731043723) do
 
-  create_table "fen_moves", :force => true do |t|
-    t.integer  "reference_database_id"
-    t.string   "move"
-    t.integer  "white"
-    t.integer  "black"
-    t.integer  "draw"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
-  end
-
   create_table "games", :force => true do |t|
     t.integer  "white_id"
     t.integer  "black_id"

@@ -4,12 +4,16 @@
   %tr
     %th= t('description')
     %th= t('status')
+    %th= t('avg_error')
+    %th= t('perfect_rate')
     %th
 
   - @pgn_files.each do |pgn_file|
     %tr
       %td= pgn_file.description
       %td= pgn_file.status_to_s
+      %td= '%.2f' % pgn_file.avg_distance
+      %td= '%.2f' % pgn_file.avg_perfect
       %td
         = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn' if pgn_file.not_processed?
         = link_to t('edit'), edit_pgn_file_path(pgn_file), class: 'btn'

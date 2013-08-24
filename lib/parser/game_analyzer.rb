@@ -72,19 +72,22 @@ class GameAnalyzer
         if index > 0 # Start assigning after first move was scored
           old_move.update_attributes! player_value: score, annotator_value: old_score, annotator_move: old_bestmove
 
-          percentage, coincidences = @db_ref.getPercentage @uci.fenstring
-          if coincidences == 0 && first_time_here
-            player = nil
-            if old_move.side.eql? 'white'
-              player = Player.where(id: game.white).first
-            else
-              player = Player.where(id: game.black).first
+          if @db_ref
+            percentage, coincidences = @db_ref.getPercentage(@uci.fenstring)
+
+            if coincidences == 0 && first_time_here
+              player = nil
+              if old_move.side.eql? 'white'
+                player = Player.where(id: game.white).first
+              else
+                player = Player.where(id: game.black).first
+              end
+              game.update_attributes! player_out_db_ref: player.name, move_out_db_ref: (index+1)/2, value_out_db_ref: score,
+                                      best_value_out_db_ref: old_score, deviation_out_db_ref: (score-old_score).abs
+              first_time_here = false
+            elsif coincidences > 0
+              first_time_here = true
             end
-            game.update_attributes! player_out_db_ref: player.name, move_out_db_ref: (index+1)/2, value_out_db_ref: score,
-                                    best_value_out_db_ref: old_score, deviation_out_db_ref: (score-old_score).abs
-            first_time_here = false
-          elsif coincidences > 0
-            first_time_here = true
           end
         end
 

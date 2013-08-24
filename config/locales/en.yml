@@ -12,3 +12,9 @@ en:
     new: New Game
     edit: Edit Game
   sure: Are you sure?
+  perfect_rate: Perfect Rate
+  avg_error: Average Error
+  time:
+    label: Time
+  process: Process
+  save: Save

@@ -1,9 +1,7 @@
 ChessRate::Application.routes.draw do
   resources :fen_moves
 
-
   resources :reference_databases
-
 
   root to: 'games#index'
 
@@ -17,6 +15,7 @@ ChessRate::Application.routes.draw do
     member do
       get :analyze, to: :setup_analysis
       get :progress
+      get :download
       get :statistics
       post :analyze
     end
