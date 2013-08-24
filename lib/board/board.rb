@@ -9,6 +9,8 @@ require 'rook'
 
 module Board
   class Board
+    attr_accessor :en_passant
+
     def initialize
       @board = Array.new(8)
       (0..7).each do |i|
