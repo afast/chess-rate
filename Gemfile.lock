@@ -1,5 +1,5 @@
 PATH
-  remote: ../uci-0.0.2/
+  remote: vendor/uci-0.0.2/
   specs:
     uci (0.0.2)
 

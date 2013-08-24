@@ -14,7 +14,7 @@ gem 'slim', ">= 1.3.0"
 
 gem 'spawnling'
 gem 'treetop'
-gem 'uci', path: '../uci-0.0.2/'
+gem 'uci', path: 'vendor/uci-0.0.2/'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
