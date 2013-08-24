@@ -89,7 +89,7 @@ class PgnFilesController < ApplicationController
   # POST /pgn_files/1/analyze
   def analyze
     @pgn_file = PgnFile.find(params[:id])
-    @pgn_file.reference_database = ReferenceDatabase.find(params[:reference_database_id])
+    @pgn_file.reference_database = ReferenceDatabase.where(id: params[:reference_database_id]).first
     @pgn_file.analyze params[:time].to_i, params[:tie_threshold].to_f, params[:blunder_threshold].to_f
     redirect_to pgn_files_path
   end
