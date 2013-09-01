@@ -83,8 +83,8 @@ class SimpleParser
         else
           move.pgn = m
         end
+        game.add_move move
       end
-      game.add_move move
     end
     game.save_moves
   end
