@@ -96,6 +96,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.24)
     multi_json (1.7.9)
+    mysql2 (0.3.13)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -193,6 +194,7 @@ DEPENDENCIES
   factory_girl_rails
   haml-rails
   jquery-rails
+  mysql2
   pkgr
   quiet_assets
   rails (= 3.2.13)

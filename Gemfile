@@ -29,6 +29,7 @@ group :development do
   gem 'pkgr'
   gem 'capistrano'
   gem 'capistrano-ext'
+  gem 'mysql2'
 end
 
 group :test do

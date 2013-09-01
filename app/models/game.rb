@@ -27,10 +27,8 @@ class Game < ActiveRecord::Base
   belongs_to :pgn_file
 
   def add_move(move)
-    puts 'adding move'
     @cache_moves = [] if @cache_moves.nil?
     @cache_moves << move
-    puts 'move added'
   end
 
   def save_moves
@@ -42,11 +40,10 @@ class Game < ActiveRecord::Base
   end
 
   def name
-    "toma barni.pgn"
+    "#{wite.name}-#{black.name}.pgn"
   end
 
   def set_tag(tag, value)
-    puts "setting tag: #{tag} => #{value}"
     if AVAILABLE_TAGS.keys.include?(tag)
       case AVAILABLE_TAGS[tag]
       when :tournament
@@ -58,7 +55,7 @@ class Game < ActiveRecord::Base
       when :white
         self.white = Player.find_or_create_by_name(value[1..-2])
       else
-        puts "#{AVAILABLE_TAGS[tag]}=#{value[1..-2]}"
+        #puts "#{AVAILABLE_TAGS[tag]}=#{value[1..-2]}"
         public_send "#{AVAILABLE_TAGS[tag]}=", value[1..-2]
       end
     end
