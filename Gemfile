@@ -11,6 +11,7 @@ gem 'jquery-rails'
 gem 'will_paginate', '~> 3.0'
 gem 'carrierwave'
 gem 'slim', ">= 1.3.0"
+gem 'mysql2'
 
 gem 'spawnling'
 gem 'treetop'
@@ -29,7 +30,6 @@ group :development do
   gem 'pkgr'
   gem 'capistrano'
   gem 'capistrano-ext'
-  gem 'mysql2'
 end
 
 group :test do

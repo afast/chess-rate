@@ -53,8 +53,9 @@ class PgnFile < ActiveRecord::Base
 
   def analyze(time, tie_threshold, blunder_threshold)
     background do
-      self.games.destroy_all
-      SimpleParser.new.parse self.id, pgn_file.file.file
+      if games.empty?
+        SimpleParser.new.parse self.id, pgn_file.file.file
+      end
 
       games.reload.each do |g|
         g.analyze(time, tie_threshold, blunder_threshold, @reference_database)

@@ -32,6 +32,7 @@ class Game < ActiveRecord::Base
   end
 
   def save_moves
+    return if @cache_moves.nil?
     transaction do
       @cache_moves.each do |m|
         m.update_attributes game: self
