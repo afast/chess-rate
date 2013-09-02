@@ -76,7 +76,30 @@ module Board
       piece = get_piece move_hash[:name], side,
                         position_to, Position.from_algebraic_notation(move_hash[:dis])
       move_hash[:from] = piece.move_to position_to # returns long algebraic notation
+      unless move_hash[:promotion].blank?
+        promote(move_hash, position_to, side)
+      end
       move_hash[:from] + move_hash[:to]
+    end
+
+    def promote(move_hash, position_to, side)
+      eliminate(piece_at(position_to))
+      case move_hash[:promotion].downcase
+      when 'q'
+        piece = Queen.new(self, side, position_to)
+        @queens[side] << piece
+      when 'r'
+        piece = Rook.new(self, side, position_to)
+        @rooks[side] << piece
+      when 'b'
+        piece = Bishop.new(self, side, position_to)
+        @bishops[side] << piece
+      when 'k'
+        piece = Knight.new(self, side, position_to)
+        @knights[side] << piece
+      end
+
+      set_piece(piece, position_to.file_to_i, position_to.rank)
     end
 
     def eliminate(piece)

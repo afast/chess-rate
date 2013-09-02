@@ -41,7 +41,7 @@ class Game < ActiveRecord::Base
   end
 
   def name
-    "#{wite.name}-#{black.name}.pgn"
+    "#{white.name}-#{black.name}.pgn"
   end
 
   def set_tag(tag, value)
@@ -228,9 +228,9 @@ class Game < ActiveRecord::Base
     end
     pgn += "[PlayerOutOfDB-Ref \"#{player_out_db_ref}\"]\n"
     pgn += "[MoveNumberOutOfDB-Ref \"#{move_out_db_ref}\"]\n"
-    pgn += "[ValueOutOfDB-Ref \"#{'%.2f' % value_out_db_ref}\"]\n"
-    pgn += "[ValueBestMoveOutOfDB-Ref \"#{'%.2f' % best_value_out_db_ref}\"]\n"
-    pgn += "[DeviationOutOfDB-Ref \"#{'%.2f' % deviation_out_db_ref}\"]\n"
+    pgn += "[ValueOutOfDB-Ref \"#{'%.2f' % (value_out_db_ref || 0)}\"]\n"
+    pgn += "[ValueBestMoveOutOfDB-Ref \"#{'%.2f' % (best_value_out_db_ref || 0)}\"]\n"
+    pgn += "[DeviationOutOfDB-Ref \"#{'%.2f' % (deviation_out_db_ref || 0)}\"]\n"
     pgn += "\n"
     pgn += moves.map { |m| m.to_pgn }.join("\n")
     pgn += " #{self.result}"
