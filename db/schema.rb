@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130731043723) do
+ActiveRecord::Schema.define(:version => 20130903020903) do
 
   create_table "games", :force => true do |t|
     t.integer  "white_id"
@@ -33,18 +33,20 @@ ActiveRecord::Schema.define(:version => 20130731043723) do
     t.float    "black_perfect_rate"
     t.float    "black_blunder_rate"
     t.float    "white_blunder_rate"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.float    "progress"
     t.float    "tie_threshold"
     t.float    "blunder_threshold"
     t.string   "player_out_db_ref"
     t.integer  "move_out_db_ref"
-    t.decimal  "value_out_db_ref"
-    t.decimal  "best_value_out_db_ref"
-    t.decimal  "deviation_out_db_ref"
+    t.decimal  "value_out_db_ref",      :precision => 10, :scale => 0
+    t.decimal  "best_value_out_db_ref", :precision => 10, :scale => 0
+    t.decimal  "deviation_out_db_ref",  :precision => 10, :scale => 0
     t.string   "white_elo"
     t.string   "black_elo"
+    t.float    "total_average_error"
+    t.float    "total_perfect_rate"
   end
 
   create_table "moves", :force => true do |t|
@@ -68,8 +70,10 @@ ActiveRecord::Schema.define(:version => 20130731043723) do
     t.string   "description"
     t.string   "pgn_file"
     t.integer  "status"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.float    "average_distance"
+    t.float    "average_perfect"
   end
 
   create_table "players", :force => true do |t|

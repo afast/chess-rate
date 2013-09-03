@@ -5,7 +5,7 @@ class Game < ActiveRecord::Base
     :end_date, :result, :round, :site_id, :start_date, :status, :tournament_id, :white_avg_error, :white_blunder_rate,
     :white_id, :white_perfect_rate, :white_std_deviation, :progress, :tie_threshold, :blunder_threshold,
     :player_out_db_ref, :move_out_db_ref, :value_out_db_ref, :best_value_out_db_ref, :deviation_out_db_ref,
-    :white_elo, :black_elo
+    :white_elo, :black_elo, :total_average_error, :total_perfect_rate
   attr_accessor :en_passant
 
   OBLIGATORY_TAGS = {'Event' => :tournament, 'Site' => :site, 'Date' => :start_date, 'Round' => :round,
@@ -91,10 +91,6 @@ class Game < ActiveRecord::Base
     avg_error(moves)
   end
 
-  def total_perfect_rate
-    perfect_rate(moves)
-  end
-
   def white_std_deviation
     white_std_deviation ||= standard_deviation(moves.white)
   end
@@ -162,6 +158,8 @@ class Game < ActiveRecord::Base
     self.black_perfect_rate = perfect_rate(moves.black)
     self.white_blunder_rate = blunder_rate(moves.white, tie_threshold, blunder_threshold)
     self.black_blunder_rate = blunder_rate(moves.black, tie_threshold, blunder_threshold)
+    self.total_average_error = avg_error(moves)
+    self.total_perfect_rate = perfect_rate(moves)
     self.save!
   end
 

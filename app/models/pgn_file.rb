@@ -10,7 +10,7 @@ class PgnFile < ActiveRecord::Base
 
   before_create :init_status
 
-  attr_accessible :description, :pgn_file, :status
+  attr_accessible :description, :pgn_file, :status, :average_perfect, :average_distance
   attr_accessor :reference_database
 
   def init_status
@@ -18,21 +18,25 @@ class PgnFile < ActiveRecord::Base
   end
 
   def avg_distance
-    arr = games.collect(&:total_avg_error)
+    return average_distance if average_distance
+    arr = games.pluck(:total_average_error).compact
+    avg = 0
     if arr.size > 0
-      arr.sum / arr.size
-    else
-      0
+      avg = arr.sum / arr.size
+      self.update_attributes average_distance: avg
     end
+    avg
   end
 
   def avg_perfect
-    arr = games.collect(&:total_perfect_rate)
+    return average_perfect if average_perfect
+    arr = games.pluck(:total_perfect_rate).compact
+    avg = 0
     if arr.size > 0
-      arr.sum / arr.size
-    else
-      0
+      avg = arr.sum / arr.size
+      self.update_attributes average_perfect: avg
     end
+    avg
   end
 
   def status_to_s
@@ -41,6 +45,10 @@ class PgnFile < ActiveRecord::Base
 
   def not_processed?
     status.nil? #|| status == STATUS[:not_processed]
+  end
+
+  def processing?
+    status == STATUS[:processing]
   end
 
   def start_processing
