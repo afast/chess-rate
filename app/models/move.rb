@@ -1,6 +1,8 @@
 class Move < ActiveRecord::Base
-  attr_accessible :annotator_move, :annotator_value, :check, :comments, :lan, :mate, :number, :pgn, :player_value, :side, :game
+  attr_accessible :annotator_move, :annotator_value, :check, :comments, :lan, :mate,
+    :number, :pgn, :player_value, :side, :game, :distance
 
+  before_save :set_distance
   serialize :comments, Array
 
   belongs_to :game
@@ -105,5 +107,10 @@ class Move < ActiveRecord::Base
 
   def to_pgn
     self.to_s
+  end
+
+  private
+  def set_distance
+    distance = deviation
   end
 end

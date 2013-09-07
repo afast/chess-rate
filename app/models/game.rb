@@ -237,20 +237,36 @@ class Game < ActiveRecord::Base
 
   private
   def avg_error(moves)
-    (moves.collect(&:deviation).inject(:+) || 0) / moves.size.to_f
+    if moves.any?
+      (moves.pluck(:distance).compact.inject(:+) || 0) / moves.size.to_f
+    else
+      0
+    end
   end
 
   def standard_deviation(moves)
     avg = avg_error moves
-    sigma = (moves.map { |m| m.standard_deviation(avg) }.inject(:+) || 0) / (moves.size - 1).to_f
-    Math.sqrt sigma
+    if moves.size > 1
+      sigma = (moves.map { |m| m.standard_deviation(avg) }.inject(:+) || 0) / (moves.size - 1).to_f
+      Math.sqrt sigma
+    else
+      0
+    end
   end
 
   def perfect_rate(moves)
-    moves.select { |m| m.deviation == 0 }.size / moves.size.to_f
+    if moves.any?
+      moves.where(distance: 0).size / moves.size.to_f
+    else
+      0
+    end
   end
 
   def blunder_rate(moves, tie_threshold, blunder_threshold)
-    moves.select { |m| m.blunder?(tie_threshold, blunder_threshold) }.size / moves.size.to_f
+    if moves.any?
+      moves.select { |m| m.blunder?(tie_threshold, blunder_threshold) }.size / moves.size.to_f
+    else
+      0
+    end
   end
 end

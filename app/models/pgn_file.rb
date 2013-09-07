@@ -7,6 +7,7 @@ class PgnFile < ActiveRecord::Base
   mount_uploader :pgn_file, PgnFileUploader
 
   has_many :games
+  has_many :moves, through: :games
 
   before_create :init_status
 
@@ -19,12 +20,9 @@ class PgnFile < ActiveRecord::Base
 
   def avg_distance
     return average_distance if average_distance
-    arr = games.pluck(:total_average_error).compact
-    avg = 0
-    if arr.size > 0
-      avg = arr.sum / arr.size
-      self.update_attributes average_distance: avg
-    end
+
+    avg = moves.average(:distance)
+    self.update_attributes average_distance: avg
     avg
   end
 
