@@ -21,20 +21,31 @@ class PgnFile < ActiveRecord::Base
   def avg_distance
     return average_distance if average_distance
 
-    avg = moves.average(:distance)
+    avg = moves.with_distance.average(:distance)
     self.update_attributes average_distance: avg
-    avg
+    avg || 0
   end
 
   def avg_perfect
     return average_perfect if average_perfect
-    arr = games.pluck(:total_perfect_rate).compact
-    avg = 0
-    if arr.size > 0
-      avg = arr.sum / arr.size
-      self.update_attributes average_perfect: avg
+    avg = if moves.with_distance.size > 0
+      moves.perfect.size / moves.with_distance.size.to_f
+    else
+      0
     end
+    self.update_attributes average_perfect: avg
     avg
+  end
+
+  def reset_stats
+    avg = moves.with_distance.average(:distance)
+    self.update_attributes average_distance: avg
+    avg = if moves.with_distance.size > 0
+      moves.perfect.size / moves.with_distance.size.to_f
+    else
+      0
+    end
+    self.update_attributes average_perfect: avg
   end
 
   def status_to_s

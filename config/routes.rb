@@ -26,6 +26,7 @@ ChessRate::Application.routes.draw do
     member do
       get :analyze, to: :setup_analysis
       post :analyze
+      post :reset_stats
     end
   end
 end

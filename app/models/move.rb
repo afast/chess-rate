@@ -2,13 +2,15 @@ class Move < ActiveRecord::Base
   attr_accessible :annotator_move, :annotator_value, :check, :comments, :lan, :mate,
     :number, :pgn, :player_value, :side, :game, :distance
 
-  before_save :set_distance
+  after_save :set_distance
   serialize :comments, Array
 
   belongs_to :game
 
   scope :black, where(side: false)
   scope :white, where(side: true)
+  scope :with_distance, where(Move.arel_table[:distance].not_eq(nil))
+  scope :perfect, with_distance.where(distance: 0)
 
   # A valuation should be a comment with {Annotator: move_value / annotator_value
   def add_comment comment
@@ -111,6 +113,6 @@ class Move < ActiveRecord::Base
 
   private
   def set_distance
-    distance = deviation
+    update_attribute(:distance, deviation) if self.distance != deviation
   end
 end

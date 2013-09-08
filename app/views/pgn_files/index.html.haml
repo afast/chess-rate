@@ -16,6 +16,7 @@
       %td= '%.2f' % pgn_file.avg_perfect
       %td
         = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn' unless pgn_file.processing?
+        = link_to t('reset'), reset_stats_pgn_file_path(pgn_file), method: :post, class: 'btn'
         = link_to t('edit'), edit_pgn_file_path(pgn_file), class: 'btn'
         = link_to t('destroy'), pgn_file, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn'
 

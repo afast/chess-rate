@@ -53,6 +53,12 @@ class PgnFilesController < ApplicationController
     end
   end
 
+  def reset_stats
+    @pgn_file = PgnFile.find(params[:id])
+    @pgn_file.reset_stats if @pgn_file
+    redirect_to pgn_files_path
+  end
+
   # PUT /pgn_files/1
   # PUT /pgn_files/1.json
   def update
