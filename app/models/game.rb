@@ -27,8 +27,8 @@ class Game < ActiveRecord::Base
   belongs_to :pgn_file
 
   scope :not_processed, where('status IS NULL OR status = ?', STATUS[:not_processed])
-  scope :processing, where(status: STATUS[:not_processed])
-  scope :processed, where(status: STATUS[:not_processed])
+  scope :processing, where(status: STATUS[:processing])
+  scope :processed, where(status: STATUS[:processed])
 
   def add_move(move)
     @cache_moves = [] if @cache_moves.nil?

@@ -64,11 +64,20 @@ class PgnFile < ActiveRecord::Base
     update_attributes status: STATUS[:processing]
   end
 
+  def progress_percentage
+    if games.any?
+      games.reload.processed.size.to_f / games.size.to_f
+    else
+      0
+    end
+  end
+
   def finished_processing
     update_attributes status: STATUS[:processed]
   end
 
   def analyze(time, tie_threshold, blunder_threshold)
+    start_processing
     background do
       if games.empty?
         SimpleParser.new.parse self.id, pgn_file.file.file

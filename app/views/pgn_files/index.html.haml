@@ -12,8 +12,12 @@
     %tr
       %td= pgn_file.description
       %td= pgn_file.status_to_s
-      %td= '%.2f' % pgn_file.avg_distance
-      %td= '%.2f' % pgn_file.avg_perfect
+      - if pgn_file.processing?
+        %td{colspan: 2}
+          = "#{'%.2f' % pgn_file.progress_percentage} % processed"
+      - else
+        %td= '%.2f' % pgn_file.avg_distance
+        %td= '%.2f' % pgn_file.avg_perfect
       %td
         = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn' unless pgn_file.processing?
         = link_to t('reset'), reset_stats_pgn_file_path(pgn_file), method: :post, class: 'btn'
