@@ -63,8 +63,14 @@ class PgnFile < ActiveRecord::Base
         SimpleParser.new.parse self.id, pgn_file.file.file
       end
 
-      games.reload.each do |g|
-        g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+      if games.reload.not_processed.any?
+        games.not_processed.each do |g|
+          g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+        end
+      else
+        games.each do |g|
+          g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+        end
       end
       finished_processing
     end
