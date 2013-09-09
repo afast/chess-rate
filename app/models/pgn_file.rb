@@ -1,5 +1,6 @@
 class PgnFile < ActiveRecord::Base
   include Background
+  belongs_to :reference_database, foreign_key: :ref_db_id
 
   STATUS = {not_processed: 0, processing: 1, processed: 2}
   STATUS_TEXT = {0 => 'Not yet Processed', 1 => 'Processing', 2 => 'Processed'}
@@ -8,10 +9,13 @@ class PgnFile < ActiveRecord::Base
 
   has_many :games
   has_many :moves, through: :games
+  has_many :unprocessed_games, class_name: 'Game', conditions: {status: STATUS[:not_processed]}
+  has_many :unprocessed_moves, through: :unprocessed_games, source: :moves
 
   before_create :init_status
 
-  attr_accessible :description, :pgn_file, :status, :average_perfect, :average_distance
+  attr_accessible :description, :pgn_file, :status, :average_perfect, :average_distance,
+    :time, :tie_threshold, :blunder_threshold, :ref_db_id
   attr_accessor :reference_database
 
   def init_status
@@ -60,13 +64,22 @@ class PgnFile < ActiveRecord::Base
     status == STATUS[:processing]
   end
 
-  def start_processing
-    update_attributes status: STATUS[:processing]
+  def start_processing(time, tie_threshold, blunder_threshold, ref_db_id)
+    update_attributes status: STATUS[:processing], time: time, tie_threshold: tie_threshold,
+      blunder_threshold: blunder_threshold, ref_db_id: ref_db_id
   end
 
   def progress_percentage
     if games.any?
-      games.reload.processed.size.to_f / games.size.to_f
+      (games.reload.processed.size.to_f / games.size.to_f) * 100
+    else
+      0
+    end
+  end
+
+  def eta
+    if processing? && self.unprocessed_moves.size > 0
+      (self.unprocessed_moves.size * (self.time || 0)) / 1000
     else
       0
     end
@@ -77,22 +90,27 @@ class PgnFile < ActiveRecord::Base
   end
 
   def analyze(time, tie_threshold, blunder_threshold)
-    start_processing
+    start_processing(time, tie_threshold, blunder_threshold, @reference_database.try(:id))
     background do
-      if games.empty?
-        SimpleParser.new.parse self.id, pgn_file.file.file
-      end
+      begin
+        if games.empty?
+          SimpleParser.new.parse self.id, pgn_file.file.file
+        end
 
-      if games.reload.not_processed.any?
-        games.not_processed.each do |g|
-          g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+        if games.reload.not_processed.any?
+          games.not_processed.update_all(status: STATUS[:not_processed])
+          games.not_processed.each do |g|
+            g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+          end
+        else
+          games.each do |g|
+            g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+          end
         end
-      else
-        games.each do |g|
-          g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
-        end
+        finished_processing
+      rescue
+        update_attributes status: STATUS[:not_processed]
       end
-      finished_processing
     end
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130907170549) do
+ActiveRecord::Schema.define(:version => 20130909000457) do
 
   create_table "games", :force => true do |t|
     t.integer  "white_id"
@@ -71,10 +71,14 @@ ActiveRecord::Schema.define(:version => 20130907170549) do
     t.string   "description"
     t.string   "pgn_file"
     t.integer  "status"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.float    "average_distance"
     t.float    "average_perfect"
+    t.integer  "time"
+    t.float    "tie_threshold"
+    t.float    "blunder_threshold"
+    t.integer  "ref_db_id"
   end
 
   create_table "players", :force => true do |t|

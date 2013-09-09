@@ -13,8 +13,10 @@
       %td= pgn_file.description
       %td= pgn_file.status_to_s
       - if pgn_file.processing?
-        %td{colspan: 2}
+        %td
           = "#{'%.2f' % pgn_file.progress_percentage} % processed"
+        %td
+          = "ETA: #{(DateTime.now + pgn_file.eta.seconds).strftime('%H:%M')}"
       - else
         %td= '%.2f' % pgn_file.avg_distance
         %td= '%.2f' % pgn_file.avg_perfect
