@@ -75,11 +75,15 @@ module Board
       position_to = Position.from_algebraic_notation(move_hash[:to])
       piece = get_piece move_hash[:name], side,
                         position_to, Position.from_algebraic_notation(move_hash[:dis])
-      move_hash[:from] = piece.move_to position_to # returns long algebraic notation
-      unless move_hash[:promotion].blank?
-        promote(move_hash, position_to, side)
+      if piece
+        move_hash[:from] = piece.move_to position_to # returns long algebraic notation
+        unless move_hash[:promotion].blank?
+          promote(move_hash, position_to, side)
+        end
+        move_hash[:from] + move_hash[:to]
+      else
+        raise "Could not move piece #{move_hash[:name]} (dis: #{move_hash[:dis]}) to #{move_hash[:to]}"
       end
-      move_hash[:from] + move_hash[:to]
     end
 
     def promote(move_hash, position_to, side)
@@ -94,7 +98,7 @@ module Board
       when 'b'
         piece = Bishop.new(self, side, position_to)
         @bishops[side] << piece
-      when 'k'
+      when 'n'
         piece = Knight.new(self, side, position_to)
         @knights[side] << piece
       end

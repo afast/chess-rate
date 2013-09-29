@@ -99,17 +99,27 @@ class PgnFile < ActiveRecord::Base
 
         if games.reload.not_processed.any?
           games.not_processed.update_all(status: STATUS[:not_processed])
+          games.processing.update_all(status: STATUS[:not_processed])
           games.not_processed.each do |g|
-            g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+            begin
+              g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+            rescue
+              logger.error $!
+            end
           end
         else
           games.each do |g|
-            g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+            begin
+              g.analyze(time, tie_threshold, blunder_threshold, @reference_database)
+            rescue
+              logger.error $!
+            end
           end
         end
         finished_processing
       rescue
         update_attributes status: STATUS[:not_processed]
+        raise
       end
     end
   end

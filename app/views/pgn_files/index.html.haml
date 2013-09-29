@@ -6,6 +6,7 @@
     %th= t('status')
     %th= t('avg_error')
     %th= t('perfect_rate')
+    %th= t('analysis time')
     %th
 
   - @pgn_files.each do |pgn_file|
@@ -16,12 +17,13 @@
         %td
           = "#{'%.2f' % pgn_file.progress_percentage} % processed"
         %td
-          = "ETA: #{(DateTime.now + pgn_file.eta.seconds).strftime('%H:%M')}"
+          = "ETA: #{(DateTime.now + pgn_file.eta.seconds).strftime('%m/%d - %H:%M')}"
       - else
         %td= '%.2f' % pgn_file.avg_distance
         %td= '%.2f' % pgn_file.avg_perfect
+      %td= pgn_file.time
       %td
-        = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn' unless pgn_file.processing?
+        = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn'
         = link_to t('reset'), reset_stats_pgn_file_path(pgn_file), method: :post, class: 'btn'
         = link_to t('edit'), edit_pgn_file_path(pgn_file), class: 'btn'
         = link_to t('destroy'), pgn_file, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn'
