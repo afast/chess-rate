@@ -1,0 +1,1269 @@
+\documentclass[12pt]{report}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{pstricks}
+\usepackage{titlesec}
+\usepackage{verbatim}
+
+\titlepage
+\usepackage{pst-node}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage[spanish]{babel}
+\usepackage[all]{xy}
+\usepackage{makeidx}
+\usepackage{multicol}
+
+\usepackage{psfrag}
+\usepackage{ae,aecompl}
+\usepackage{fancyhdr}
+
+
+%\pagestyle{headings}
+
+\pagestyle{fancy}
+
+\fancyhf{}
+\fancyhead[LO]{\leftmark}               %Capitulo en el encabezado
+\fancyfoot[C]{\thepage}                 %Numero de pagina centrado abajo
+%\pagestyle{headings}
+%\pagestyle{fancy}
+
+\input epsf
+\input pstricks
+\setcounter{MaxMatrixCols}{10}
+
+\textwidth=14.5cm  \oddsidemargin=0.5cm
+\font\de=cmssi12
+\makeindex
+
+\begin{document}
+
+\setcounter{secnumdepth}{5}
+\thispagestyle{empty}
+
+%$\rfoot{\thepage}
+
+\def\bp{\noindent{\it Proof. }}
+\def\ep{\noindent{\hfill $\fbox{\,}$}\medskip\newline}
+\def\to{\mathop{\rightarrow}}
+\def\cc{\mathop{\rm cc}}
+
+\date{Diciembre de 2013}
+\title{Proyecto de Grado, Oliveri-Fast}
+\author{Mathias Oliveri \and Andreas Fast}
+
+\newcounter{theorem}[section] 
+\newtheorem{ejemplo}{\sc \textbf{Ejemplo} \rm}
+\newtheorem{ejercicio}{\sc \textbf{Ejercicio} \rm} 
+\newtheorem{conj}[theorem]{\sc Conjecture} 
+\newtheorem{defi}[theorem]{\sc \textbf{Definici\'on}} %
+\newtheorem{propiedades}[theorem]{\sc \textbf{Propiedades}} %
+\newtheorem{lemma}[theorem]{\sc \textbf{Lema}} 
+\newtheorem{proposition}[theorem]{\sc \textbf{Proposci\'on}} 
+\newtheorem{corollary}[theorem]{\sc \textbf{Corolario}} %
+\newtheorem{theorem}[theorem]{\sc \textbf{Teorema}} 
+\newtheorem{obs}[theorem]{\sc \textbf{Observaci\'on}} 
+\newtheorem{ques}[theorem]{\sc Question} %
+\newtheorem{question}{\sc Question}
+
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}} %
+\renewcommand{\thetheorem}{\arabic{section}.\arabic{theorem}}
+
+\newenvironment{demo}{\textit{\textbf{Dem.}}}{\quad \hfill $\square$}
+
+%--------------------------------------------------------
+%PORTADA---------------------------------------------------
+
+\begin{center}
+\Large{Proyecto de Grado}
+\end{center}
+
+\textbf{
+\begin{center}
+\LARGE{Evoluci\'on del Rendimiento en Ajedrez}
+\end{center}
+}
+
+
+\begin{center}
+\Large{Math\'ias Oliveri, Andreas Fast}
+
+\end{center}
+
+
+\begin{center}
+\Large{Supervisor Responsable: Ing. Pablo Romero}
+
+\Large{Supervisor Alterno: Ing. Gonzalo Varalla}
+\end{center}
+
+
+
+
+\vspace{\stretch{1}}
+
+\begin{flushright}
+Ingenier\'ia en Computaci\'on
+
+Facultad de Ingenier\'ia
+
+Universidad de la Rep\'ublica
+
+Montevideo, Uruguay
+\end{flushright}
+
+\pagebreak
+ %FIN PORTADA---------------------------------------------------             
+ 
+%Dedicatoria--------------------------------------------------    
+$\;$
+\vspace{\stretch{1}}
+%\vspace{16cm}
+\begin{flushright}
+
+A Capablanca, un muerto.
+
+A Panes, con sus milanesas chorreando aceite y sus bizcochos de 9 pesos.
+
+A Ferrari, con quien no pude aprender nada de f\'isica.
+
+Al Faro, donde pintamos caras jugando al pin pon.
+
+A Franco, que no hace falta pintarle la cara!
+
+A Pinturas Tito Pabon, que nos amenizo todas las jornadas de duro trabajo.
+
+\end{flushright}
+%fin dedicatoria-----------------------------------------
+
+
+\newpage
+
+
+%AGRADECIMIENTOS-----------------------------------------------
+
+\newpage
+$\;$
+
+
+\vspace{0.7cm}
+
+\begin{center}
+
+{\Large{\textbf{Agradecimientos}}}
+
+\end{center}
+\vspace{.7cm}
+
+Este va en serio:
+A Joseph Bell, por proporcionar poder de c\'omputo gratuito cuando nuestras computadores se reiniciaban por sobrecalentamiento.
+-----------------
+
+Son 12 a\~nos de VideoMatch\\
+haciendo reir a grandes y chicos\\
+junto a marcelo que es el titan\\
+el titan del humor\\
+el titan del amor\\
+Marcelo Tinelli,\\
+hoy te quiero cantar\\
+esta cancion\\
+que habla de vos\\
+sos un grande\\
+sos un grande cabezon\\
+sos un referente de todos nosotros\\
+por eso te quiero decir\\
+GRAAAAAAACIAS MARCELO\\
+a vos, todo tu equipo\\
+te rinde este homenaje...\\
+
+Gracias, gracias Marcelo\\
+gracias cabeza\\
+por ser como sos\\
+Gracias, gracias Marcelo\\
+gracias cabeza\\
+por ser como sos\\
+
+Gracias a Tiki y a Paula,\\
+tambien a Mica y a Candelaria\\
+gracias Salomone y Scoltore\\
+Gracias Garbarino,\\
+gracias a todos\\
+yo te digo gracias..
+
+
+%FIN-AGRADECIMIENTOS-------------------------------------------
+
+%RESUMEN-------------------------------------------------------
+
+\newpage
+
+\begin{center}
+{\Large{\textbf{Abstract}}}
+\end{center}
+
+\vspace{.7cm}
+
+Actualmente los motores de ajedrez han llegado a un nivel de juego que supera a los mejores ajedrecistas humanos, a punto tal que motores como Houdini 3 o Rybka 4 son utilizados por los principales ajedrecistas de \'elite como or\'aculos superiores a los cuales consultan constantemente en su preparaci\'on y entrenamiento.\\
+
+En este proyecto se pretende desarrollar una aplicaci\'on que utilice estos or\'aculos y permita a ajedrecistas evaluar su nivel de juego, desde una perspectiva de comparaci\'on de sus decisiones en relaci\'on a las tomadas por el motor de referencia.\\
+
+Se combinan libros de aperturas (opening books) y un conjunto de m\'etricas para evaluar al ajedrecista. En este \'ultimo caso se utilizan funciones estad\'isticas sencillas como distancia media y desviaci\'on est\'andar respecto a la decisi\'on que el or\'aculo valora como la mejor en cada posici\'on evaluada. 
+
+
+\vspace{2cm}
+
+{\textbf{Palabras clave:}} Ajedrez, Motor de Ajedrez, ELO.
+%\newpage
+%$\;$
+
+%\vspace{2cm}
+
+%\begin{center}
+%{\Large{\textbf{Resumen}}}
+%\end{center}
+
+%\vspace{.5cm}
+
+%Esta es la documentaci\'on de nuestro Proyecto de Grado acerca del uso de Motores de Ajedrez para evaluar el desempe\~no de jugadores humanos y como estimar su ELO utilizando sus partidas.
+
+
+%\vspace{.5cm}
+
+ %{\textbf{Palabras Claves:}} Ajedrez, Motor de ajedrez, ELO.
+
+
+
+%FIN-RESUMEN-------------------------------------------------------
+
+%INDICE------------------------------------------------------------
+
+\setcounter{tocdepth}{5}
+%Modificar en caso de querer mostrar más niveles en Tabla de Contenidos
+\tableofcontents
+
+%FIN-INDICE-------------------------------------------------------------
+\newpage
+
+\newpage
+
+\vspace{0.7cm}
+
+\chapter{Resumen del Proyecto}
+Actualmente los motores de ajedrez han llegado a un nivel de juego que supera a los mejores ajedrecistas humanos, incluso cuando son ejecutados sobre hardware de prop\'osito general. Motores como Houdini 3\cite{houdini-home} o Rybka 4\cite{rybka-home} son utilizados por los principales ajedrecistas de \'elite como or\'aculos superiores a los cuales consultan constantemente en su preparaci\'on y entrenamiento. Existen cientos de motores desarrollados por programadores del mundo entero, muchos de ellos de dominio p\'ublico, de uso gratuito, y de c\'odigo abierto.\\
+
+El Software desarrollado analizar\'a las partidas de un ajedrecista para evaluar su nivel de juego. Tanto partida a partida como torneo a torneo, e incluso a lo largo del tiempo. Desde una perspectiva de comparaci\'on de las decisiones del ajedrecista con las decisiones que hubieran realizado uno o m\'as motores de referencia. Arrojar\'a indicadores num\'ericos apoy\'andose en las valoraciones que dichos motores realizan jugada a jugada.\\
+
+La estrategia de evaluaci\'on deber\'a aplicar mecanismos heur\'isticos, dado que no est\'a desarrollado hasta el momento un mecanismo claro de c\'omo utilizar las evaluaciones de los motores para este prop\'osito. Se combinaron libros de aperturas (opening books) para la evaluaci\'on del nivel de juego en dicha fase, (bases de finales (endgame tablebases) para la evaluaci\'on correspondiente en dicha fase)(aun no) y alg\'un conjunto de m\'etricas (a desarrollar en el proyecto) para evaluar al ajedrecista durante el juego no comprendido en apertura o final. En este \'ultimo caso se us\'o una funci\'on estad\'istica sencilla como distancia media y desviaci\'on est\'andar respecto a la mejor jugada dada por el motor. Estas estrategias fueron calibradas con par\'ametros de sensibilidad y criterios adicionales: por ejemplo, en ciertas posiciones muy ventajosas, un ajedrecista humano puede optar por una opci\'on de juego sub-\'optima a los solos efectos de neutralizar opciones de contrajuego a su rival; en casos como esos es probable que la decisi\'on humana pueda considerarse correcta aun cuando el motor hubiera elegido otras l\'ineas de juego m\'as fuertes. Durante el proyecto deber\'an evaluarse diversas heur\'isticas y deber\'a\'a fundamentarse adecuadamente la elecci\'on de la heur\'istica final.\\
+
+El software a desarrollar en este proyecto deber\'a proporcionar una interfaz de usuario adecuada para el manejo de los principales casos de uso que se releven al comienzo del proyecto. Entre ellos estar\'a el acceso a bancos de partidas de distintos jugadores a ser analizadas, seleccionar un motor externo para el an\'alisis, computar las evaluaciones escogidas partida a partida o para una serie de ellas,  elaborar comparaciones entre la evoluci\'on de los distintos jugadores y dejar persistencia de dichas evaluaciones para an\'alisis y recuperaci\'on en el futuro. El software deber\'a prever algunas funcionalidades a ser incorporadas en el futuro como el acceso a un libro de aperturas y a una base de finales. Finalmente, se espera que el desarrollo sea apto para ejecuci\'on en m\'as de una arquitectura de c\'omputo (combinaci\'on de hardware y sistema operativo). La heur\'istica de evaluaci\'on deber\'a quedar debidamente modularizada de forma tal que sea sencillo reemplazarla por otras en el futuro.\\
+
+Este documento se encuentra organizado de la siguiente forma: En el cap\'itulo 2, se encuentra el relevamiento bibliogr\'afico realizado, donde se definen ciertos conceptos que luego ser\'an frecuentemente utilizados en el resto del documento. Por otra parte, se presentan tres art\'iculos relacionados, mostrando c\'omo los mismos se vinculan a nuestro proyecto. El cap\'itulo 3 refiere al desarrollo del proyecto. Se presentan determinadas herramientas elegidas, comentando sus principales ventajas y desventajas que justificaron su elecci\'on. Posteriormente, se resumen un art\'iculo de investigaci\'on que sigue una l\'inea similar a la del presente documento y del cual se obtuvieron varias ideas para el desarrollo del proyecto. M\'as adelante, se describen tres etapas de programaci\'on, con los diferentes hitos alcanzados. Finalmente, como \'ultima etapa del cap\'itulo, se describen las distintas ideas para lograr la evaluaci\'on de los jugadores, as\'i como distintos problemas (y sus respectivas soluciones) a los que tuvimos que enfrentarnos. Por \'ultimo, en el cap\'itulo 4, se presentan las conclusiones y los principales resultados a los que se arrib\'o luego de ocho meses de trabajo. Por otra parte, se brindan distintas ideas y l\'ineas de investigaci\'on para trabajos a futuro, de forma de mejorar los resultados alcanzados en nuestro proyecto.
+%------------------------------------------------------------------------------------
+
+\newpage
+
+\chapter{Relevamiento bibliogr\'afico}
+En esta etapa se pretende realizar un breve estudio de bibliograf\'ia relacionada que permita incorporar conocimientos. Asimismo, se definir\'an algunos conceptos que facilitar\'an la comprensi\'on del resto del texto para un lector no familiarizado.
+
+\section{Definiciones}
+\subsection{Ajedrez por Computadora \cite{comp-chess}}
+El ajedrez por computadora es una arquitectura computacional que abarca tanto software como hardware, capaz de jugar ajedrez en forma aut\'onoma y sin la gu\'ia de un humano. Permite a los usuarios jugar en forma individual (permiti\'endoles entrenar y mejorar, sobre todo en aquellos casos en los que no hay suficiente cantidad de oponentes al mismo nivel), as\'i como ayuda a los investigadores en sus an\'alisis. Recientemente, tambi\'en se han realizado estudios en los que se ha utilizado el ajedrez en investigaciones referentes a la cognici\'on humana.\\
+
+En las d\'ecadas de 1970 y 1980, se dudaba de que en alg\'un momento un programa de ajedrez pudiera vencer a los usuarios humanos m\'as avanzados. En 1968 el campe\'on internacional David Levy predijo que no ser\'ia vencido por una computadora en los siguientes 10 a\~nos. Gan\'o su apuesta en el a\~no 1978, venciendo a Chess 4.7 (el motor m\'as potente en su momento), sin embargo, en ese momento Levy reconoci\'o que no pasar\'ia demasiado tiempo para que pudiera ser superado.\cite{levy-bet}\\
+
+En el a\~no 1989 Levy fue superado por la computadora Deep Thought. Pese a esto, la misma no estaba a nivel de los mejores jugadores de ese momento, tal como demostr\'o el multicampe\'on Garry Kasparov con dos victorias contundentes en el mismo a\~no 1989. Reci\'en en el a\~no 1996, Kasparov perdi\'o su primera partida contra una computadora[15]. La protagonista fue Deep Blue de IBM. Anecd\'oticamente, los siguientes cinco juegos favorecieron a Kasparov (quien gan\'o tres y empat\'o dos), quien obtuvo una victoria convincente. En mayo de 1997, una versi\'on mejorada de Deep Blue venci\'o a Kasparov con una puntuaci\'on final de 3 1/2 - 2 1/2.\\
+
+En los primeros a\~nos de la d\'ecada de 2000, programas com Junior o Fritz lograban empates contra el campe\'on Kasparov y el campe\'on mundial cl\'asico Vladimir Kramnik. Posteriormente, entre noviembre y diciembre de 2006, Kramnik jug\'o contra el programa Deep Fritz. En esta oportunidad, venci\'o la computadora, con un marcador de 2-4. En los primeros cinco juegos, Kramnik adopt\'o una postura anti-computadora en sus jugadas, perdiendo una partida y empatando las cuatro restantes. En el juego final e intentando empatar el marcador, Kramnik jug\'o la agresiva Defensa Siciliana, pero fue aplastado por Fritz.\\
+
+Los motores continuaron mejorando y en el a\~no 2009, un tel\'efono m\'ovil HTC Touch HD, utilizando el motor de ajedrez Hiarcs 13 dentro del programa Pocket Fritz 4\cite{copa-mercosur}, gan\'o el torneo Copa Mercosur (categor\'ia 6) en Buenos Aires, Argentina. Pocket Fritz 4 realiza menos de 20.000 b\'usquedas por segundo\cite{fritz-mercosur}, en contraste de supercomputadoras como Deep Blue, que realizaban 200 millones de b\'usquedas en el mismo per\'iodo de tiempo\cite{deep-blue-200millones}.\\
+
+Actualmente, los motores de ajedrez son capaces de vencer incluso a los mejores jugadores humanos.
+
+\subsection{Motor de Ajedrez \cite{chess-eng}}
+Un motor de ajedrez es un programa de computadora que calcula posiciones de ajedrez as\'i como movimientos. El motor decide qu\'e movimientos realizar, aunque t\'ipicamente no interact\'ua directamente con el usuario. De hecho, la mayor\'ia de estos motores no tienen una interfaz gr\'afica de usuario (GUI) propia, sino que son aplicaciones de consola que se comunican con una GUI mediante ciertos protocolos. De esta manera, se permite que el usuario juegue contra m\'ultiples motores sin necesidad de tener una interfaz diferente para cada uno, as\'i como permite que motores diferentes jueguen entre s\'i.\\
+
+La interfaz de l\'inea de comandos de GNU Chess se transform\'o en el primer est\'andar de facto y fue denominada como Protocolo de Comunicaci\'on para Motores de Ajedrez (Chess Engine Communication Protocol). Existe otro protocolo, Universal Chess Interface (UCI). De hecho, ciertos motores de ajedrez soportan ambos de manera indistinta. A nivel de preferencia de usuarios, el protocolo de comunicaci\'on para motores de ajedrez es el que tiene mayor cantidad de adherentes. Sin embargo, muchos desarrolladores de motores sostienen que UCI facilita la implementaci\'on.\\
+
+Los motores de ajedrez han incrementado su potencia de juego a\~no a a\~no, debido (entre otras cosas) al incremento del poder de procesamiento, que permite c\'alculos cada vez m\'as complejos para un tiempo dado. Por otra parte, tambi\'en han mejorado las t\'ecnicas de programaci\'on, permitiendo a los motores ser m\'as selectivos en sus an\'alisis y tener un mejor entendimiento posicional. Incluso, algunos motores han incorporado bases de datos de tablas de finales (son bases de datos de todas las posibles posiciones para tableros conteniendo hasta seis piezas, contando dos reyes). Muchos motores, han incorporado la caracter\'istica de pensamiento constante (permanent brain), que implica que el motor piense y realice c\'alculos incluso durante el turno de su oponente, como forma de incrementar su potencia.
+
+\subsection{GNU Chess \cite{gnu-chess}}
+Es un software motor de ajedrez gratuito, que permite jugar partidas completas contra un ser humano, o bien contra otro programa de computadora. El objetivo principal de GNU Chess, ha sido el de servir como base para distintas investigaciones. Es uno de los programas de ajedrez m\'as antiguos y de los primeros en proporcionar su c\'odigo fuente.\\
+
+Usualmente es utilizado en conjunto con una GUI, por ejemplo XBoard o glChess, que lo incluyen como su motor por defecto. De hecho, las primeras versiones del protocolo de comunicaci\'on de XBoard estaban basadas en la interfaz de l\'inea de comandos de GNU Chess. A partir de la versi\'on 6, tambi\'en se da soporte a UCI (Universal Chess Interface).
+
+\subsection{Xboard/Winboard \cite{xboard}}
+Tanto XBoard (GNU Linux) como Winboard (Microsoft Windows) son interfaces gr\'aficas de usuarios gratuitas. Son compatibles con distintos motores de ajedrez que soportan el \emph{Chess Engine Communication Protocol} como GNU Chess\cite{gnu-chess}. Recientemente, han sido notoriamente mejorados, y el protocolo de comunicaci\'on fue extendido para adaptarse a las nuevas necesidades de los motores de ajedrez modernos (tales como tablas de hash, multiprocesamiento y tablas de finales).
+
+\subsection{Chess Engine communication Protocol \cite{cecp}}
+Es un protocolo abierto de comunicaci\'on, que permite al motor de un programa de ajedrez comunicarse con la interfaz de usuario. Fue inicialmente concebido para comunicarse con el motor de GNU Chess\cite{gnu-chess}, que recib\'ia y generaba texto. De hecho, la primera versi\'on del protocolo funcionaba mediante una interfaz de l\'inea de comandos. Posteriormente, XBoard\cite{xboard} \emph{envolvi\'o} GNU Chess, alimentando al motor con una entrada de texto esperada, interpretando sint\'acticamente su salida y representando la informaci\'on mediante un tablero de ajedrez gr\'afico.\\
+
+Este protocolo soporta tambi\'en tres tipos de control de tiempo: relojes convencionales, relojes incrementales y cantidad exacta de segundos por movimiento. En el a\~no 2006, exist\'ian m\'as de 300 motores y 30 programas de interfaz de ajedrez (incluyendo evidentemente a XBoard) que soportan este protocolo.
+
+\subsection{Universal Chess Interface \cite{uci}}
+Al igual que el \emph{Chess Engine Communication Protocol}, \emph{Universal Chess Interface} es un protocolo de comunicaci\'on abierto, que permite al motor de un programa de ajedrez comunicarse con su interfaz de usuario. Puede ser visto, como un rival del protocolo de comunicaci\'on de XBoard/Winboard\cite{xboard}. Brevemente, UCI asigna ciertas tareas (que tradicionalmente las realizaba el motor) a la interfaz de usuario. Los libros de aperturas son manejados por la interfaz, simplemente seleccionando movimientos hasta quedar por fuera del libro y reci\'en desde ese momento el motor comienza a realizar sus c\'alculos. Incluso, la interfaz podr\'ia tambi\'en manejar las bases de datos de tablas de finales, aunque esta tarea ser\'ia preferible que la realizara el motor.
+
+\subsection{Notaci\'on Algebraica \cite{fide-an}}
+La notaci\'on algebraica (AN por su sigla en ingl\'es) es un m\'etodo para almacenar y describir los movimientos en un juego de ajedrez. Actualmente es el standard utilizado por todas las organizaciones de ajedrez, as\'i como por m\'ultiples libros, revistas y publicaciones especializadas.
+Esta notaci\'on existe en diferentes formas y lenguajes y est\'a basada en un sistema desarrollado por Philipp Stamma, quien utiliz\'o los nombres modernos de las filas. Sin embargo, Stamma utiliz\'o p para los movimientos de peones, as\'i como la fila original (desde la a hasta la h) de una pieza en lugar de la letra inicial del nombre de la pieza.\\
+
+\textbf{Notaci\'on de los escaques: }
+Cada escaque del tablero se identifica mediante una \'unica coordenada, formada por una letra y un n\'umero. Las columnas verticales de cuadrados (llamadas filas) a partir de la izquierda de las piezas blancas (el lado de la Reina) y hacia la derecha (el lado del Rey) se etiquetan desde la a hasta la h. Las filas de cuadrados horizontales se numeran de 1 a 8 comenzando desde el lado de las blancas del tablero. De esta forma, cada casillero se identifica mediante una letra seguida de un n\'umero. Como ejemplo, el rey de las piezas blancas comienza en el escaque e1.\\
+
+\textbf{Notaci\'on de las piezas: }
+Cada tipo de pieza (distinto a los peones) se identifica mediante una letra may\'uscula, usualmente la primera letra del nombre del tipo en cuesti\'on. Los jugadores de habla inglesa, utilizan la letra K para el Rey (King), Q para la Reina (Queen), R para la Torre (Rook), B para el alfil (Bishop) y N para el caballo (Knight, ver que la K ya hab\'ia sido utilizada). De todas maneras, esta notaci\'on se adapta al lenguaje de anotaci\'on del jugador. Los peones no se identifican mediante una letra may\'uscula, sino por la ausencia de la misma en la notaci\'on.\\
+
+\textbf{Notaci\'on de los movimientos: }
+Cada movimiento de una pieza se indica mediante la letra may\'uscula del tipo de pieza, m\'as la coordenada del casillero destino. Por ejemplo, Be5 indica mover el alfil a e5, c5 significa mover un pe\'on a c5.\\
+
+\textbf{Notaci\'on de las capturas: }
+Cuando una pieza realiza una captura, se inserta una \textbf{x} inmediatamente antes del escaque destino. Por ejemplo, Bxe5 indica que el alfil se mueve al casillero e5 capturando una pieza del rival. Si un pe\'on realiza una captura, la fila desde la cual parte el mismo es utilizada para identificarlo. Por ejemplo, exd5 indica que el pe\'on de la fila e captur\'o una pieza en el escaque d5.\\
+
+\textbf{Desambiguaci\'on de movimientos potencialmente iguales: }
+Cuando dos (o m\'as) piezas id\'enticas pueden moverse a la misma casilla, el movimiento de la pieza se identificado especificando la primer letra de la pieza, seguido de:
+
+$\Rightarrow$ La fila origen (en caso de que sean distintas) \'o
+
+$\Rightarrow$ La columna de partida (en caso de que las filas sean las mismas, pero difieran las columnas) \'o
+
+$\Rightarrow$ Ambos, en caso de que no alcance \'unicamente con la fila o la columna, aunque ocurre en raras excepciones, en las que uno o m\'as peones fueron promovidos, lo que resulta en un jugador con tres o m\'as piezas id\'enticas que podr\'ian alcanzar el mismo casillero.\\
+
+Por ejemplo, con caballos en g1 y d2, cualquiera de los dos podr\'ia llegar a f3. El movimiento se especifica como Ngf3 (N: caballo, g: en la columna g, f3: movi\'endose al escaque f3) o bien Ndf3. Como  se explic\'o anteriormente, en caso de captura, la notaci\'on en estos casos ser\'ia: Ngxf3 \'o Ndxf3.\\
+
+\textbf{Promoci\'on de peones: }
+Cuando un pe\'on alcanza la \'ultima l\'inea del tablero y promueve, la pieza promovida se indica al final de la notaci\'on. Por ejemplo, e8Q indica la promoci\'on a una Reina. En la notaci\'on PGN, la promoci\'on de peones se indica utilizando el signo de igual (=). El caso anterior se identificar\'ia como e8=Q.\\
+
+\textbf{Fin del juego: }
+La notaci\'on 1-0 al final de los movimientos, indica que las piezas blancas ganaron. Por el contrario, 0-1 refiere a una victoria de las piezas negras. Finalmente, 1/2-1/2 implica un empate.\\
+
+\textbf{Notaci\'on de una partida: }
+Una partida (o bien una serie de movimientos) se anotan de dos formas posibles:
+
+$\Rightarrow$ En dos columnas, como pares de movimientos de piezas blancas y negras, precedidos del n\'umero de movimiento y un punto:\\
+\indent\indent 1. e4 e5\\
+\indent\indent 2. Nf3 Nc6\\
+\indent\indent 3. Bb5 a6
+    
+$\Rightarrow$ Como texto plano:\\
+\indent\indent 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6\\
+
+\subsection{Notaci\'on Portable de Juego (PGN) \cite{pgn}}
+Portable Game Notation (PGN) es un formato de texto plano, procesable por computadoras, para registrar partidas de ajedrez (tanto los movimientos, como datos relevantes) soportado por la gran mayor\'ia de los programas de ajedrez.
+Est\'a estructurado de forma que sea f\'acil de leer y escribir por humanos, y para que sea sencillo de generar y de ser interpretado sint\'acticamente por parte de un programa de computadora. Los movimientos de ajedrez se registran utilizando la notaci\'on algebraica. La extensi\'on de estos archivos es \emph{.pgn}.\\
+
+\textbf{Pares de etiquetas: }En el archivo PGN, las etiquetas comienzan con un par\'entesis recto inicial \textbf{[}, seguido por el nombre de la etiqueta en texto plano. El valor de la etiqueta se encierra entre comillas dobles y luego la etiqueta se cierra con un par\'entesis recto final \textbf{]}.
+Existen siete etiquetas que son requeridas en los archivos tipo PGN y juntas son conocidas como STR (Seven Tag Roster - N\'omina de siete etiquetas). Cuando el archivo es con formato de exportaci\'on, los pares de etiquetas STR deben aparecer antes que cualquier otra etiqueta y en el siguiente orden:\\
+\indent\indent 1. Evento: El nombre del torneo o evento de la partida.\\
+\indent\indent 2. Sitio: El lugar del evento. Debe ser con el siguiente formato: \emph{Ciudad, Regi\'on PA\'IS}. Un ejemplo es: \emph{New York City, NY USA}.\\
+\indent\indent 3. Fecha: La fecha de inicio de la partida, con formato: \emph{YYYY.MM.DD}.\\
+\indent\indent 4. Ronda: La ronda de la partida dentro del evento.\\
+\indent\indent 5. Blancas: El jugador de las piezas blancas, con formato: \emph{apellido, nombre}.\\
+\indent\indent 6. Negras: El jugador de las piezas negras, con formato: \emph{apellido, nombre}.\\
+\indent\indent 7. Resultado: El resultado de la partida. Puede \'unicamente tener los siguientes valores: \emph{1-0} si las blancas ganaron, \emph{0-1} si ganaron las negras \'o \emph{1/2-1/2} en caso de empate.\\
+
+El est\'andar permite ciertas otras etiquetas, con car\'acter de opcionales, con la finalidad de brindar informaci\'on suplementaria.\\
+
+\textbf{Comentarios: }Los comentarios se insertan tanto con un punto y coma \textbf{;} (cuando el comentario contin\'ua hasta el final de la l\'inea) o bien con una llave \textbf{\{} (en este caso, el comentario contin\'ua hasta encontrar un \textbf{\}}). No existe anidamiento de comentarios.\\
+
+\subsection{Notaci\'on de Forsyth-Edwards (FEN) \cite{fen}}
+La Notaci\'on de Forsyth-Edwards (Forsyth-Edwards Notation - FEN) es una notaci\'on est\'andar que permite describir una posici\'on particular de un tablero en una partida de ajedrez. El objetivo de FEN es proveer toda la informaci\'on necesaria para reiniciar una partida a partir de cierta posici\'on. FEN describe una posici\'on particular de una partida, en una \'unica l\'inea de texto y utilizando s\'olo el conjunto de caracteres ASCII. Los archivos de texto que contienen s\'olo registros FEN, llevan la extensi\'on \emph{.fen}.\\
+
+Un registro con la notaci\'on FEN cuenta con seis campos, siendo el espacio en blanco el separador entre los mismos. Los campos mencionados son:\\
+\indent\indent 1. Lugar de las piezas (desde la perspectiva de las blancas): Se describe cada fila, comenzando por la octava hasta llegar a la primera y el contenido de cada escaque mediante las columnas \textbf{a} hasta la \textbf{h}. Se utiliza la notaci\'on algebraica para identificar a las piezas, donde las blancas se anotan en may\'usculas (en ingl\'es \emph{PNBRQK}) y las piezas negras con letras min\'usculas (en ingl\'es \emph{pnbrqk}). Los espacios en blanco se anotan con n\'umeros entre 1 y 8, indicando la cantidad de espacios en blanco consecutivos. El caracter \textbf{/} permite separar entre filas.\\
+\indent\indent 2. Color activo: Es un caracter en letra min\'uscula que indica si juegan las blancas (en ingl\'es \textbf{w}) o las negras (en ingl\'es \textbf{b}).\\
+\indent\indent 3. Posibilidad de enroque: Si ninguno de los lados puede realizar enroque, se utiliza el caracter \textbf{-}. \textbf{K} indica que las blancas pueden realizar enroque del lado del Rey, \textbf{Q} que las blancas pueden realizar enroque del lado de la Reina, \textbf{k} implica que las negras pueden realizar enroque del lado del Rey y finalmente, \textbf{q} significa que las negras pueden realizar enroque del lado de la Reina.\\
+\indent\indent 4. Escaque objetivo de captura al paso: Si no hubiera escaque objetivo de captura al paso, se anota \textbf{-}. Si un pe\'on hubiera realizado un movimiento de dos casillas, en notaci\'on algebraica, el movimiento se anota como si el pe\'on capturado hubiera avanzado solo una. Esto se registra en todos los casos en los que exista un pe\'on en posici\'on de realizar una captura \emph{en passant}.\\
+\indent\indent 5. Registro de la mitad de movimientos (halfmove clock): Indica la cantidad de movimientos (de turnos) desde que se realiz\'o una captura o bien desde que se movi\'o por \'ultima vez un pe\'on. Se utiliza para determinar un empate siguiendo la regla de cincuenta movimientos\cite{fide-laws}.\\
+\indent\indent 6. N\'umero de movimientos total: Es el total de movimientos. Inicia en 1 y se incrementa ante cada movimiento de las piezas negras.\\
+
+La notaci\'on de Forsyth-Edwards de la posici\'on inicial es la siguiente:\\
+\indent\indent rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+
+\subsection{Libros de Aperturas \cite{open-books}}
+Libros de aperturas (Opening books) se denominan a aquellas bases de datos de aperturas, dadas por los programas de ajedrez. Estos programas han sido mejorados a trav\'es de la provisi\'on de una versi\'on electr\'onica de un libro de aperturas, debido a que los mismos evitan que la computadora realice c\'alculos complejos para aproximadamente los primeros diez movimientos de la partida, que computacionalmente son los m\'as costosos. De esta manera, es posible ahorrar esfuerzo de c\'omputo.\\
+
+Los libros de aperturas utilizados por las computadoras usualmente son representados en archivos binarios o bien en formato PGN.
+
+\subsection{Bases de Datos de Finales \cite{endgame-db}}
+Son bases de datos que contienen un an\'alisis exhaustivo precalculado de posiciones finales de ajedrez. T\'ipicamente son utilizadas por los motores de ajedrez durante el juego, o bien por humanos o computadoras realizando an\'alisis retrospectivos de partidas ya jugadas.\\
+
+Contienen el valor te\'orico de la partida (victoria, empate o derrota) de cada movimiento y para cada posici\'on posible, as\'i como la cantidad de movimientos necesarios para que termine la partida en caso de que ambos jugadores jueguen en forma perfecta. As\'i, la base de datos act\'ua como un or\'aculo, siempre asignando movimientos \'optimos. T\'ipicamente se almacena cada posici\'on posible, con ciertas piezas disponibles en el tablero, as\'i como los mejores movimientos tanto para las piezas blancas como las negras.\\
+
+Estas bases de datos son generadas mediante un an\'alisis retrospectivo\cite{bellman}, partiendo desde una posici\'on de jaque mate. Actualmente, se encuentran resueltos todos los posibles finales para seis o menos piezas disponibles en el tablero (incluyendo dos reyes). Por otra parte, ya existen varios finales de 7 piezas y pronto estar\'an todos\cite{lomonosov}.\\
+
+Una de las contribuciones de estas bases de datos de finales, han sido la de probar que ciertas posiciones en el tablero conducen a una victoria, cuando desde hac\'ia a\~nos se hab\'ian analizado por humanos y conclu\'ido que el resultado final ser\'ia empate. Sin embargo, para llegar a la victoria, en muchos casos ser\'ian necesarios cientos de movimientos.\\
+
+\textbf{M\'etricas: }Antes de crear la base de datos es necesario definir una medida de optimalidad. En otras palabras, se debe definir en qu\'e momento un jugador ha ganado una partida. Cada posici\'on puede ser definida mediante su distancia al punto deseado. En general, se utilizan dos m\'etricas:
+
+$\Rightarrow$ Depth To Mate (DTM): Cuantas movidas faltan para lograr jaque mate.
+
+$\Rightarrow$ Depth To Conversion (DTC): El lado m\'as fuerte puede ganar capturando material de su rival, o sea, convirtiendo el juego en uno m\'as simple. Por ejemplo, en KQKR (el jugador con piezas blancas jugando con su Rey y su Reina, el de piezas negras con su Rey y una Torre), la conversi\'on se da cuando el jugador blanco captura la torre del rival.\\
+
+Existen otras m\'etricas, como \emph{Depth to zeroing-move} (DTZ) \'o \emph{Depth by the rule} (DTR). Ambas soportan la regla de cincuenta movimientos. Sin embargo, las bases de datos de DTZ no han sido a\'un computarizadas, mientras que las de DTR no est\'an disponibles p\'ublicamente.
+
+
+\section{Trabajos Relacionados}
+Habi\'endose incorporado algunas definiciones relevantes respecto al desarrollo del proyecto, en esta secci\'on se pretende comentar algunos trabajos y art\'iculos relacionados al \'area de estudio, de forma de mostrar distintos enfoques que han tomado otros investigadores, as\'i como diferentes conclusiones a las que se ha arribado en el \'area del ajedrez computacional.
+
+\subsection{Using heuristic-search based engines for estimating human skill at Chess\cite{guid-matej}}
+Los resultados presentados en este paper demuestran que programas de ajedrez que utilizan heur\'isticas basadas en b\'usquedas pueden actuar como un estimador confiable del nivel de habilidad del jugador. Se seleccion\'o un gran conjunto de decisiones de partidas de tres grandes jugadores, cuyas habilidades hab\'ian sido previamente establecidas y se compararon sus puntajes (para diferentes niveles de profundidad de b\'usqueda) utilizando cuatro programas distintos de ajedrez. Se demuestra que el ranking relativo entre los jugadores se preserva para todos los niveles de profundidad de las b\'usquedas y utilizando cualquiera de los programas.\\
+
+Subsecuentemente, el an\'alisis computacional fue repetido utilizando uno de los programas de ajedrez m\'as fuertes: RYBKA 3. Los resultados fueron cualitativamente muy similares a los obtenidos previamente. Este experimento est\'a fuertemente relacionado con la siguiente pregunta: El estilo de juego de un programa muestra preferencias por el estilo de juego de alguno de los jugadores analizados? Los resultados sugieren que los rankings podr\'ian verse afectados, aunque no considerablemente.\\
+
+Los resultados obtenidos en esta investigaci\'on, son alentadores respecto a nuestro trabajo. Tal como se especific\'o anteriormente, se utilizaron motores de ajedrez como or\'aculos para generar un ranking entre los jugadores analizados. Esto indicar\'ia entonces, que tiene sentido la idea de utilizar motores para evaluar el rendimiento de jugadores de ajedrez.\\
+
+\subsection{The quality of play at the Candidates\cite{guid-matej-qual}}
+En este art\'iculo se presentan los resultados del an\'alisis computacional de partidas de ajedrez en el \'ultimo torneo de candidatos en Londres, utilizando el motor Houdini 1.5a de 64 bit, con un nivel de 20 capas de profundidad en sus b\'usquedas. En estudios previos, se demostr\'o que los motores de ajedrez pueden producir rankings realmente confiables de jugadores. Incluso, diferentes motores con distintos niveles de b\'usqueda, producen los mismos (o por lo menos similares) resultados.\\
+
+\textbf{Breve descripci\'on del m\'etodo utilizado: }El m\'etodo utilizado para obtener los resultados presentados, se describen en el paper Using heuristic-search based engines for estimating human skill at Chess\cite{guid-matej}.
+Este es un breve resumen:\\
+\indent $\Rightarrow$ El an\'alisis comienza a partir del movimiento n\'umero 12.\\
+\indent $\Rightarrow$ El motor de ajedrez eval\'ua los mejores movimientos (seg\'un sus c\'alculos) y los movimientos jugados por el jugador.\\
+\indent $\Rightarrow$ Todas las evaluaciones del motor se obtienen con el mismo nivel de profundidad de b\'usqueda.\\
+\indent $\Rightarrow$ El resultado se calcula como la diferencia promedio entre las evaluaciones de los mejores movimientos y de los movimientos realizados por el jugador.\\
+\indent $\Rightarrow$ Si el error de un jugador (seg\'un el motor) en un movimiento particular es mayor a 3.00, el resultado para ese movimiento ser\'a de 300 centipawns (\'esto es para evitar valores exageradamente altos de castigo por cometer un error grande).\\
+\indent $\Rightarrow$ Aquellos movimientos en los que, tanto el movimiento jugado como el sugerido por la computadora tienen una evaluaci\'on fuera del intervalo [-2.00, 2.00] son descartados.\\
+
+En este art\'iculo, se presenta un modelo para determinar la calidad de un jugador en base a sus movimientos. Un detalle a tener en cuenta, es que se utiliza el mismo motor con el que trabajamos en nuestra investigaci\'on. Por otra parte, nos result\'o \'util e interesante la forma de evaluar a los jugadores, seg\'un los mejores movimientos determinados por un or\'aculo.\\
+
+\subsection{Houdini 3 - The world\'s strongest chess engine in the Fritz Interface\cite{chess-news-houdini}}
+HOUDINI 3 es el motor m\'as fuerte de ajedrez en todo el mundo. Su desarrollador fue (y es) el ingeniero estructural belga Robert Houdart. Su formaci\'on acad\'emica fue principalmente entorno a la mec\'anica estructural y a la transferencia de calor. Durante algunos a\~nos trabaj\'o en plantas de energ\'ia nuclear. Posteriormente, Houdart cambi\'o completamente de sector, enfoc\'andose en el desarrollo de aplicaciones CRM (Customer Relationship Management). Sin embargo, pese a que su carrera no estaba enfocada en la programaci\'on, Robert Houdart comenz\'o a desarrollar a mediados de la d\'ecada de 1980 y como hobby, software relacionado al ajedrez, inclu\'idos m\'ultiples motores que nunca termin\'o de completar. Fue reci\'en en el a\~no 2009 cuando comenz\'o a trabajar en el proyecto Houdini. Su objetivo era simple: desarrollar el mejor motor de ajedrez que pudiera, ayud\'andose con la creciente cantidad de informaci\'on disponible en Internet; donde distintas t\'ecnicas, ideas y ejemplos se encuentran disponibles.\\
+
+El secreto de Houdini 3 para ser considerado el mejor motor de ajedrez del mundo, radica en dos puntos: buena evaluaci\'on e incluso mejor selectividad. Resulta evidente que una buena evaluaci\'on de una determinada posici\'on, es clave para un buen motor de ajedrez. Probablemente, Houdini 3 sea la mejor herramienta para evaluar la movilidad de las piezas y el control de espacio en un tablero. Su autor, relaciona directamente la  evaluaci\'on a la probabilidad de ganar un juego. Por ejemplo, si Houdini 3 muestra +1.00 como resultado de una evaluaci\'on en la mitad de un juego, se tiene un 80\% de probabilidad de ganar ante un rival igual de fuerte. Esta es una caracter\'istica muy \'util del motor. Por otra parte, la selectividad es un aspecto clave dentro de Houdini 3. Al igual que un jugador humano, Houdini 3 no analiza todos sus posibles movimientos con la misma profundidad: aquellos movimientos potencialmente buenos son analizados exhaustivamente, mientras que aquellos que a simple vista no sean demasiado atractivos, se analizan someramente. Houdini tiene la habilidad de detectar, para cierta posici\'on, aquellos movimientos m\'as productivos. Compar\'andolo con un jugador humano, este comportamiento es similar al instinto y experiencia del mismo, que para una posici\'on analizar\'a ciertos movimientos, descartando instant\'aneamente y casi sin pensar, todos los otros posibles casos. Esta habilidad de Houdini, ha sido refinada y optimizada en cada una de sus versiones: identificando nuevos movimientos potencialmente interesantes, mejorando t\'acticas, as\'i como la b\'usqueda en \'arboles.\\
+
+Como se mencion\'o anteriormente, el desarrollo del motor se bas\'o fuertemente en t\'ecnicas y herramientas disponibles en la web, que permitieron (entre otras cosas) la implementaci\'on multi-hilo de Houdini, as\'i como la utilizaci\'on de t\'ecnicas de evaluaci\'on ya existentes. Por otra parte, la comunidad de Internet tambi\'en apoya este proyecto, aconsejando a su desarrollador sobre posibles mejoras o advirti\'endole sobre posiciones en las que Houdini no se comporta satisfactoriamente.\\
+
+Una de las principales caracter\'isticas de Houdini es que aporta una valoraci\'on exacta y \'util para casi todas las posibles posiciones que pueden ocurrir en un tablero de ajedrez. Esto permite identificar, desde el inicio y hasta el fin de una partida, qu\'e aspectos fueron positivos y cu\'ales negativos en una partida. Por otra parte, Houdini es realmente bueno defendi\'endose ante posiciones dif\'iciles (incluso ante otros motores de renombre) siendo su habilidad t\'actica considerada como s\'uper-humana. Finalmente, por su caracter\'istica de juego \emph{agresivo}, Houdini cuenta con los n\'umeros m\'as bajos de empates en comparaci\'on con otros motores, e incluso, muestra mejores n\'umeros que los observados en torneos con competidores humanos de +3000 Elo.\\
+
+En este momento, Houdart se encuentra trabajando en Houdini 4, mejorando el motor de ajedrez, considerado como el mejor del mundo.\\
+
+Dado que durante el transcurso del proyecto se pretende trabajar fuertemente con el motor Houdini (aunque sin limitarnos al mismo), es que se decidi\'o presentar a su desarrollador, as\'i como la situaci\'on actual del proyecto Houdini.\\
+
+\newpage
+
+\chapter{Desarrollo del Proyecto}
+En este cap\'itulo se presentar\'an todas las herramientas utilizadas durante el transcurso del proyecto, comentando sus principales ventajas y desventajas, as\'i como los motivos que nos llevaron a elegirlas. Luego, se presentar\'an en forma resumida las distintas etapas del proyecto, documentando los distintos hitos del mismo, detallando en cada una de las etapas el alcance al que se lleg\'o, as\'i como los problemas detectados en cada etapa y las soluciones que se generaron.
+
+\section{Lenguaje, versionador y herramientas utilizadas}
+Previo a la documentaci\'on de las distintas etapas del desarrollo del proyecto, entendemos necesario presentar el lenguaje de programaci\'on que se utilizar\'a en el mismo, as\'i como distintas herramientas que hemos elegido para organizar tanto el c\'odigo de la aplicaci\'on y su documentaci\'on as\'i como informaci\'on relevante del mismo.
+
+\subsection{Ruby on Rails\cite{ror}}
+Ruby es un lenguaje de programaci\'on que combina una sintaxis inspirada en Perl y Python. Ruby es interpretado, reflexivo y orientado a objetos y fue creado por el programador japon\'es Yukihiro Matsumoto. Por otra parte, este lenguaje soporta m\'ultiples paradigmas de programaci\'on, incluyendo funcional, imperativa y orientada a objetos.\\
+
+Decidimos emplear el lenguaje Ruby, por su portabilidad entre sistemas operativos, su elegancia y f\'acil programaci\'on. Sumado que al ser interpretado, el ciclo de desarrollo y pruebas es m\'as r\'apido que con un lenguaje compilado.\\
+
+Adem\'as el objetivo es crear la interfaz mediante un sitio web Rails, ya que nuestro fuerte radica en el desarrollo web y no en aplicaciones de escritorio.\\
+
+En etapas posteriores de este documento se har\'a referencia a la utilizaci\'on de ciertas gemas de Ruby. Una gema es un paquete de librer\'ias que se instalan en el sistema y quedan habilitadas para su utilizaci\'on. Una propiedad importante de las gemas, es que una vez descargadas e instaladas, es posible su manipulaci\'on y modificaci\'on de forma de adaptarla a nuestra soluci\'on.\\
+
+\subsection{Git\cite{git}}
+Para versionar el c\'odigo elegimos la herramienta Git. En este modelo cada desarrollador posee un  repositorio local. Con este repositorio puede interactuar creando ramas, realizando merges, as\'i como revisando commits. Incluso a la hora de realizar cambios, los commits se guardan en el repositorio local. Una vez que el desarrollador est\'a satisfecho con sus modificaciones, puede entonces sincronizar su repositorio con el repositorio remoto para que los dem\'as desarrolladores reciban los cambios.\\
+
+En este modelo las ramas locales trackean las ramas remotas del repositorio donde se sincronizan los desarrolladores. Una rama que siempre est\'a presente es la rama master.\\
+
+Debido a la relativa independencia del servidor remoto para realizar muchas operaciones, consideramos que Git cuenta con ventaja respecto a SVN (sistema de control de versiones) y sumado a que Github brinda cuentas privadas gratis para estudiantes logramos un muy buen entorno de control, sincronizaci\'on, privacidad y disponibilidad desde cualquier lado mediante internet. A modo de aclaraci\'on, Github(github.com) es un servicio web que permite el hosting de proyectos de desarrollo de software que utilizan Git como controlador de versiones.\\
+
+Finalmente, el hecho de que ambos integrantes del grupo ya ten\'iamos experiencia en el uso de esta herramienta, conociendo sus principales ventajas y contribuciones, fue un factor predominante a la hora de elegir qu\'e versionador utilizar.\\
+
+\subsection{Documentaci\'on inicial del proyecto}
+Uno de los objetivos que nos propusimos al inicio del proyecto fue el de documentar cada una de las etapas del mismo, de forma de tener una mayor precisi\'on a la hora de describirlas. Por otra parte, de esta manera se evita detener el desarrollo de la aplicaci\'on para realizar el proceso de documentaci\'on. Entendemos que si se documenta a medida que se va desarrollando el proyecto, la informaci\'on contenida ser\'a sumamente fiel al mismo. En cambio, si se espera hasta el final del desarrollo para realizar esta tarea (o bien si se definen ciertas instancias intermedias exclusivamente para generar la documentaci\'on), podr\'ian perderse muchos datos o referencias bibliogr\'aficas relevantes, lo que generar\'ia un retraso en los tiempos planeados para rehacer toda esa informaci\'on.\\
+
+Para mantener toda documentaci\'on del proyecto, se define un archivo de texto compartido, utilizando la herramienta de documentos compartidos de google \cite{gdocs}. Esta herramienta presenta m\'ultiples ventajas a la hora de editar archivos, muy beneficiosas para cuando se desea que m\'as de una persona acceda y edite un archivo, entre las que se destacan:\\
+
+$\Rightarrow$ Edici\'on de los archivos en forma online y offline.
+
+$\Rightarrow$ Mantiene un hist\'orico de versiones, que permite ver los cambios realizados por los distintos usuarios que editaron el archivo.
+
+$\Rightarrow$ Cambios en tiempo real con m\'ultiples usuarios editando al mismo tiempo. Cuando m\'as de un usuario edita el mismo archivo, los restantes usuarios ven en tiempo real los cambios realizados.
+
+$\Rightarrow$ Seguridad. El archivo ser\'a compartido \'unicamente por los usuarios que define su creador o due\~no. De hecho, se pueden definir distintos niveles de seguridad. Los cu\'ales son: de lectura, de lectura y para comentar y finalmente de edici\'on.
+
+$\Rightarrow$ Exportar a distintos formatos. Se permite que los archivos sean exportados a distintos formatos que pueden ser \'utiles, como ser: \emph{.docx}, \emph{.pdf}, \emph{.odt}, etc.
+
+$\Rightarrow$ Chat incorporado. Los distintos usuarios que acceden a un archivo al mismo tiempo, pueden chatear directamente desde la presentaci\'on.\\
+
+Mantener un archivo en forma online en lugar de local, permite que todos los usuarios cuenten con la \'ultima versi\'on del mismo, evitando problemas que podr\'ian originarse en caso de que una \'unica persona posea la informaci\'on en forma local.\\
+
+\subsection{Documentaci\'on formal del proyecto}
+Tal como se describi\'o en la secci\'on anterior, en una primera instancia se escribi\'o la documentaci\'on del proyecto utilizando los archivos compartidos de google. Sin embargo, \'eramos conscientes de que si bien este tipo de herramientas son realmente funcionales, no cumplen con los est\'andares necesarios de formalidad y prolijidad que requiere un proyecto de grado. Por lo anteriormente mencionado y a sugerencia del cuerpo de tutores, se opt\'o por trasladar lo ya documentado y continuar con el proceso, utilizando LaTeX\cite{latex}.\\
+
+LaTeX es el est\'andar de facto para la publicaci\'on y comunicaci\'on de documentos cient\'ificos\cite{latex}. Adem\'as, vale destacar que es una herramienta que se encuentra disponible como software libre.\\
+
+Investigando la mencionada herramienta, nos encontramos y optamos por escribir nuestra documentaci\'on utilizando \emph{writeLaTeX}\cite{writeLaTeX}, que tal como sugiere su nombre, es un editor LaTeX. Sin embargo, tambi\'en cuenta con otras ventajas, a saber:\\
+
+$\Rightarrow$ Es un editor online colaborativo. De forma similar a los documentos compartidos de google, en \emph{writeLaTeX} varios usuarios pueden editar (al mismo tiempo) la documentaci\'on. Pese a esto, encontramos la desventaja de que no es posible saber qu\'e parte del documento est\'a siendo modificada por los diferentes usuarios.
+
+$\Rightarrow$ Colaboraci\'on del documento en modo de s\'olo lectura. Es posible compartir el documento en modo de s\'olo lectura, es decir, que los usuarios puedan leer lo escrito en el mismo, no contando con la posibilidad de edici\'on.
+
+$\Rightarrow$ Cuenta con vista previa del documento. De esta manera, se puede comprobar los cambios realizados en el editor. En este caso, la desventaja encontrada es que existe un retraso de varios segundos entre la edici\'on realizada y el reflejo de los cambios en el documento.
+
+$\Rightarrow$ Cuentas gratuitas. En \emph{writeLaTeX} es posible crear una cuenta b\'asica gratuita y de esta forma, crear documentos sin necesidad de pagar ninguna cuota. Con las cuentas gratuitas, no hay l\'imite de cantidad de documentos creados o de editores colaborativos. Sin embargo, s\'i existe un l\'imite de espacio disponible para el usuario, establecido en 1 Gb.
+
+$\Rightarrow$ Importaci\'on de im\'agenes, estilos y bibliograf\'ias. De esta manera, se puede enriquecer a\'un m\'as la documentaci\'on generada.
+
+$\Rightarrow$ Exportaci\'on del archivo en formato PDF. Es posible exportar el archivo en formato PDF, de forma de que el mismo pueda ser presentado en los  \'ambitos que corresponda. Asimismo, es posible la descarga de los archivos en  forma comprimida, en formato ZIP.\\
+
+\subsection{Motores de ajedrez utilizados}
+Si bien en etapas anteriores se menciona en varias oportunidades a los motores Houdini 3\cite{houdini-home} y Rybka 4\cite{rybka-home} como los mejores motores de ajedrez que existen por el momento, es necesario destacar que los mismos no se encuentran disponibles en forma gratuita. Por ende, por el momento no ser\'an utilizados para realizar las evaluaciones.\\
+
+Pese a esto, existen motores realmente buenos que se encuentran disponibles en forma gratuita (y legal) en la web. Por el momento y para no perder generalidad, se opta por utilizar los motores Houdini 1.5\cite{houdini-15} y Stockfish 3\cite{stockfish}.\\
+
+De todas maneras, tal como puede apreciarse en\cite{ccrl}, las versiones tanto de Houdini como de Stockfish con las que se trabaja, est\'an destacadamente posicionadas en el ranking al momento de realizar este informe (primera y tercera respectivamente) y son excelentes herramientas de evaluaci\'on. En ese mismo listado, puede verse c\'omo la versi\'on 3 de Houdini\cite{houdini-home} es la que predomina por sobre los distintos motores e incluso, la versi\'on utilizada de Stockfish en la aplicaci\'on, tiene un valor superior al del motor Rybka 4\cite{rybka-home}.\\
+
+
+\section{Etapas del desarrollo del proyecto}
+Tal como se desprende de su nombre, en esta secci\'on se presentar\'an las distintas etapas del desarrollo del proyecto. La idea es especificar cu\'ales han sido los principales hitos del mismo, documentando cu\'ales fueron los principales agregados, los principales logros, dificultades encontradas y dem\'as datos relevantes. En caso de utilizar c\'odigo fuente de terceros, ser\'a en esta instancia donde se especificar\'an y detallar\'an las razones que motivaron su uso, as\'i como los beneficios obtenidos a partir del mismo.
+
+\subsection{Etapa 1 - Relevamiento bibliogr\'afico y primeras decisiones}
+En esta etapa, se realiz\'o un relevamiento de bibliograf\'ia relacionada al proyecto. Conceptos como ajedrez por computadora, universal chess interface (UCI), portable game notation (PGN) o libros de aperturas fueron estudiados y documentados en esta etapa.\\
+
+Para el relevamiento de informaci\'on, los tutores del proyecto proporcionaron una serie de enlaces recomendados. A partir de los mismos, comenzaron a surgir nuevos conceptos e ideas que implicaron ampliar la investigaci\'on inicial, as\'i como incursionar en distintos papers y documentos relacionados (muchos de los cuales se mencionan en este informe). Toda la informaci\'on que se entendi\'o relevante y que podr\'ia aportar al desarrollo del proyecto, fue debidamente incorporada a este documento.\\
+
+Por otra parte, tambi\'en en esta etapa se tomaron las primeras decisiones en cuanto al lenguaje de programaci\'on a utilizar para el desarrollo del proyecto, as\'i como el versionador y distintas herramientas \'utiles. Las motivaciones para el uso de cada una, fueron descritas en la secci\'on 2.2.1.\\
+
+Esta etapa transcurri\'o durante el mes de Abril de 2013.\\
+
+\subsection{Etapa 2 - Asignaciones de programaci\'on}
+En las siguientes subsecciones se pretender\'a detallar las asignaciones de programaci\'on que se fueron dando durante el transcurso del proyecto. Tomando como gu\'ia algunos documentos presentados por los tutores, en donde se especificaron distintos requerimientos y necesidades, se comenz\'o a trabajar. En las etapas subsiguientes, se ir\'a desarrollando una soluci\'on que ser\'a incremental sobre la obtenida en la etapa inmediata anterior.
+
+\subsubsection{Primera Asignaci\'on de Programaci\'on}
+Esta primera etapa de desarrollo se divide en dos instancias.\\
+
+En la primera se desarroll\'o un programa que recibe como entradas: un archivo en formato PGN conteniendo una colecci\'on de partidas de ajedrez, la ruta del motor de ajedrez a utilizar, una cota de corte para detener al motor ante cada jugada que eval\'ua (medida en milisegundos, es el tiempo que dedicar\'a el motor para evaluar cada jugada), un valor para definir un entorno de empate (los motores consideran un empate absoluto si eval\'uan la partida en 0, pero en los hechos, es muy dif\'icil que un jugador gane si la evaluaci\'on es muy cercana a 0, por ende, esta variable representa un entorno de valores en el cual una partida debe considerarse empatada) y un valor de sensibilidad para la detecci\'on de blunders (aquellas jugadas cuya distancia a la mejor jugada sea mayor o igual a dicho valor, y donde el jugador, con su jugada, pasa de un resultado de ganar a un resultado de empatar o perder, o pasa de un resultado de empatar a un resultado de perder). 
+La salida de este programa es otro archivo en formato PGN, muy similar al recibido por par\'ametro (conteniendo incluso las mismas partidas), pero con algunos agregados. Para cada movimiento y en formato de comentario, se especificar\'a: el valor de la jugada, la mejor jugada, el valor de la mejor jugada y la diferencia en valor absoluto de dichas evaluaciones. Se deja constancia de que las evaluaciones son realizadas por el motor escogido. Por otra parte, en el cabezal de cada partida analizada, se agregar\'an algunos campos adicionales: nombre del motor de evaluaci\'on, tipo y valor de la cota de c\'alculo, valor del entorno de empate, valor de sensibilidad para la detecci\'on de blunders y, para cada jugador, la distancia media a la mejor jugada, la desviaci\'on est\'andar a la mejor jugada, la tasa de jugadas perfectas y la tasa de blunders.\\
+
+Constru\'ido sobre lo obtenido en la instancia anterior, se desarroll\'o un programa que a partir del nombre de un jugador y un archivo PGN con una colecci\'on de partidas (archivo obtenido en la instancia anterior), elabora un informe acumulativo para dicho jugador. Se presentan estad\'isticas generales en base a la informaci\'on disponible, relativa a torneos, jugadores y movimientos. Para el usuario de la aplicaci\'on, la relaci\'on entre las dos instancias de esta etapa es transparente. A partir de un archivo en formato PGN y definiendo los valores de ciertos par\'ametros, podr\'a analizar las partidas contenidas en el mismo, sin enterarse que existe un proceso que genera un archivo en formato PGN nuevo (el establecido en la primera instancia).\\
+
+Para el desarrollo de esta etapa, se accedi\'o a la gema UCI\cite{gem-uci}. Tal como surge de su especificaci\'on, la misma facilita la comunicaci\'on con motores de ajedrez que soportan el protocolo UCI\cite{uci-prot}. El objetivo es la comunicaci\'on, por lo cual, no se incluyen motores de ajedrez, que deber\'an ser instalados por separado. En la siguiente referencia\cite{gem-uci} se accede a todos los m\'etodos implementados para facilitar la comunicaci\'on con los motores, as\'i como a un ejemplo b\'asico del uso de la gema. Tal como se desprende de su nombre, se opta por utilizar el protocolo UCI para realizar la comunicaci\'on con los motores de ajedrez.\\
+
+Por otra parte, mediante la gema Treetop\cite{gem-treetop}, se realiz\'o la generaci\'on del parser mediante el an\'alisis de expresiones gramaticales. De esta forma, todas las partidas le\'idas desde el archivo original se mantienen en una estructura de \'arbol, lo cual facilita enormemente su comprensi\'on y an\'alisis.\\
+
+En un principio se opt\'o por desarrollar una aplicaci\'on Rails, mediante la cual un usuario acceder\'ia a una p\'agina web, en la cual podr\'ia subir sus partidas (en formato PGN) y se har\'ia un an\'alisis detallado de las mismas, manteniendo datos de los jugadores, de las partidas y torneos. Una de las ventajas de esta postura implicaba en el hecho de que la misma podr\'ia ser accedida desde distintos navegadores y dispositivos, teniendo en cuenta el auge de los smartphones en la actualidad. Por otra parte, el usuario final no tendr\'ia que instalarse nada, directamente acceder\'ia a la web desarrollada. El \'unico requisito en este caso, era tener un servidor levantado en forma cont\'inua. Sin embargo, habi\'endose considerado distintas ventajas y desventajas, se opt\'o por el desarrollo de una aplicaci\'on de escritorio, dej\'andose para momentos futuros la posibilidad de contar con una aplicaci\'on web.\\
+
+Para el testeo inicial de la aplicaci\'on se utilizaron archivos en formato PGN, conteniendo un n\'umero peque\~no de partidas de ajedrez. De esta forma, se logr\'o encontrar y corregir algunos errores que no se hab\'ian detectado en etapas previas. Posteriormente, se opt\'o por utilizar un archivo con una gran cantidad de partidas (alrededor de 600), para probar c\'omo respond\'ia el programa ante una carga alta y con gran cantidad de datos disponibles (tanto partidas, como jugadores, torneos y movimientos). Se vio que cuando se estaban analizando las partidas, muchas veces las computadoras quedaban trancadas y sin respuesta (debido a la gran cantidad de recursos que consumen los motores de ajedrez y que para cada partida a analizar, quedaba un proceso abierto del motor de ajedrez), debiendo ser reiniciadas constantemente. Para solucionar este (gran) inconveniente, se decidi\'o matar el proceso cada vez que se termina de analizar una partida. A partir de esto, se logr\'o solucionar el problema antes mencionado.\\
+
+Esta etapa transcurri\'o durante el mes de Mayo de 2013.\\
+
+\subsubsection{Segunda Asignaci\'on de Programaci\'on}
+En esta segunda asignaci\'on de programaci\'on, se pretend\'ia la realizaci\'on de un sistema inform\'atico, capaz de soportar los siguientes dos escenarios de uso:\\
+
+$\Rightarrow$ Recibir una colecci\'on de partidas en un archivo en formato PGN y crear con ellas una estructura persistente en disco (denominada de ahora en m\'as BD-Ref) que permita una eficiente ejecuci\'on del restante escenario de uso.\\
+
+$\Rightarrow$ A partir de una colecci\'on de partidas en formato PGN y una identificaci\'on de una BD-Ref, devolver como salida otro archivo con la misma colecci\'on de partidas pero agreg\'andole informaci\'on obtenida de la BD-Ref (identificaci\'on de la BD-Ref utilizada previo a cada partida y porcentaje de puntos obtenidos por las piezas blancas a continuaci\'on de cada ply).\\
+
+Pese a que los escenarios de uso se encuentran claramente ordenados, no pudiendo cumplir el segundo sin antes haber completado el primero, se entiende necesario realizar ciertas aclaraciones respecto al segundo escenario, para luego comenzar a detallar la soluci\'on obtenida.\\
+
+Tal como se especific\'o anteriormente en los escenarios de uso, luego de cada ply es necesario obtener el porcentaje de puntos obtenidos por las blancas en base a la BD-Ref. Discutiendo con el cuerpo de tutores, se arrib\'o a la conclusi\'on de que la forma \'optima para realizar estos c\'alculos, consist\'ia en comparar el estado de cada tablero luego de cada ply, respecto a la informaci\'on persistida en la BD-Ref. De esta forma, en caso de que el estado del mismo coincida con al menos un registro de la BD-Ref, se realizar\'an los c\'alculos mencionados anteriormente.\\
+
+En la secci\'on 2.1.1.9, se present\'o el sistema de notaci\'on FEN. La misma, describe una determinada posici\'on del tablero mediante una l\'inea de texto. Dado que a una misma posici\'on de un tablero se puede arribar mediante distintas jugadas, se considera la notaci\'on FEN para poder generar la BD-Ref y determinar si una posici\'on particular de un tablero, se corresponde a alguno de los registros persistidos.
+Para la generaci\'on de la BD-Ref, los tutores proporcionaron un archivo en formato PGN, que conten\'ia m\'as de 202.000 partidas, correspondientes a jugadores con por lo menos 2500 puntos Elo. De esta manera, la BD-Ref contendr\'ia informaci\'on de jugadas de los mejores ajedrecistas del mundo y permitir\'ia realizar comparaciones y c\'alculos en base a sus partidas. Para facilitar los primeros c\'alculos, se utilizaron versiones parciales de este archivo inicial, de forma de contar con menos datos y realizar cuentas m\'as veloces. Estos archivos conten\'ian informaci\'on a\'un m\'as selecta de la perteneciente al archivo PGN inicial, con partidas de jugadores con por lo menos 2600, 2700, y 2800 puntos Elo respectivamente. Este \'ultimo archivo cuenta \'unicamente con 92 partidas.\\
+
+Sin embargo, tal como se mencion\'o anteriormente, se pretend\'ia que las mismas estuvieran en formato FEN para poder realizar las comparaciones y c\'alculos necesarios para el segundo escenario de uso. Fue necesario entonces, acceder a la aplicaci\'on pgn2fen\cite{pgn2fen}. La misma recibe como par\'ametro un archivo en formato PGN y tal como su nombre indica, devuelve otro, pero en formato FEN y con informaci\'on de cada una de las partidas del archivo original.\\
+
+A partir de lo obtenido en el punto anterior, se estaba en condiciones de calcular, luego de cada ply, \'unicamente el total de partidas pertenecientes al archivo formato FEN que conten\'ian el mismo estado del tablero analizado, pero no se estaba en condiciones de determinar el porcentaje de victorias blancas para ese tablero. Fue por esto que se desarrollaron algunos m\'etodos para modificar el archivo obtenido con la aplicaci\'on pgn2fen, de forma de agregarle m\'as informaci\'on y que fuera de mayor utilidad para realizar los c\'alculos. Para cada l\'inea del archivo original, se agreg\'o un n\'umero secuencial para identificar a qu\'e partida pertenece ese tablero y un caracter, que identifica al ganador de la partida (w en caso de victoria de las blancas, b para el caso de victoria de las negras y d para el caso de empate). Desde este punto, ya se conten\'ia toda la informaci\'on necesaria para determinar, para cada ply, todos los requerimientos planteados en el escenario de uso y por ende, este archivo modificado ser\'a la BD-Ref necesaria.\\
+
+En base a la BD-Ref, se implementaron algunos m\'etodos para obtener las coincidencias y realizar los c\'alculos correspondientes al segundo escenario de uso. En particular, determinar para cada ply, el porcentaje de puntos obtenidos por las piezas blancas en esas condiciones.\\
+
+Esta etapa transcurri\'o durante el mes de Junio de 2013.\\
+
+\subsubsection{Tercera Asignaci\'on de Programaci\'on}
+En la tercera asignaci\'on de programaci\'on, se propon\'ia una profesionalizaci\'on de las etapas anteriores, de forma de obtener un producto similar al que se podr\'ia generar en la industria comercial. Por otra parte, mediante el agregado de nuevas funcionalidades, se nutr\'ia al sistema de una mayor capacidad de an\'alisis de informaci\'on, acerc\'andolo su objetivo fundamental: estudiar la evoluci\'on del rendimiento de los jugadores de ajedrez. Dentro de los objetivos en esta tercera instancia, se pretend\'ia:\\
+
+$\Rightarrow$ Instalaci\'on y Desinstalaci\'on: Proporcionar un aplicativo para la instalaci\'on y desinstalaci\'on del software.\\
+
+$\Rightarrow$ Creaci\'on y eliminaci\'on de BD-Ref: A partir de un path a un archivo en formato PGN, crear una base de datos de referencia, con el nombre especificado en el archivo. Por otra parte, se deb\'ia presentar una funcionalidad encargada de la eliminaci\'on de las DB-Ref a partir de su nombre.\\
+
+$\Rightarrow$ Evaluaci\'on de una colecci\'on de partidas: Recibiendo como par\'ametro un archivo con una colecci\'on de partidas en formato PGN, una DB-Ref, el identificador del motor de evaluaci\'on a utilizar y valores para la \emph{cota de corte} para el motor, para el \emph{entorno de empate} y para el \emph{umbral de blunder}, el sistema deb\'ia procesar la informaci\'on, devolviendo un archivo en formato PGN con la colecci\'on analizada anot\'andola jugada a jugada con informaci\'on de la DB-Ref y del motor de an\'alisis.\\
+
+$\Rightarrow$ Informaci\'on general para un jugador dentro de la colecci\'on: A partir de un archivo en formato PGN con una colecci\'on ya analizada, y el nombre de un jugador, elaborar un informe para el jugador especificado.\\
+
+Tal como se especific\'o anteriormente, esta instancia de programaci\'on pretend\'ia servir de bisagra, dado que una vez culminada, se obtendr\'ia un sistema con gran capacidad de an\'alisis de informaci\'on y con distintas funcionalidades desarrolladas. Asimismo, se completar\'ia la \'ultima etapa de programaci\'on, puesto que en etapas posteriores el objetivo principal ser\'ia el desarrollo y evoluci\'on de la metaheur\'istica encargada de evaluar a los jugadores.\\
+
+Puede apreciarse que los objetivos de esta etapa, m\'as que presentar nuevas funcionalidades al usuario, implicaban la conjunci\'on de todas las etapas previas, con el agregado de la instalaci\'on presente en la primera parte.\\
+
+Para la instalaci\'on y desinstalaci\'on de la aplicaci\'on en Ubuntu, utilizamos una gema llamada \emph{pkgr}\cite{pkgr} que mediante simples archivos de configuraci\'on y dependencias permite crear un paquete \emph{.deb} que al ser instalado crea y configura el servidor rails como un servicio del sistema. Quedando a disposici\'on para ser utilizado. El paquete incluye el motor Houdini para el an\'alisis de las partidas.\\
+
+Por otra parte, cuando se intent\'o realizar el mismo proceso para crear un instalador para el sistema operativo Windows, se encontraron diferentes gemas que podr\'ian ser de utilidad\cite{pack-exec}. Sin embargo, muchas de ellas se encontraban en estado de inactividad y con poco (o nulo) mantenimiento. En orden descendente seg\'un popularidad de las gemas, intentamos generar el instalador, obteniendo en cada uno de los intentos, errores de dif\'icil resoluci\'on. Dado que del listado de gemas de\cite{pack-exec} y seg\'un b\'usquedas realizadas, \emph{ocra} era la m\'as utilizada por la comunidad, dedicamos gran cantidad de tiempo en intentar solucionar los errores surgidos. Pese a esto, no obtuvimos el \'exito deseado. Como forma de no trancar el avance del proyecto por culpa de un mismo error, en esta instancia optamos por continuar con el desarrollo de la soluci\'on, dejando para m\'as adelante la resoluci\'on de esta etapa.\\
+
+Por otra parte, uno de los objetivos planteados por el cuerpo docente era la descarga del informe para un jugador en formato CSV (comma-separated values). Sin perjuicio de lo anterior, se obtuvo una soluci\'on en la cual el informe se genera en pantalla, no siendo posible por el momento la descarga del mismo.\\ 
+
+Esta etapa transcurri\'o durante el mes de Julio de 2013.\\
+
+\subsection{Etapa 3 - Evaluaci\'on de los Jugadores}
+Para poder evaluar el rendimiento de un jugador, debido a la complejidad de los c\'alculos relacionados y al tiempo necesario para el procesamiento de los mismos, se tom\'o la decisi\'on del desarrollo de variantes para cumplir nuestro cometido. Para esto, el cuerpo de tutores brind\'o determinados papers, en los cuales recientemente se ha comenzado a investigar en \'areas afines a la del presente proyecto y por lo cual, ser\'an \'utiles al momento de tomar decisiones.\\
+
+\subsubsection{An\'alisis del paper \emph{Intrinsic-Chess-Ratings}\cite{intrinsic}}
+Luego de cumplida la etapa anterior, en la cual se hab\'ia obtenido un producto m\'as profesional, y como forma de aproximarnos un poco m\'as a la soluci\'on final del proyecto, el cuerpo de tutores sugiri\'o la lectura del paper \emph{Intrinsic-Chess-Ratings}, correspondiente a los autores Kenneth W. Regan y Guy McC. Haworth. En esta secci\'on, se presentar\'a un breve resumen del mismo. Asimismo, encontramos de gran utilidad muchos de los conceptos utilizados y resultados obtenidos.\\
+
+El principal objetivo de los autores es el desarrollo de un aut\'omata de ajedrez (aunque la idea es aplicable a otros juegos) que tenga cualidades similares a las de un ser humano. Para esto, utilizan or\'aculos (motores de ajedrez reconocidos), as\'i como una base de datos de partidas de jugadores con similar puntaje Elo. Por otra parte, se plantea la idea de poder clasificar a los jugadores no por el resultado de sus partidas, sino por la calidad de las decisiones que tomaron. Finalmente, los autores plantean la posibilidad de responder las siguientes interrogantes:\\
+
+$\Rightarrow$ ?`Ha habido inflaci\'on o deflaci\'on en el sistema de clasificaci\'on Elo durante los \'ultimos cuarenta a\~nos?
+
+$\Rightarrow$ ?`Los mejores jugadores de anta\~no, eran tan buenos como los jugadores actuales?
+
+$\Rightarrow$ ?`La calidad de jugadas, se ve significativamente perjudicada al aplicar control de tiempos?
+
+$\Rightarrow$ ?`A partir de partidas de diferentes torneos almacenadas, donde los buenos resultados de un jugador son sospechosos de incurrir en fraude, se puede determinar si fue debido a suerte, o bien si se debi\'o a un il\'icito?\\
+
+Se concluye que existe una cierta relaci\'on entre la puntuaci\'on Elo de los jugadores y la calidad intr\'inseca de sus movimientos. Por otra parte, se determina que con el pasar del tiempo, no ha habido inflaci\'on en los puntajes Elo, e incluso, podr\'ia haberse dado una peque\~na deflaci\'on. En relaci\'on a la segunda interrogante planteada, se menciona que en la d\'ecada de 1970, \'unicamente dos jugadores (Fischer y Karpov) superaban los 2700 puntos Elo, mientras que en la \'ultima d\'ecada han habido m\'as de treinta jugadores con esos puntajes. La falta de inflaci\'on comentada anteriormente implica que estos jugadores son los mejores que han habido a lo largo del tiempo, junto a Fischer y Karpov.\\
+
+Finalmente, responder las \'ultimas dos preguntas que se planteaban como interrogantes en el paper, forman parte del trabajo a futuro propuesto por los autores.\\
+
+\subsubsection{Primeras aproximaciones a la soluci\'on}
+A partir de los resultados obtenidos en \emph{Intrinsic-Chess-Ratings}\cite{intrinsic} se comenz\'o a trabajar en el desarrollo de la soluci\'on. \\
+
+Tal como se describi\'o en la secci\'on 3.2.2.2., los tutores hab\'ian provisto un gran conjunto de partidas para jugadores con (al menos) 2500 puntos Elo. Utilizando ideas obtenidas del paper introducido en la parte anterior y con el objetivo de poder analizar aquellas correspondientes a jugadores de un mismo nivel, es que se desarroll\'o un proceso encargado de dividir el conjunto de partidas anteriormente mencionado en rangos de 50 puntos de Elo. Fue entonces, que se definieron los siguientes rangos: 2500 - 2549 puntos Elo, 2550 - 2599 puntos Elo, \ldots , 2800 - 2849 puntos Elo. Actualmente s\'olo un jugador supera ese rango de puntos, por lo cual, carece de sentido definir un rango a partir de los 2850 puesto que no habr\'ian partidas a analizar\cite{fide-rating}. Un punto interesante de esta etapa, es que cada rango fue dividido en dos subconjuntos, de forma de poder realizar los c\'alculos con uno de ellos y comprobar los mismos con el restante. De forma de no introducir ning\'un sesgo en la elecci\'on de las partidas para cada subconjunto, definimos una funci\'on que, a partir de la suma de los d\'igitos de la fecha de una partida (m\'odulo 2), determina a cu\'al subconjunto pertenece la misma.\\
+
+Un primer objetivo de esta etapa, era poder tomar cada uno de los rangos definidos, analizar sus partidas y calcular, promedialmente, el valor del error de las jugadas y el porcentaje de jugadas perfectas, calculado seg\'un los valores de un or\'aculo (al igual que en el paper de Regan y Haworth, en nuestro caso, seg\'un el motor de ajedrez Houdini). La idea en esta primera instancia era comprobar si exist\'ia una notoria correspondencia entre el porcentaje de errores y jugadas perfectas de un jugador (o conjunto de jugadores) respecto a su puntaje Elo. Si una vez calculados los valores, se llegaba a la conclusi\'on de que (en promedio) el porcentaje de jugadas perfectas descend\'ia seg\'un lo hac\'ia el rango de puntos Elo, se habr\'ia encontrado un par\'ametro seg\'un el cual clasificar a un jugador. La idea es an\'aloga para el valor de error calculado. Si en cambio, los valores calculados no mostraban relaci\'on alguna con la variaci\'on de los puntos Elo, seguramente ser\'ia necesario agregar otras variables a los c\'alculos.\\
+
+A partir de lo anterior, comenzamos a procesar cada uno de los conjuntos definidos, de forma de obtener los valores ya mencionados. Sin embargo, en esta etapa detectamos dos problemas que no hab\'iamos previsto anteriormente y que modificaban en forma significativa nuestra realidad.\\
+
+\textbf{Primer problema: }Tal como se hab\'ia definido la gram\'atica encargada de modelar nuestras estructuras, cuando el archivo de partidas era muy grande, se necesitaba una gran cantidad de tiempo \'unicamente para poder crear las mismas. Reci\'en cuando se generaban las estructuras, el motor Houdini comenzaba a realizar los c\'alculos. Optamos entonces por reformular la gram\'atica y convertirla en un proceso iterativo (en lugar de recursivo), en el cual, una vez creada una partida, ya se encontraba en condiciones de ser analizada, no debiendo esperar por el resto de partidas de la colecci\'on.\\
+
+\textbf{Segundo problema: }Analizando un archivo de alrededor de quince mil partidas, obtuvimos que el total de movimientos en las partidas era aproximadamente de un mill\'on. Considerando utilizar tres segundos para el c\'alculo de cada jugada, llegamos a la siguiente conclusi\'on:\\
+
+1.000.000 movs x 3 seg/mov = 3.000.000 segundos = 50.000 minutos = 833,33 hs $\thickapprox$ \textbf{35 d\'ias}\\
+
+A partir de lo anterior, analizar un \'unico archivo demandar\'ia m\'as de un mes, lo cual atentaba severamente contra los tiempos (y alcance) definidos para el proyecto. Fue por esto que, con apoyo del cuerpo de tutores, optamos por reducir la cantidad a alrededor de doscientas partidas por archivo, de esta forma, los tiempos de an\'alisis ser\'ian mucho m\'as coherentes con nuestra realidad. Para esto, desarrollamos un proceso que, al leer una partida \textbf{m} de un archivo origen, lo escrib\'ia en el archivo destino con una probabilidad \textbf{p = (200/k)}, siendo \textbf{k} la cantidad de partidas para el rango de puntos Elo a analizar y mismo m\'odulo que la partida \textbf{m}. De esta manera, cada archivo obtenido contar\'ia con un n\'umero de partidas similar a doscientas. Ver adem\'as, que si \textbf{k} < 200 => \textbf{p} > 1, con lo cual, necesariamente ser\'ia escrita en el archivo destino y no se filtrar\'ian partidas para ese rango.\\
+
+Solucionados los problemas anteriormente descritos, comenzamos nuevamente el an\'alisis de partidas para jugadores con al menos 2500 puntos Elo, separadas mediante conjuntos con rangos de cincuenta puntos y con tres segundos para el an\'alisis de cada movimiento.\\
+
+A medida que se fueron analizando los datos de las partidas, pudimos constatar que, para rangos de puntos Elo m\'as elevados, el porcentaje de jugadas perfectas era levemente superior que para rangos menores, mostrando una peque\~na tendencia descendente a menor cantidad de puntos Elo de los jugadores. Sin embargo, los valores correspondientes al error promedio, lejos de mostrar una tendencia, eran totalmente aleatorios, no pareciendo existir relaci\'on entre los mismos y la variaci\'on de puntaje Elo. Una posible raz\'on es la poca cantidad de rangos analizados. Ver que entre 2500 y 2850 puntos Elo, con un rango de 50 puntos, se obtienen \'unicamente siete rangos. Quiz\'as con un n\'umero mayor de rangos, podr\'ia existir una tendencia a\'un no observable por la cantidad de datos. Los resultados obtenidos en esta instancia son los siguientes:
+
+\begin{center}
+    \begin{tabular}{ | c | c | c |}
+    \hline
+    \textbf{Descripci\'on} & \textbf{Error Promedio} & \textbf{Jugadas Perfectas} \\ \hline
+    Elo 2800-2849 par & 0.07 & 0.68 \\ \hline
+    Elo 2800-2849 impar & 0.37 & 0.65 \\ \hline
+    Elo 2750-2799 par & 0.50 & 0.66 \\ \hline
+    Elo 2750-2799 impar & 0.50 & 0.66 \\ \hline
+    Elo 2700-2749 par & 0.50 & 0.66 \\ \hline
+    Elo 2700-2749 impar & 0.50 & 0.66 \\ \hline
+    Elo 2650-2699 par & 0.50 & 0.66 \\ \hline
+    Elo 2650-2699 impar & 0.50 & 0.66 \\ \hline
+    Elo 2600-2649 par & 0.50 & 0.66 \\ \hline
+    Elo 2600-2649 impar & 0.50 & 0.66 \\ \hline
+    Elo 2550-2599 par & 0.50 & 0.66 \\ \hline
+    Elo 2550-2599 impar & 0.50 & 0.66 \\ \hline
+    Elo 2500-2549 par & 0.50 & 0.66 \\ \hline
+    Elo 2500-2549 impar & 0.50 & 0.66 \\ \hline
+    \end{tabular}
+\end{center}
+
+Tal como previamente se mencion\'o, no existir\'ia relaci\'on entre los valores calculados del error promedio, pese a que, con los datos obtenidos hasta este momento, parecer\'ia darse un incremento de los errores a menores valores de Elo. Por otra parte, se observa una leve tendencia descendente en la tasa de jugadas perfectas a medida que el Elo de los jugadores decrece.\\
+
+Durante esta etapa, detectamos que ciertas partidas no eran correctamente analizadas por nuestro proceso. Temiendo que el mismo no fuera certero en algunos casos puntuales, optamos por realizar una revisi\'on de c\'odigo para detectar errores. Al fracasar en esta idea, decidimos analizar las partidas que generaban problemas en nuestro an\'alisis. De forma sorpresiva, encontramos que dos de las partidas a analizar contaban con errores que introduc\'ian movimientos inv\'alidos y que generaban que nuestro analizador no se comportara en forma correcta.\\
+
+\subsubsection{!`Houdini necesita m\'as tiempo!}
+A partir de los resultados y de las conclusiones obtenidas en la etapa anterior, comenzamos a cuestionarnos respecto a cu\'an buenos eran nuestros valores. A fin de cuentas, con todos los c\'alculos realizados, \'unicamente parec\'ia existir una relaci\'on estrecha entre el porcentaje de jugadas perfectas y el rango Elo de los jugadores (que necesitar\'ia ser confirmada calculando los mismos valores para m\'as rangos de datos), as\'i como una relaci\'on aparente que indicar\'ia que los errores tienden a ser mayores cuanto menores son los valores de Elo.\\
+
+Fue entonces que decidimos buscar relaciones o par\'ametros que no hubi\'eramos considerado hasta ese momento, con el objetivo de poder determinar si se produce determinada tendencia en alg\'un valor, seg\'un el crecimiento (o decrecimiento) de los rangos Elo. Evaluamos el error cometido seg\'un el total de movimientos de un jugador, el promedio, la tasa de errores sobre el total de movimientos (considerando \'unicamente aquellos errores superiores a un valor \textbf{e}), as\'i como varios otros diferentes par\'ametros, no identificando en ning\'un caso que existiera una relaci\'on de los mismos con los rangos considerados.\\
+
+Seg\'un lo descrito anteriormente, decidimos investigar un poco en internet para poder determinar fehacientemente si el tiempo configurado para que el motor Houdini analice un movimiento, era suficiente. Por el momento, todos los c\'alculos se hab\'ian realizado d\'andole tres segundos de an\'alisis al motor. No fue necesario demasiado tiempo para echar luz al asunto. En el manual de usuario de Houdini\cite{houdini-30-sec}, se menciona una configuraci\'on del motor asignando treinta segundos por posici\'on.\\
+
+A partir de lo anterior y con el objetivo de sacarnos definitivamente la duda, optamos por correr nuestro an\'alisis para una partida, configurando al motor con treinta segundos por movimiento. Obtenidos los resultados, hicimos el mismo proceso, pero asignando a Houdini sesenta segundos de procesamiento para cada movimiento. Los resultados obtenidos son los siguientes:\\
+
+\textbf{PEGAR RESULTADOS DE UNA PARTIDA!!!}
+
+Puede apreciarse de forma notoria, que el porcentaje de jugadas perfectas de las piezas blancas crece significativamente a medida que el tiempo asignado es mayor. Sorpresivamente, los valores de las piezas negras no cambian en forma dr\'astica. Ante este escenario, era de prever que al analizar un conjunto de partidas, se diera una situaci\'on similar, con lo que, decidimos realizar los c\'alculos para el primer rango analizado.\\
+
+\textbf{PEGAR RESULTADOS DE UNA COLECCION!!!}
+
+A partir de lo anterior, se desprende que la elecci\'on de tiempo de an\'alisis por movimiento no fue del todo oportuna, debiendo ser bastante mayor para que los valores calculados se ajustaran mejor a la realidad.\\
+
+\textbf{Inconvenientes en esta etapa: }Al intentar analizar una colecci\'on, asignando treinta segundos al motor para analizar cada movimiento, nos encontramos con un inconveniente no esperado. Cada cierto tiempo, la computadora donde se estaba realizando el an\'alisis se apagaba sin raz\'on aparente. Nuestra hip\'otesis es que, debido al alto consumo de recursos de los motores de ajedrez, se pudo haber producido sobrecalentamiento de la m\'aquina, apag\'andose autom\'aticamente.
+
+\newpage
+
+\chapter{Conclusiones y Trabajo a Futuro}
+En este cap\'itulo se presentan las conclusiones a las que se arrib\'o en el transcurso del proyecto, as\'i como el posible trabajo a futuro que pudiera ampliar y mejorar los resultados obtenidos.
+
+\section{Conclusiones del Proyecto}
+Luego de aproximadamente ocho meses de trabajo y habiendo cumplido con los objetivos planteados al inicio del proyecto, se entiende necesario realizar un apartado con las conclusiones que se desprenden de los resultados obtenidos:\\
+
+$\Rightarrow$ A partir de determinados art\'iculos relacionados, se logr\'o identificar ciertas variables, como el error promedio y la tasa de jugadas perfectas, necesarias para evaluar a un jugador de ajedrez.\\
+
+$\Rightarrow$ Se dividi\'o un universo de partidas de ajedrez, seg\'un rangos de cincuenta puntos Elo, tomando ideas obtenidas de documentos relacionados. Para cada rango, se calcularon los valores de las variables anteriormente mencionadas, detect\'andose que los mismos estaban fuertemente ligados al tiempo asignado al motor de ajedrez para evaluar cada movimiento.\\
+
+$\Rightarrow$ Pese a lo anterior, se comprueba con los c\'alculos realizados, que a menor puntaje Elo de los jugadores, se marca una clara tendencia descendente en su tasa de jugadas perfectas. Asimismo, se puede apreciar un incremento en el error promedio calculado, aunque esta tendencia no es tan evidente.
+
+\section{Trabajo a Futuro}
+Finalmente, con el trabajo finalizado, somos conscientes de que los resultados pueden ser notoriamente mejorados. En esta secci\'on se proponen ciertas ideas que podr\'ian ser \'utiles a tal fin:\\
+
+$\Rightarrow$ En el presente proyecto se utilizaron dos variables para evaluar un jugador de ajedrez: el error promedio y su tasa de jugadas perfectas. Identificar nuevas variables para realizar la evaluaci\'on podr\'a ser de gran utilidad, mejorando los resultados alcanzados en este trabajo.\\
+
+$\Rightarrow$ Se estableci\'o un tiempo de tres segundos para que el motor de ajedrez pudiera evaluar cada movimiento de una partida. Sin embargo, se comprob\'o que los resultados var\'ian sensiblemente si se incrementa este tiempo. Permitir a los motores \emph{pensar} por lo menos treinta segundos por movimiento, servir\'a para ajustar mejor los resultados.
+
+\newpage
+
+\begin{comment}
+
+\begin{theorem}[$\lambda$-Lemma]Sea $f: M \rightarrow M$ un difeomorfismo, $p$ un punto fijo hiperb\'olico, $D^{u}$ un disco compacto en $W^{u}(p)$ y $D$ una variedad de igual dimensi\'on que $W^{u}(p)$ tal que $D \pitchfork W^{s}(p) \neq \phi$. Entonces $\forall \epsilon >0, \quad \exists n_{0}$ tal que $\forall n \geq n_{0}$ existe $D_{n} \subset D$ / $f^{n}(D_{n})$ est\'a $\epsilon$-cerca de $D^{u}$ con la topolog\'ia $C^{1}$.
+
+\end{theorem}
+
+\begin{theorem} [Criterio de Ergodicidad] {\label{criterio}} Sea $M$ una variedad compacta, $f:M \rightarrow M$ un difeomorfismo $C^{1+\alpha}$ y $m$ una medida suave e invariante para $f$. Si $m(\Lambda^{s}(p))>0$ y $m(\Lambda^{u}(p))>0$ entonces:
+\begin{enumerate}
+  \item $\Lambda(p) \stackrel{\circ}{=} \Lambda^{s}(p) \stackrel{\circ}{=} \Lambda^{u}(p)$
+  \item $\Lambda(p)$ es una componente erg\'odica hiperb\'olica.
+\end{enumerate}
+\end{theorem}
+
+
+
+\begin{corollary} Sea $f : M \rightarrow M$ un difeomorfismo $C^{1+ \alpha}$, $m$ una medida suave invariante para $f$. Si $m( \Lambda(p))>0$ para un punto hiperb\'olico p, entonces $ \Lambda(p)$ es una componente erg\'odica hiperb\'olica de $f$. 
+
+\end{corollary}
+
+\begin{demo}[Criterio de Ergodicidad - Parte 2] \\
+
+Para cualquier funci\'on $ \varphi \in L_{m}^{1}(M, \mathbb{R})$ sea $\varphi^{\pm}(x)= \lim_{n \rightarrow \pm \infty} \frac{1}{n} \sum\limits_{i=0}^{n-1} \varphi(f^{n}(x))$. Por el Teorema Erg\'odico de Birkhoff \cite{mane}[Teorema 1.1 cap.2] el l\'imite anterior existe y $\varphi^{+}(x)= \varphi^{-}(x)$ para $ctx \in M$. Adem\'as $\varphi^{\pm}(x)$ es $f-invariante$. Antes de continuar con la prueba desarrollaremos el siguiente lema que nos dar\'a informaci\'on sobre los l\'imites de Birkhoff a lo largo de variedades estables e inestables.
+
+\begin{lemma} [Puntos t\'ipicos para funciones continuas] \label{TP} Existe un conjunto invariante $T_{0}$ de \textbf{Puntos T\'ipicos} con $m(T_{0})=1$ tal que para toda $\varphi \in C^{0}(M)$ vale que si $x \in T_{0}$ entonces: $\varphi^{+}(w)=\varphi^{+}(x)$ para todo $w \in W^{s}(x)$ y para $m_{x}^{u}-ctw \in W^{u}(x)$
+\end{lemma}
+
+\begin{demo}[Lema]Consideremos el siguiente conjunto de medida total
+$$ S_{0}=\lbrace x \in M: \quad existe \quad \varphi^{+}(x)= \varphi^{-}(x)\rbrace $$
+Para casi todo $x \in S_{0}$ se tiene que $m_{x}^{u}-ct \xi \in W_{loc}^{u}(x) \quad \xi \in S_{0}$.\\
+De lo contrario existir\'ia un conjunto $ A \subset M $ de medida positiva tal que $\forall x \in A$ se tiene un subconjunto $B_{x} \subset W_{loc}^{u}(x)\backslash S_{0}$ con $m_{x}^{u}(B_{x})>0$. Por el teorema de densidad de Lebesgue, como $A$ posee medida positiva podemos tomar $y \in A$ un punto de densidad de $A$, ahora bien integrando respecto a un disco transversal peque\~no podemos obtener $B= \bigcup_{x \in T} B_{x} \subset M \backslash S_{0}$ (v\'ease figura \ref{figura2.1}) tal que:
+$$m(B)= \int_{T} m_{x}^{u}(B_{x})dm_{T}(x)>0$$
+
+\begin{center}
+\begin{figure}[ht]
+
+\centering{
+
+\psfrag{T1}{\footnotesize$T$}
+
+\psfrag{x}{\footnotesize$x$}
+
+\psfrag{Bx}{\footnotesize $B_{x}$}
+
+\psfrag{B1}{\footnotesize $B= \bigcup_{x \in T} B_{x}$}
+
+\psfrag{T2}{\footnotesize$T$}
+
+\psfrag{B2}{\footnotesize$B$}
+
+
+
+\caption{} }
+\label{figura2.1}
+\end{figure}
+\end{center}
+
+
+Lo cual es absurdo pues contradice el hecho de que $S_{0}$ tenga medida total. Luego como hemos visto el siguiente conjunto posee medida total:
+$$ S_{1}=\lbrace x \in S_{0} : m_{x}^{u}-ct \xi \in W_{loc}^{u}(x), \quad \xi \in S_{0}\rbrace$$
+Para todo $x \in S_{1}$ existe $ \xi_{x} \in W_{loc}^{u}(x) \cap S_{1}$ tal que: $$\varphi^{-}(\xi)=\varphi^{-}(\xi_{x}) \quad m_{x}^{u}-ct \xi \in W_{loc}^{u}(x)$$ pues al ser $\varphi$ continua se tiene que $\varphi^{-}$ es constante en $W_{loc}^{u}(x)$. Tambien como $x \in S_{1}$ tenemos que $\varphi^{+}(\xi)=\varphi^{-}(\xi) \quad m_{x}^{u}-ct \xi \in W_{loc}^{u}(x)$, y por \'ultimo como $\xi_{x} \in S_{1}$ vale que $\varphi^{-}(\xi_{x})=\varphi^{+}(\xi_{x})$. En conclusi\'on hemos probado que:
+$$\varphi^{+}(\xi)=\varphi^{-}(\xi)= \varphi^{-}(\xi_{x})= \varphi^{+}(\xi_{x}) \quad m_{x}^{u}-ct \xi \in W_{loc}^{u}(x)$$
+
+Pero casi todo $x \in S_{1}$ satisface que $\varphi^{+}(x)=\varphi^{+}(\xi_{x})$, pues de lo contrario podemos obtener un conjunto $C \subset S_{1}$ de medida positiva tal que $$m_{x}^{u}(C \cap W_{loc}^{u}(x))=0$$ para casi todo $x$. Pues por un lado si $y \in W_{loc}^{u}(x)$ entonces $\varphi^{-}(y)=\varphi^{-}(x) \quad para \quad m_{x}^{u}-cty \in  W_{loc}^{u}(x)$. Si $y \in C \Rightarrow y \in S_{1} \Rightarrow y \in S_{0} \Rightarrow \varphi^{+}(y)=\varphi^{-}(y)$, pero $x \in S_{1} \Rightarrow \varphi^{+}(x)=\varphi^{-}(x)$. Luego se obtiene que:
+
+$$\varphi^{+}(y)=\varphi^{+}(x), \quad para \quad m_{x}^{u}-cty \in W_{loc}^{u}(x)$$
+
+Por otro lado si adem\'as $y \in S_{1} \Rightarrow \varphi^{+}(y)=\varphi^{-}(y)$ y $\forall \xi_{x} \in S_{1} \cap W_{loc}^{u}(x)$ vale que $\varphi^{+}(\xi_{x})=\varphi^{-}(\xi_{x})$, como $\varphi^{-}$ es constante en $W_{loc}^{u}(x)$ tenemos que $\varphi^{-}(y)=\varphi^{-}(\xi_{x})$ entonces:
+
+$$ \varphi^{+}(y)= \varphi^{-}(y)= \varphi^{-}(\xi_{x})= \varphi^{+}(\xi_{x}), \quad \forall \xi_{x} \in S_{1} \cap W_{loc}^{u}(x)$$
+
+Luego hasta ac\'a obtenemos que $\varphi^{+}(x)=\varphi^{+}(y)$, para $m_{x}^{u}-cty \in W_{loc}^{u}(x)$ y si $y \in C \Rightarrow \varphi^{+}(y)=\varphi^{+}(\xi_{x}), \forall \xi_{x} \in S_{1}\cap W_{loc}^{u}(x)$. De  aqu\'i se deduce que $m_{x}^{u}(C \cap W_{loc}^{u}(x))=0$, lo cual contradice la continuidad absoluta.
+Hasta ahora tenemos que casi todo $x \in S_{1}$ cumple que:
+$$\varphi^{+}(x)=\varphi^{+}(\xi_{x})$$
+Y anteriormente obtuvimos que para todo $x \in S_{1}$ vale que:
+$$\varphi^{+}(\xi)=\varphi^{+}(\xi_{x}), \quad para \quad m_{x}^{u}-ct \xi \in W_{loc}^{u}(x)$$
+Luego se obtiene que:
+$$\varphi^{+}(x)=\varphi^{+}(\xi), \quad para \quad ctx \in S_{1}$$
+
+Esto \'ultimo define un conjunto $T_{0} \subset S_{1}$ con $m(T_{0})=1$ y tal que si $x \in T_{0}$ entonces $m_{x}^{u}-ct \xi \in W^{u}(x)$ satisface $\varphi^{+}(x)=\varphi^{+}(\xi)$. La invariancia de $\varphi^{+}$ implica que el conjunto de puntos t\'ipicos $T_{0}$ sea invariante.
+Por \'ultimo como $\varphi$ es continua entonces $\varphi^{+}$ es constante en $W^{s}(x)$
+
+\end{demo}[Lema]
+
+Continuando con la prueba del teorema asumiremos por simplicidad que $p$ es un punto fijo. Dada cualquier funci\'on continua $\varphi: M \rightarrow \mathbb{R}$, sea $T_{0}$ el conjunto de puntos t\'ipicos obtenido en el lema \ref{TP} y $\mathcal{R}$ el conjunto de puntos regulares. Asumamos que hemos probado la parte $(1)$ del teorema \ref{criterio} y nos dirigimos a probar la parte parte $(2)$ del mismo, en particular $m(\Lambda (p))>0$. Veremos que $\varphi^{+}$ es constante en $ \Lambda (p) \cap T_{0} \cap \mathcal{R}$ y por lo tanto en casi todas partes constante en $\Lambda (p)$, pues $T_{0} \cap \mathcal{R}$ posee medida total porque $T_{0}$ y $\mathcal{R}$ la poseen. Esto probar\'a que $f$ es erg\'odica en $\Lambda (p)$. La hiperbolicidad de la medida surge r\'apidamente pues para ver que $\Lambda (p)$ es una componente hiperb\'olica basta ver que todo elemento en $ \Lambda (p)$ posee exponentes de Lyapunov distintos de $0$. Sabemos que $p$ es un punto hiperb\'olico entonces $ \dim W^{s}(p) + \dim W^{u}(p) = \dim M$. Por otro lado como $x \in \Lambda(p)$ tenemos que:
+
+$$W^{u}(x) \pitchfork W^{s}(p) \neq \phi \quad y \quad W^{s}(x) \pitchfork W^{u}(p) \neq \phi$$
+Lo cual implica que:
+
+$$\dim W^{u}(x) + \dim W^{s}(p) \geq \dim M \quad y \quad \dim W^{s}(x) + \dim W^{u}(p)\geq \dim M$$
+Por lo tanto se obtiene que
+$$\dim W^{u}(x) + \dim W^{s}(x) \geq 2 \dim M - \left( \dim W^{u}(p) + \dim W^{s}(p)\right) = \dim M$$
+ es decir:
+$$\dim W^{u}(x) + \dim W^{s}(x) = \dim M$$
+Es decir cualquier $x \in \Lambda(p)$ posee exponentes de Lyapunov distintos de cero.
+
+
+Ahora si pasemos a ver que $\varphi^{+}$ es constante en $ \Lambda (p) \cap T_{0} \cap \mathcal{R}$. Para alg\'un $\epsilon>0$ y $l>1$ tal que $m(\Lambda(p) \cap \mathcal{R}_{\epsilon,l})>0$, llamaremos $\Lambda = \Lambda(p) \cap \mathcal{R}_{\epsilon,l} \cap T_{0}$. Sin p\'erdida de generalidad podemos suponer que todos los puntos en $\Lambda$ son puntos de densidad de Lebesgue de $\Lambda$ y retornan infinitas veces a $\Lambda$ en el futuro y el pasado, pues $\Lambda$ posee medida positiva, entonces por el teorema de densidad de Lebesgue y el teorema de Recurrencia de Poincar\'e se obtiene lo mencionado anteriormente.\\
+
+Notar que por el Teorema de la variedad estable de Pesin se obtiene que $ \exists \delta>0$ / $W_{loc}^{s}(x) \supset B_{\delta}(x)$, $\forall x \in \Lambda$, pues el Teorema de la variedad estable de Pesin nos dice que para cada $x$ existe un $\delta_{x}>0$ tal que $W^{s}_{loc}(x) \supset B_{\delta_{x}}(x)$, donde los $\delta_{x}$ var\'ian continuamente sobre $\mathcal{R}_{\epsilon,l}$, luego por la compacidad del bloque de Pesin se obtiene un m\'inimo $\delta >0$.\\
+Sean $ x, y \in \Lambda$ y $n>0$ tal que $y_{n}=f^{n}(y) \in \Lambda$ y $d(y_{n}, W^{u}(p))<\frac{\delta}{2}$. Entonces como $y_{n} \in \Lambda$ tenemos que $W_{loc}^{s}(y_{n}) \pitchfork W^{u}(p)$.\\
+
+Como consecuencia del $ \lambda $-Lema, existe $k>0$ tal que $x_{k}=f^{k}(x) \in \Lambda$ y $W^{u}(x_{k}) \pitchfork W_{loc}^{s}(y_{n})$, pues sea $T \subset W^{u}(x)$ un peque\~{n}o disco transversal a $W_{loc}^{s}(p)$ que contiene a $x$ entonces por el $\lambda$ - Lema se tiene que existe $k>0$ tal que $d(f^{k}(T), W^{u}(p))< \frac{\delta}{2}$ $\Rightarrow$ $d(W^{u}(x_{k}), W^{u}(p)<\frac{\delta}{2}$ $\Rightarrow$ $W^{u}(x_{k}) \pitchfork W^{u}(p)$ y por lo tanto $W^{u}(x_{k}) \pitchfork W_{loc}^{s}(y_{n})$
+
+
+
+Como $y_{n}$ es un punto t\'ipico para $\varphi$, pues $y$ lo es e $y_{n}=f^{n}(y)$, entonces para $m_{y_{n}}^{u}-ctw \in W^{u}(y_{n})$ obtenemos que $\varphi^{+}(w)=\varphi^{+}(y_{n})$. Tambi\'en tenemos por el mismo argumento anterior que $\varphi^{+}(z)=\varphi^{+}(x_{k})$ para $m_{x_{k}}^{u}-ctz \in W^{u}(x_{k})$. Como $y_{n}$ es un punto de densidad de $\Lambda$ para $r$ suficientemente peque\~{n}o tenemos que tenemos que $m(B_{r}(y_{n}) \cap \Lambda)>0$ y por lo tanto $\forall \xi \in B_{r}(y_{n}) \cap \Lambda$  vale que $W_{loc}^{s} \cap W_{loc}^{u}(p) \neq \phi$ y $W_{loc}^{s} \cap W_{loc}^{u}(y_{n}) \neq \phi$, pues $ \forall \xi \in \Lambda$, $\exists B_{ \delta}^{s}(\xi) \subset W_{loc}^{s}(\xi)$. Luego por Fubini:
+$$m(B_{r}(y_{n}) \cap \Lambda)= \int_{T} m^{u}(B_{r}(y_{n}) \cap \Lambda \cap W^{u}(z)) dm_{T}(z)$$
+
+
+Como $m(B_{r}(y_{n}) \cap \Lambda) >0$ tenemos que $ \exists z \in B_{r}(y_{n}) \cap \Lambda$ tal que $m^{u}(B_{r}(y_{n}) \cap \Lambda \cap W_{loc}^{u}(z))>0$, luego por la continuidad absoluta de la holonom\'ia estable tenemos que $m^{u}(\Lambda \cap W^{u}(y_{n}))>0$ y $m^{u}(\Lambda \cap W^{u}(x_{k}))>0$, , v\'ease figura \ref{figura2.2}\\
+
+
+\begin{center}
+\begin{figure}[ht]
+\label{figura2.2}
+\centering{
+
+\psfrag{W^{u}(x_{k})}{\footnotesize$W^{u}(x_{k})$}
+
+\psfrag{x_{k}}{\footnotesize$x_{k}$}
+
+\psfrag{z}{\footnotesize $z$}
+
+\psfrag{y_{n}}{\footnotesize $y_{n}$}
+
+\psfrag{p}{\footnotesize$p$}
+
+\psfrag{W^{s}(p)}{\footnotesize$W^{s}(p)$}
+
+\psfrag{W^{u}(p)}{\footnotesize $W^{u}(p)$}
+
+\psfrag{x}{\footnotesize$x$}
+
+\psfrag{xi}{\footnotesize$\xi$}
+
+\psfrag{W^{s}(y)}{\footnotesize$W^{s}(y)$}
+
+\psfrag{W^{s}(y_{n})}{\footnotesize$W^{s}(y_{n})$}
+
+\psfrag{W^{s}(xi)}{\footnotesize$W_{loc}^{s}(\xi)$}
+
+\psfrag{W^{u}(xi)}{\footnotesize$W_{loc}^{u}(\xi)$}
+
+\psfrag{holonomia}{\footnotesize$\textrm{Holonom\'ia}$}
+
+\psfrag{W^{u}(y_{n})}{\footnotesize$W_{loc}^{u}(y_{n})$}
+
+\psfrag{B}{\footnotesize$B_{r}(y_{n}) \cap \Lambda $}
+
+\psfrag{y}{\footnotesize$y$}
+
+\psfrag{Conjunto de medida}{\footnotesize$\textrm{Conjuntos de medida}$}
+
+\psfrag{positiva}{\footnotesize$\textrm{positiva}$}
+
+
+
+\caption{\label{figura2.2}} }
+
+
+\end{figure}
+\end{center}
+
+Ahora, $\varphi^{+}$ es constante a lo largo de variedades estables de Pesin. Y debido a la continuidad absoluta, la holonom\'ia estable lleva el conjunto de puntos $w$ en $W_{loc}^{u}(y_{n})$ para el cual $\varphi^{+}(w)=\varphi^{+}(y_{n})$ en un conjunto de medida positiva en $W_{loc}^{u}(z)$ para el cual el valor de $\varphi^{+}$ ser\'a $\varphi^{+}(y_{n})$. El hecho que $x_{k}$ sea un punto t\'ipico de $\varphi$ implica que $\varphi^{+}(x)=\varphi^{+}(x_{k})=\varphi^{+}(y_{n})=\varphi^{+}(y)$, luego $\varphi^{+}$ es constante en $\Lambda$, v\'ease figura \ref{figura3}\\
+
+
+\begin{center}
+\begin{figure}[ht]
+\label{figura3}
+\centering{
+
+\psfrag{phi +(w)=phi +(y_{n})}{\footnotesize$\varphi^{+}(w)= \varphi^{+}(y_{n})$}
+
+\psfrag{x_{k}}{\footnotesize$x_{k}$}
+
+\psfrag{w}{\footnotesize $w$}
+
+\psfrag{W^{s}(y_{n})}{\footnotesize $W^{s}(y_{n})$}
+
+\psfrag{W^{s}(x_{k})}{\footnotesize$W^{s}(x_{k})$}
+
+\psfrag{W^{s}(p)}{\footnotesize$W^{s}(p)$}
+
+\psfrag{h(w)}{\footnotesize $h(w)$}
+
+\psfrag{phi +(w)=phi+(h(w))}{\footnotesize$\varphi^{+}(w)=\varphi^{+}(h(w))$}
+
+\psfrag{phi +(h(w))=phi+(x_{k})}{\footnotesize$\varphi^{+}(h(w))=\varphi^{+}(x_{k})$}
+
+\psfrag{phi +(z)=phi +(x_{k})}{\footnotesize$\varphi^{+}(z)=\varphi^{+}(x_{k})$}
+
+\psfrag{phi + cte}{\footnotesize$\varphi^{+} \quad cte$}
+
+\psfrag{W^{u}(y_{n})}{\footnotesize$W^{u}(y_{n})$}
+
+\psfrag{y_{n}}{\footnotesize$y_{n}$}
+
+\psfrag{Holonomia}{\footnotesize$\textrm{Holonom\'ia}$}
+
+\psfrag{phi +}{\footnotesize$\varphi^{+}$}
+
+\psfrag{Casi todo w}{\footnotesize$Casi \quad todo \quad w$}
+
+\psfrag{cumple}{\footnotesize$cumple$}
+
+\psfrag{luego}{\footnotesize$luego$}
+
+\psfrag{Casi todo z}{\footnotesize$Casi \quad todo \quad z$}
+
+\psfrag{cumple que}{\footnotesize$cumple \quad que$}
+
+\psfrag{Sobre variedad}{\footnotesize$Sobre \quad variedad$}
+
+\psfrag{estable phi +}{\footnotesize$estable \quad \varphi^{+}$}
+
+\psfrag{es constante}{\footnotesize$es \quad constante$}
+
+\psfrag{luego}{\footnotesize$luego$}
+
+\psfrag{z}{\footnotesize$z$}
+
+
+
+
+\caption{\label{figura3}} }
+
+
+\end{figure}
+\end{center}
+
+\end{demo}[Criterio de Ergodicidad - Parte 2]
+
+
+
+
+
+
+
+
+
+
+
+
+Con esto hemos terminado de probar la parte 2 del teorema. Ahora para probar la parte 1 necesitaremos refinar el Lema \ref{TP}
+
+\newpage
+
+
+\begin{lemma}[Puntos t\'ipicos para funciones en $L^{1}$] Dada $\varphi \in L^{1}$ existe un conjunto invariante $T \subset M$ de \textbf{Puntos T\'ipicos} de $\varphi$, con $m(T)=1$ tal que si $x \in T$ entonces $\varphi^{+}(z)=\varphi^{+}(x)$ para $m_{x}^{s}-ctz \in W^{s}(x)$ y  $m_{x}^{u}-ctz \in W^{u}(x)$
+
+\end{lemma}
+
+\begin{demo}[Lema] Dada $\varphi \in L^{1}$ tomemos una sucesi\'on de funciones continuas $\left\{\varphi_{n}\right\}$ tal que $\varphi_{n} \longrightarrow \varphi$ en $L^{1}$ entonces $\forall \epsilon >0, \quad \exists n_{0} \quad / \quad \int \left|\varphi_{n}-\varphi\right| dm < \epsilon$, $\forall n > n_{0}$. Veamos que $\varphi_{n}^{+} \longrightarrow \varphi^{+}$ en $L^{1}$\\
+Sabemos que: $$\int \left|\varphi_{n}^{+}-\varphi^{+} \right| dm = \int \lim_{j \rightarrow \infty} \left|\frac{1}{j} \sum\limits_{i=0}^{j-1} \varphi_{n}(f^{i}(x))-\varphi(f^{i}(x)) \right| dm$$
+Por el teorema de convergencia dominada obtenemos que podemos sacar el l\'imite para afuera de la integral y por tanto:
+
+$$\int \left|\varphi_{n}^{+}-\varphi^{+} \right| dm = \lim_{j \rightarrow \infty} \int  \left|\frac{1}{j} \sum\limits_{i=0}^{j-1} \varphi_{n}(f^{i}(x))-\varphi(f^{i}(x)) \right| dm $$
+Entonces:
+$$\int \left|\varphi_{n}^{+}-\varphi^{+} \right| dm \leq \lim_{j \rightarrow \infty} \frac{1}{j} \sum\limits_{i=0}^{j-1} \int  \left| \varphi_{n}(f^{i}(x))-\varphi(f^{i}(x)) \right| dm < \epsilon$$
+Entonces obtenemos que $\varphi_{n}^{+} \longrightarrow \varphi^{+}$ en $L^{1}$. Luego existe una subsucesi\'on $\left\{\varphi_{n_{k}}^{+}\right\}$ que converge en casi todo punto a $\varphi^{+}$. Sea $S = \left\{x \in M / \varphi_{n_{k}}^{+}(x) \longrightarrow \varphi^{+}(x) \right\}$ y sea $T=T_{0} \cap S$ entonces $T$ es un conjunto invariante (porque $T_{0}$ lo es), de medida total (porque $T_{0}$ y $S$ poseen medida total) y adem\'as cumple con la tesis.
+
+\end{demo} [Lema]
+
+Ahora estamos en condiciones de probar la primer parte del Criterio de Ergodicidad.\\
+
+\begin{demo}[Criterio de Ergodicidad - Parte 1]
+Para simplificar ideas supondremos que $p$ es un punto fijo hiperb\'olico. Sea $T$ el conjunto de puntos t\'ipicos para la funci\'on caracteristica $\chi_{\Lambda^{s}(p)}$ del conjunto $\Lambda^{s}(p)$. Tomemos $x \in \Lambda^{u}(p) \cap T$ tal que todos sus iterados son puntos de densidad de Lebesgue de $\Lambda^{u}(p)$ y $x$ retorna infinitas veces a $\Lambda^{u}(p)$. Veremos que $x \in \Lambda^{s}(p)$ y que aqu\'i estar\'iamos probando que $\Lambda^{u}(p) \stackrel{\circ}{\subset} \Lambda^{s}(p)$, siendo la otra inclusi\'on an\'aloga.\\
+Sea $\epsilon > 0$, $l>1$ tal que $m(\Lambda^{s}(p) \cap \mathcal{R}_{\epsilon, l})>0$, y sea $\delta >0$ tal que $\forall z \in \Lambda^{s}(p) \cap \mathcal{R}_{\epsilon, l}$ el conjunto $W_{loc}^{s}(z)$ contiene un disco de dimensi\'on $s$ y radio $ \delta >0$, esto sucede por el Teorema de la variedad estable y la compacidad de los bloques de Pesin.\\
+Consideremos $y$ un punto de densidad de Lebesgue del conjunto $\Lambda^{s}=\Lambda^{s}(p) \cap \mathcal{R}_{\epsilon, l} \cap T$ tal que $d(y, W^{u}(p))<\frac{\delta}{2}$.\\
+Al igual que antes como consecuencia del $ \lambda - Lema$, $ \exists k>0 \quad / \quad x_{k}=f^{k}(x) \in \Lambda^{u}(p) \cap T \quad y \quad W^{u}(x_{k}) \pitchfork W_{loc}^{s}(y)$. Notar que esta intersecci\'on podr\'ia tener dimensi\'on positiva.\\
+Desde entonces $y$ es un punto de densidad de Lebesgue de $\Lambda^{s}$, tenemos tambi\'en que $m(\Lambda^{s} \cap B_{\delta}(y))>0$, pues por hip\'otesis sabemos que $m(\Lambda^{s}(p))>0$.\\
+Tomemos una foliaci\'on diferenciable $\mathcal{L}$ en $B_{\delta}(y)$ de dimensi\'on $u_{y}=n-dim(W^{s}_{loc}(y))$ y transversal a $W_{loc}^{s}(y)$ (v\'ease figura \ref{figura4}). Por otro lado como $y \in \Lambda^{s}(p)$ $\Rightarrow$ $W^{s}(y) \pitchfork W^{u}(p) \neq \phi$ $\Rightarrow$ $\dim W^{s}(y) + \dim W^{u}(p) \geq n$ entonces $ \dim W^{u}(p) \geq n - \dim W^{s}(y) = n_{y}$, luego se obtiene que $n_{y} \leq \dim(W^{u}(p))$.\\
+
+
+\begin{center}
+\begin{figure}[ht]
+\label{figura4}
+\centering{
+
+\psfrag{p}{\footnotesize$p$}
+
+\psfrag{W^{s}(p)}{\footnotesize$W^{s}(p)$}
+
+\psfrag{W^{u}(p)}{\footnotesize $W^{u}(p)$}
+
+\psfrag{L_{w}}{\footnotesize$L_{w}$}
+
+\psfrag{W^{s}(p)}{\footnotesize$W^{s}(p)$}
+
+\psfrag{w}{\footnotesize $w$}
+
+\psfrag{W^{u}(y)}{\footnotesize$W^{u}(y)$}
+
+\psfrag{W^{u}(x_{k})}{\footnotesize$W^{u}(x_{k})$}
+
+\psfrag{x_{k}}{\footnotesize $x_{k}$}
+
+\psfrag{y}{\footnotesize$y$}
+
+\psfrag{x}{\footnotesize$x$}
+
+\psfrag{W^{s}(y)}{\footnotesize $W^{s}(y)$}
+
+\psfrag{foliacion}{\footnotesize$\textrm{Foliaci\'on} \quad \mathcal{L}$}
+
+\psfrag{W^{u}(x)}{\footnotesize $W^{u}(x)$}
+
+
+
+\caption{\label{figura4}} }
+
+
+\end{figure}
+\end{center}
+
+
+
+Podemos tambi\'en pedir que la hoja $L_{w}$ de $\mathcal{L}$ que contiene a $w \in W^{u}(x_{k})$ est\'e contenida en $W^{u}(x_{k})$. Por el teorema de Fubini (V\'ease figura \ref{figura5}) se obtiene que:
+$$m \left( \Lambda^{s} \cap B_{\delta}(y) \right) = \int_{W_{loc}^{s}(y)} m_{\xi}^{L} \left( L_{\xi} \cap \Lambda^{s} \right) dm_{y}^{s}(\xi)$$
+Como $m \left( \Lambda^{s} \cap B_{\delta}(y) \right)>0$ entonces por la ecuaci\'on anterior se obtiene que $m_{\xi}^{L} \left( L_{\xi} \cap \Lambda^{s} \right)>0$ para $m_{y}^{s}-ct \xi \in W_{loc}^{s}(y)$.\\
+
+
+\begin{center}
+\begin{figure}[ht]
+\label{figura5}
+\centering{
+
+\psfrag{W^{s}_{loc}}{\footnotesize$W^{s}_{loc}$}
+
+\psfrag{B}{\footnotesize$ \Lambda^{s} \cap B_{\delta}(y)$}
+
+\psfrag{A}{\footnotesize $L_{\xi} \cap \Lambda^{s}$}
+
+
+
+\caption{\label{figura5}} }
+
+\end{figure}
+\end{center}
+
+
+Tomemos $L \in \mathcal{L}$ tal que $m_{\xi}^{L} \left( L \cap \Lambda^{s} \right)>0$, esto significa que existe un conjunto de puntos $w \in L_{\xi}$ de medida $m_{\xi}^{L}-positiva$ tal que $w \in \Lambda^{s}(p)$. Por la continuidad absoluta la holonom\'ia estable manda este conjunto de medida $m_{\xi}^{L}-positiva$ en un conjunto de medida $m_{w}^{L}-positiva$ en $L_{w}$ para todo $w \in W^{u}(x_{k}) \cap B_{\delta}(y)$ (V\'ease \ref{figura6}). Pero $\Lambda^{s}(p)$ es un conjunto saturado por hojas estables (observaci\'on \ref{homoclinica}), esto significa que $m_{w}^{L}(L_{w} \cap \Lambda^{s})>0$, $\forall w \in W^{u}(f^{k}(x) \cap B_{\delta}(y))$.
+
+
+
+
+\begin{center}
+\begin{figure}[ht]
+\label{figura6}
+\centering{
+
+\psfrag{W^{u}(x_{k})}{\footnotesize$W^{u}(x_{k})$}
+
+\psfrag{x_{k}}{\footnotesize$x_{k}$}
+
+\psfrag{w}{\footnotesize $w$}
+
+\psfrag{holonomia}{\footnotesize$ \textrm{Holonom\'ia} $}
+
+\psfrag{xi}{\footnotesize$\xi$}
+
+\psfrag{y}{\footnotesize $y$}
+
+\psfrag{W^{s}(y)}{\footnotesize$W^{s}(y)$}
+
+\psfrag{m^{L}_{w}(L_{w} inter Lambda^{s})}{\footnotesize$m^{L}_{w}(L_{w} \cap \Lambda^{s})>0$}
+
+\psfrag{B}{\footnotesize $L \cap \Lambda^{s}$}
+
+\psfrag{A}{\footnotesize $m^{L}_{\xi}(L \cap \Lambda^{s})>0$}
+
+
+
+
+\caption{\label{figura6}} }
+
+\end{figure}
+\end{center}
+
+
+
+Si $W^{u}(x_{k}) \cap W_{loc}^{s}(y)$ es cero dimensional entonces f\'acilmente tenemos que $m_{x_{k}}^{u}(W^{u}(x_{k}) \cap \Lambda^{s}(p))>0$ (pues tomamos la hoja $L_{w}$ que esta contenida en $W^{u}(x_{k})$ y que contiene a $x_{k}$ tal que $m_{x_{k}}^{u}(L_{w} \cap \Lambda^{s})>0$) y por lo tanto como $x_{k}$ es un punto t\'ipico entonces $\chi_{\Lambda^{s}(p)}(z)= \chi_{\Lambda^{s}(p)}(x_{k})$, para $m_{x_{k}}^{s}-ctz \in W^{s}(x_{k})$ $m_{x_{k}}^{u}-ctz \in W^{u}(x_{k})$ entonces $x_{k} \in \Lambda^{s}(p)$ lo cual implica que $x \in \Lambda^{s}(p)$.\\
+Sino tomamos una subvariedad abierta $T$ de $W^{u}(x_{k}) \pitchfork W_{loc}^{s}(y)$. Entonces por el teorema de Fubini (V\'ease figura \ref{figura2.7}):
+
+$$m_{x_{k}}^{u} \left( \Lambda^{s} \cap W^{u}(x_{k})\cap B_{\delta}(y) \right) = \int_{T} m_{w}^{L} \left( L_{w} \cap \Lambda^{s} \right) dm_{T}(w)>0$$
+
+
+
+
+\begin{center}
+\begin{figure}[ht]
+\label{figura2.7}
+\centering{
+
+\psfrag{A}{\footnotesize$\Lambda^{s} \cap W^{u}(x_{k}) \cap B_{\delta}(y)$}
+
+\psfrag{B}{\footnotesize$L_{w} \cap \Lambda^{s}$}
+
+\psfrag{T}{\footnotesize $T$}
+
+\psfrag{W^{u}(x_{k})}{\footnotesize$W^{u}(x_{k})$}
+
+\psfrag{W^{s}_{loc}(y)}{\footnotesize$W^{s}_{loc}(y)$}
+
+
+
+
+\caption{\label{figura2.7}} }
+
+\end{figure}
+\end{center}
+
+
+Nosotros obtenemos que un conjunto de medida $m_{x_{k}}^{u}-positiva$ de $w \in W^{u}(x_{k})$ satisface que $\chi_{\Lambda^{s}(p)}(w)=1$. Como $x_{k}$ es un punto t\'ipico implica que $x_{k} \in \Lambda^{s}(p)$ y por lo tanto $x \in \Lambda^{s}(p)$. Luego 
+$$\Lambda^{u}(p) \stackrel{\circ}{\subset} \Lambda^{s}(p)$$
+La otra inclusi\'on es an\'aloga y por lo tanto se obtiene que:
+$$\Lambda(p) \stackrel{\circ}{=} \Lambda^{u}(p) \stackrel{\circ}{=} \Lambda^{s}(p)$$
+
+\end{demo}[Criterio de Ergodicidad - Parte 1]
+%--------------------------------------------------------------------------
+
+
+\newpage
+
+
+%%%%%%%%%%%%%%%TEOREMA DE DESCOMPOSICION ERGODICA DE PESIN%%%%%%%%%%%%%%%%%
+
+\section{Teorema de Descomposici\'on Erg\'odica de Pesin}
+
+
+El objetivo de esta secci\'on es demostrar el conocido Teorema de Descomposici\'on Erg\'odica de Pesin \cite{pesin} usando el Criterio de Ergodicidad desarrollado por \cite{hhut}, para ello usaremos un resultado demostrado por Katok \cite{katok} en 1980 llamado Lema Principal y el Teorema de Recurrencia de Poincar\'e.
+
+\begin{lemma}[Lema Principal] Sea $f:M \rightarrow M$ un difeo $C^{1 + \alpha}$, $M$ variedad compacta Riemanniana de dimensi\'on finita. Entonces para cualquier $k=0, \ldots , \dim M$, y para todo $\epsilon, L>0$, existe $r>0$ tal que si:
+\begin{enumerate}
+  \item $x$, $f^{n}(x) \in \mathcal{R}_{\epsilon, L}^{k}$, para alg\'un $n>0$, donde $\mathcal{R}_{\epsilon, L}^{k}= \mathcal{R}_{\epsilon, L} \cap \left\{ x\in \mathcal{R}/ \dim E^{u}(x)=k \right\}$
+  \item $d(x, f^{n}(x))<r$
+\end{enumerate}
+
+Entonces existe $p \in Per_{H}(f)$ tal que $x \in \Lambda(p)$
+\end{lemma}
+
+\begin{theorem}[Teorema de Descomposici\'on Erg\'odica de Pesin] Sea $f:M \rightarrow M$ un difeo $C^{1 + \alpha}$ y $m$ una medida suave e hiperb\'olica bajo un conjunto invariante $V$. Entonces:\\
+
+$$V \stackrel{\circ}{=} \Lambda_{1} \cup \ldots \Lambda_{n} \cup \ldots$$
+donde los conjuntos $\Lambda_{i}$ son conjuntos medibles, invariantes y disjuntos tales que $f| _{\Lambda_{i}}$ es erg\'odica. Adem\'as $\Lambda_{i}=\Lambda(p_{i})$ con $p_{i} \in Per_{H}(f)$
+
+\end{theorem}
+
+En realidad el Teorema de Descomposici\'on Erg\'odica de Pesin tambi\'en dice que cada $\Lambda_{i}$ se descompone en $k_{i}$ conjuntos disjuntos permutados por $f$, donde en cada uno $f^{k_{i}}$ es mixing e isomorfa a un sub-shift de Bernoulli, aqu\'i esto \'ultimo no lo incluiremos en la prueba, aunque se puede consultar en \cite{pesin}.
+
+\begin{demo} Sean $\epsilon$, $L$, $k$ tales que $m \left( \mathcal{R}_{\epsilon, L}^{k} \right)>0$ y $x$ un punto de densidad de $\mathcal{R}_{\epsilon, L}^{k}$. Tomemos $r>0$ el n\'umero que nos entrega el Lema de Katok, dado que $x$ es un punto de densidad de $\mathcal{R}_{\epsilon, L}^{k}$ se obtiene que $m \left( \mathcal{R}_{\epsilon, L}^{k} \cap B_{r/2}(x)\right)>0$ luego por el Teorema de Recurrencia de Poincar\'e obtenemos que existe un $n>0$ tal que $f^{n}(x) \in \mathcal{R}_{\epsilon, L}^{k} \cap B_{r/2}(x)$, es decir estamos en las hip\'otesis del lema de Katok y por tanto existe $p \in Per_{H}(f)$ tal que $x \in \Lambda(p)$. En conclusi\'on se ha probado que:
+$$ \mathcal{R}_{\epsilon, L}^{k} \stackrel{\circ}{\subset} \Lambda(p), \quad para \quad alg\acute{u}n \quad p \in Per_{H}(f)$$
+
+Puesto que $M \stackrel{\circ}{=} \mathcal{R} = \displaystyle\bigcup_{L=1}^{\infty} \mathcal{R}_{\epsilon, L}^{k} $, con $\epsilon >0$ fijo y $\mathcal{R}_{\epsilon, L}^{k} = \mathcal{R}_{\epsilon, L} \cap \left\{ x \in \mathcal{R} / \dim E^{u}(x)=k \right\}$, con $k=0, \ldots , \dim M$ entonces $M$ se escribe como uni\'on numerable de $\mathcal{R}_{\epsilon, L}^{k}$, es decir:
+$$M \stackrel{\circ}{=} \bigcup\limits_{l, k} \mathcal{R}_{\epsilon, L}^{k}, \quad con \quad l \in \mathbb{N}, \quad k=0, \ldots , \dim M $$
+
+De aqu\'i existe una sucesi\'on de puntos peri\'odicos hiperb\'olicos tales que\\
+$M \stackrel{\circ}{=} \bigcup\limits_{i \in I} \Lambda(p_{i})$, es decir hasta ahora tenemos probado que:
+$$M \stackrel{\circ}{=} \Lambda_{1} \cup \ldots \Lambda_{n} \cup \ldots, \quad con \quad \Lambda_{i}=\Lambda(p_{i}), \quad p_{i} \in Per_{H}(f)$$
+
+Por otro lado hab\'iamos visto que $\mathcal{R}_{\epsilon, L}^{k} \subset \Lambda(p_{i})$ para alg\'un $p_{i} \in Per_{H}(f)$ y $m\left( \mathcal{R}_{\epsilon, L}^{k} \right)>0$ entonces $m\left( \Lambda(p_{i}) \right)>0$, luego por el Criterio de Ergodicidad se obtiene que $f| _{\Lambda_{i}}$ es erg\'odica. Por \'ultimo es claro que los $\Lambda_{i}$ son medibles, invariantes (pues $\Lambda^{s}(p_{i})$ y $\Lambda^{u}(p_{i})$ lo son) y adem\'as son disjuntos pues si $p$ y $q$ son puntos en $Per_{H}(f)$ tales que su $\Lambda(p) \cap \Lambda(q) \neq \phi$ entonces existe un $z$ que est\'a relacionado homocl\'inicamente con $p$ y $q$, veamos que esto \'ultimo implica que $\Lambda(p) = \Lambda(q)$.\\
+
+Veamos que si tenemos $x$ relacionado homocl\'inicamente con $y$ entonces $\Lambda(x)=\Lambda(y)$. Sea $z \in \Lambda(y)$ entonces por el $\lambda$ - Lema $\forall \epsilon >0$, $\exists k>0$ tal que $f^{k}(W^{u}(z))$ est\'a $\epsilon-C^{1}$ cerca de $W^{u}(x)$ $\Rightarrow$ $W^{u}(f^{k}(z)) \pitchfork W^{s}(x)$ $\Rightarrow$ $f^{k}(z) \in \Lambda^{u}(x) \cap \Lambda^{s}(x)$ $\Rightarrow$ $z \in \Lambda(x)$, luego $\Lambda(y) \subset \Lambda(x)$, siendo la otra inclusi\'on an\'aloga y por lo tanto $\Lambda(x)=\Lambda(y)$.
+
+Por \'ultimo como $z$ esta relacionado homocl\'inicamente con $p$ y $q$ obtenemos que $\Lambda(p)=\Lambda(z)=\Lambda(q)$
+
+\end{demo}
+
+
+
+
+
+\newpage
+\end{comment}
+
+\begin{thebibliography}{HHUT}
+
+\bibitem[1] {comp-chess} Levy, David; Newborn, Monty (1991), How Computers Play Chess, Computer Science Press, ISBN 0-7167-8121-2
+
+\bibitem[2] {chess-eng} Wikipedia, The Free Encyclopedia: Chess Engine, https://en.wikipedia.org/wiki/Chess\_engine [Consulta Abril-2013]
+
+\bibitem[3] {houdini-home} Houdini 3
+http://www.cruxis.com/chess/houdini.htm
+
+\bibitem[4] {rybka-home} Rybka 4
+http://www.rybkachess.com/
+
+\bibitem[5] {git} Git, http://git-scm.com/ [Consulta Abril-2013]
+
+\bibitem[6] {gdocs} Google Docs, http://docs.google.com/ [Consulta Mayo-2013]
+
+\bibitem[7] {houdini-15} Houdini Chess Engine, http://www.houdinichess.com/ [Consulta Mayo-2013]
+
+\bibitem[8] {stockfish} Stockfish, http://stockfishchess.org/ [Consulta Mayo-2013]
+
+\bibitem[9] {ccrl} CCRL 40/40 - Complete Rating List, http://www.computerchess.org.uk/ccrl/4040/rating\_list\_all.html [Consulta Mayo-2013]
+
+\bibitem[10] {copa-mercosur} Pocket Fritz 4, Campe\'on Copa Mercosur 2009 http://ajedrezmartelli.org.ar/magistrales/2009/mercosur09.htm
+
+\bibitem[11] {gem-uci} Ruby UCI - A Universal Chess Interface for Ruby, https://github.com/xunker/uci [Consulta Mayo-2013]
+
+\bibitem[12] {gem-treetop} Treetop, http://treetop.rubyforge.org/ [Consulta Mayo-2013]
+
+\bibitem[13] {uci-prot} UCI Protocol, http://wbec-ridderkerk.nl/html/UCIProtocol.html [Consulta Mayo-2013]
+
+\bibitem[14] {pgn2fen} pgn2fen - pgn2fen A utility to convert from PGN to a series of FEN / EPD lines, http://www.pgn2fen.com-about.com/ [Consulta Junio-2013]
+
+\bibitem[15] {fritz-mercosur} Tsukrov on PF4 Nps http://hiarcs.net/forums/viewtopic.php?t=2537\&start=67
+
+\bibitem[16] {deep-blue-200millones} Deep Blue does 200 million searches http://www-03.ibm.com/ibm/history/ibm100/us/en/icons/deepblue/
+
+\bibitem[17] {guid-matej} Guid, Matej \& Bratko, Ivan: Using heuristic-search based engines for estimating human skill at
+Chess, ICGA Journal, Vol. 34, No.2, pp.71-81, 2011.
+
+\bibitem[18] {guid-matej-qual} Guid, Matej \& Bratko, Ivan: The quality of play at the Candidates, http://www.chessbase.com/Home/TabId/211/PostId/4009400/the-quality-of-play-at-the-candidates-090413.aspx [Consulta Abril-2013]
+
+\bibitem[19] {ror} Wikipedia, The Free Encyclopedia: Ruby (programming language), http://en.wikipedia.org/wiki/Ruby\_programming\_language [Consulta Junio-2013]
+
+\bibitem[20] {chess-news-houdini} Chess News: Houdini 3 - The world\'s strongest chess engine in the Fritz Interface, http://en.chessbase.com/home/TabId/211/PostId/4008591 [Consulta Abril-2013]
+
+\bibitem[21] {levy-bet} David Levy, "Man Beats Machine!", Chess Life \& Review, November 1978, pp. 600-03, at pp. 600-01.
+
+\bibitem[22] {pkgr} Gema Pkgr, https://github.com/crohr/pkgr [Consulta Setiembre 2013]
+
+\bibitem[23] {pack-exec} The Ruby Toolbox - Packaging to Executables, https://www.ruby-toolbox.com/categories/packaging\_to\_executables [Consulta Setiembre-2013]
+
+\bibitem[24] {cecp} Tim Mann \& H.G.Muller: Chess Engine Communication Protocol, http://www.open-aurec.com/wbforum/WinBoard/engine-intf.html [Consulta Abril-2013]
+
+\bibitem[25] {gnu-chess} GNU Chess, http://lists.gnu.org/archive/html/info-gnu/2013-03/msg00004.html [Consulta Abril-2013]
+
+\bibitem[26] {xboard} XBoard, http://www.gnu.org/software/xboard/ [Consulta Abril-2013]
+
+\bibitem[27] {uci} UCI protocol, http://wbec-ridderkerk.nl/html/UCIProtocol.html [Consulta Abril-2013]
+
+\bibitem[28] {fide-an} FIDE - Handbook - Appendices,\\
+http://www.fide.com/component/handbook/?id=125\&view=article [Consulta Abril-2013]
+
+\bibitem[29] {pgn} Standard: Portable Game Notation Specification and Implementation Guide, http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm [Consulta Abril-2013]
+
+\bibitem[30] {fen} Standard: Portable Game Notation Specification and Implementation Guide, http://www.thechessdrum.net/PGN\_Reference.txt [Consulta Abril-2013]
+
+\bibitem[31] {fide-laws} FIDE - Handbook - E.I.01A. Laws of Chess,\\
+http://www.fide.com/component/handbook/?id=124\&view=article [Consulta Abril-2013]
+
+\bibitem[32] {open-books} Chess Programming Wiki - Opening Book, http://chessprogramming.wikispaces.com/Opening+Book [Consulta Octubre-2013]
+
+\bibitem[33] {endgame-db} Chess Programming Wiki - Endgame Tablebases,
+https://chessprogramming.wikispaces.com/Endgame+Tablebases\#x7-man [Consulta Octubre-2013]
+
+\bibitem[34] {latex} LaTeX \- A document preparation system, http://www.latex-project.org/ [Consulta Octubre-2013]
+
+\bibitem[35] {writeLaTeX} writeLaTeX - Online collaborative LaTeX editor with integrated real-time preview, https://www.writelatex.com/ [Consulta Octubre-2013]
+
+\bibitem[36] {intrinsic} Kenneth W. Regan - Guy McC. Haworth, Intrinsic-Chess-Ratings,
+http://www.cse.buffalo.edu/$\thicksim$regan/papers/pdf/ReHa11c.pdf [Consulta Setiembre 2013]
+
+\bibitem[37] {fide-rating} World Chess Federation - FIDE - Top 100 Players September 2013 - Archive, http://ratings.fide.com/toparc.phtml?cod=273 [Consulta Setiembre 2013]
+
+\bibitem[38] {houdini-30-sec} Houdini 3 Chess Engine User's Manual - Game Play, http://www.cruxis.com/chess/manual/index.html?game\_play.htm [Consulta Octubre-2013]
+
+\bibitem[39] {bellman} R. E. Bellman (February 1965). "On the application of dynamic programming to the determination of optimal play in chess and checkers". Proceedings of the National Academy of Sciences of the United States of America 53 (2): 244-246. doi:10.1073/pnas.53.2.244
+
+\bibitem[40] {lomonosov} http://chessok.com/?p=28049
+
+\end{thebibliography}
+\end{document}
