@@ -1,4 +1,6 @@
 class Move < ActiveRecord::Base
+  OPENING_START = 12
+
   attr_accessible :annotator_move, :annotator_value, :check, :comments, :lan, :mate,
     :number, :pgn, :player_value, :side, :game, :distance
 
@@ -11,6 +13,8 @@ class Move < ActiveRecord::Base
   scope :white, where(side: true)
   scope :with_distance, where(Move.arel_table[:distance].not_eq(nil))
   scope :perfect, with_distance.where(distance: 0)
+  scope :not_null, lambda { |attr| where(Move.arel_table[attr].not_eq(nil)) }
+  scope :non_opening, not_null(:number).where('number > ?', OPENING_START)
 
   # A valuation should be a comment with {Annotator: move_value / annotator_value
   def add_comment comment
@@ -109,6 +113,10 @@ class Move < ActiveRecord::Base
 
   def to_pgn
     self.to_s
+  end
+
+  def opening?
+    number && number <= OPENING_START
   end
 
   private

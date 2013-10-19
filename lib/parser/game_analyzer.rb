@@ -16,7 +16,7 @@ class GameAnalyzer
     board = Board::Board.new
 
     @games.each do |game|
-      if game.moves.empty?
+      if game.moves.non_opening.empty?
         game.destroy
         next
       end
@@ -30,9 +30,9 @@ class GameAnalyzer
       # Set game properties
       board_score = 0
 
-      old_move = game.moves.first
+      old_move = game.moves.non_opening.first
       old_lan_move = old_bestmove = old_score = nil
-      move_count = game.moves.size
+      move_count = game.moves.non_opening.size
 
       first_time_here = true
 
@@ -46,52 +46,58 @@ class GameAnalyzer
         old_lan_move = lan_move if old_lan_move.nil? # The first time old_lan_move has lan_move
 
         game.update_attributes! progress: (index+1)/move_count.to_f
-        # Ask our engine for the current score and best move
-        score, best_move = @uci.analyse_position
 
-        # Correct score
-        if score.nil? # Assume the score did not change
-          score = old_score
-        else
-          score *= -1 if move.black? # Change to white's perspective
-        end
+        # Ignore the move if it's an opening
 
-        # initialize first score
-        old_score = score if old_score.nil?
+        unless move.opening?
+          # Ask our engine for the current score and best move
+          score, best_move = @uci.analyse_position
 
-        # Stabilize score, bestmove results
-        if old_lan_move == old_bestmove
-          # The newest score is more reliable if the player matched the best move
-          old_score = score
-        elsif score > old_score && old_move.white? || score < old_score && old_move.black?
-          # If the new evaluation says that the user's move has a better score, it is the better move
-          old_bestmove = old_lan_move
-          old_score = score
-        end
+          # Correct score
+          if score.nil? # Assume the score did not change
+            score = old_score
+          else
+            score *= -1 if move.black? # Change to white's perspective
+          end
 
-        if index > 0 # Start assigning after first move was scored
-          old_move.update_attributes! player_value: score, annotator_value: old_score, annotator_move: old_bestmove
+          # initialize first score
+          old_score = score if old_score.nil?
 
-          if @db_ref
-            percentage, coincidences = @db_ref.getPercentage(@uci.fenstring)
+          # Stabilize score, bestmove results
+          if old_lan_move == old_bestmove
+            # The newest score is more reliable if the player matched the best move
+            old_score = score
+          elsif score > old_score && old_move.white? || score < old_score && old_move.black?
+            # If the new evaluation says that the user's move has a better score, it is the better move
+            old_bestmove = old_lan_move
+            old_score = score
+          end
 
-            if coincidences == 0 && first_time_here
-              player = nil
-              if old_move.side.eql? 'white'
-                player = Player.where(id: game.white).first
-              else
-                player = Player.where(id: game.black).first
+          if index > 0 # Start assigning after first move was scored
+            old_move.update_attributes! player_value: score, annotator_value: old_score, annotator_move: old_bestmove
+
+            if @db_ref
+              percentage, coincidences = @db_ref.getPercentage(@uci.fenstring)
+
+              if coincidences == 0 && first_time_here
+                player = nil
+                if old_move.side.eql? 'white'
+                  player = Player.where(id: game.white).first
+                else
+                  player = Player.where(id: game.black).first
+                end
+                game.update_attributes! player_out_db_ref: player.name, move_out_db_ref: (index+1)/2, value_out_db_ref: score,
+                                        best_value_out_db_ref: old_score, deviation_out_db_ref: (score-old_score).abs
+                first_time_here = false
+              elsif coincidences > 0
+                first_time_here = true
               end
-              game.update_attributes! player_out_db_ref: player.name, move_out_db_ref: (index+1)/2, value_out_db_ref: score,
-                                      best_value_out_db_ref: old_score, deviation_out_db_ref: (score-old_score).abs
-              first_time_here = false
-            elsif coincidences > 0
-              first_time_here = true
             end
           end
+
+          old_score = score
         end
 
-        old_score = score
         old_move = move
         old_lan_move = lan_move
         old_bestmove = best_move
@@ -100,7 +106,7 @@ class GameAnalyzer
         @uci.move_piece lan_move
         @uci.send_position_to_engine
 
-        if move_count == index - 1 # update last move
+        if !move.opening? && move_count == index - 1 # update last move
           old_move.update_attributes! player_value: old_score, annotator_value: old_score, annotator_move: old_bestmove
         end
       end

@@ -13,6 +13,16 @@
 
 ActiveRecord::Schema.define(:version => 20130909000457) do
 
+  create_table "fen_moves", :force => true do |t|
+    t.integer  "reference_database_id"
+    t.string   "move"
+    t.integer  "white"
+    t.integer  "black"
+    t.integer  "draw"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
   create_table "games", :force => true do |t|
     t.integer  "white_id"
     t.integer  "black_id"
@@ -33,16 +43,16 @@ ActiveRecord::Schema.define(:version => 20130909000457) do
     t.float    "black_perfect_rate"
     t.float    "black_blunder_rate"
     t.float    "white_blunder_rate"
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
     t.float    "progress"
     t.float    "tie_threshold"
     t.float    "blunder_threshold"
     t.string   "player_out_db_ref"
     t.integer  "move_out_db_ref"
-    t.decimal  "value_out_db_ref",      :precision => 10, :scale => 0
-    t.decimal  "best_value_out_db_ref", :precision => 10, :scale => 0
-    t.decimal  "deviation_out_db_ref",  :precision => 10, :scale => 0
+    t.decimal  "value_out_db_ref"
+    t.decimal  "best_value_out_db_ref"
+    t.decimal  "deviation_out_db_ref"
     t.string   "white_elo"
     t.string   "black_elo"
     t.float    "total_average_error"

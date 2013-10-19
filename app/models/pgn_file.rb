@@ -25,15 +25,15 @@ class PgnFile < ActiveRecord::Base
   def avg_distance
     return average_distance if average_distance
 
-    avg = moves.with_distance.average(:distance)
+    avg = moves.non_opening.with_distance.average(:distance)
     self.update_attributes average_distance: avg
     avg || 0
   end
 
   def avg_perfect
     return average_perfect if average_perfect
-    avg = if moves.with_distance.size > 0
-      moves.perfect.size / moves.with_distance.size.to_f
+    avg = if moves.non_opening.with_distance.size > 0
+      moves.non_opening.perfect.size / moves.non_opening.with_distance.size.to_f
     else
       0
     end
@@ -42,10 +42,10 @@ class PgnFile < ActiveRecord::Base
   end
 
   def reset_stats
-    avg = moves.with_distance.average(:distance)
+    avg = moves.non_opening.with_distance.average(:distance)
     self.update_attributes average_distance: avg
-    avg = if moves.with_distance.size > 0
-      moves.perfect.size / moves.with_distance.size.to_f
+    avg = if moves.non_opening.with_distance.size > 0
+      moves.non_opening.perfect.size / moves.non_opening.with_distance.size.to_f
     else
       0
     end
@@ -78,8 +78,8 @@ class PgnFile < ActiveRecord::Base
   end
 
   def eta
-    if processing? && self.unprocessed_moves.size > 0
-      (self.unprocessed_moves.size * (self.time || 0)) / 1000
+    if processing? && self.unprocessed_moves.non_opening.size > 0
+      (self.unprocessed_moves.non_opening.size * (self.time || 0)) / 1000
     else
       0
     end

@@ -84,39 +84,39 @@ class Game < ActiveRecord::Base
   end
 
   def white_avg_error
-    white_avg_error ||= avg_error(moves.white)
+    white_avg_error ||= avg_error(moves.non_opening.white)
   end
 
   def black_avg_error
-    black_avg_error ||= avg_error(moves.black)
+    black_avg_error ||= avg_error(moves.non_opening.black)
   end
 
   def total_avg_error
-    avg_error(moves)
+    avg_error(moves.non_opening)
   end
 
   def white_std_deviation
-    white_std_deviation ||= standard_deviation(moves.white)
+    white_std_deviation ||= standard_deviation(moves.non_opening.white)
   end
 
   def black_std_deviation
-    black_std_deviation ||= standard_deviation(moves.black)
+    black_std_deviation ||= standard_deviation(moves.non_opening.black)
   end
 
   def white_perfect_rate
-    white_perfect_rate ||= perfect_rate(moves.white)
+    white_perfect_rate ||= perfect_rate(moves.non_opening.white)
   end
 
   def black_perfect_rate
-    black_perfect_rate ||= perfect_rate(moves.black)
+    black_perfect_rate ||= perfect_rate(moves.non_opening.black)
   end
 
   def white_blunder_rate
-    white_blunder_rate ||= blunder_rate(moves.white, tie_threshold, blunder_threshold)
+    white_blunder_rate ||= blunder_rate(moves.non_opening.white, tie_threshold, blunder_threshold)
   end
 
   def black_blunder_rate
-    black_blunder_rate ||= blunder_rate(moves.black, tie_threshold, blunder_threshold)
+    black_blunder_rate ||= blunder_rate(moves.non_opening.black, tie_threshold, blunder_threshold)
   end
 
   def player_ratings
@@ -154,16 +154,16 @@ class Game < ActiveRecord::Base
   end
 
   def set_statistics!
-    self.white_avg_error = avg_error(moves.white)
-    self.black_avg_error = avg_error(moves.black)
-    self.white_std_deviation = standard_deviation(moves.white)
-    self.black_std_deviation = standard_deviation(moves.black)
-    self.white_perfect_rate = perfect_rate(moves.white)
-    self.black_perfect_rate = perfect_rate(moves.black)
-    self.white_blunder_rate = blunder_rate(moves.white, tie_threshold, blunder_threshold)
-    self.black_blunder_rate = blunder_rate(moves.black, tie_threshold, blunder_threshold)
-    self.total_average_error = avg_error(moves)
-    self.total_perfect_rate = perfect_rate(moves)
+    self.white_avg_error = avg_error(moves.non_opening.white)
+    self.black_avg_error = avg_error(moves.non_opening.black)
+    self.white_std_deviation = standard_deviation(moves.non_opening.white)
+    self.black_std_deviation = standard_deviation(moves.non_opening.black)
+    self.white_perfect_rate = perfect_rate(moves.non_opening.white)
+    self.black_perfect_rate = perfect_rate(moves.non_opening.black)
+    self.white_blunder_rate = blunder_rate(moves.non_opening.white, tie_threshold, blunder_threshold)
+    self.black_blunder_rate = blunder_rate(moves.non_opening.black, tie_threshold, blunder_threshold)
+    self.total_average_error = avg_error(moves.non_opening)
+    self.total_perfect_rate = perfect_rate(moves.non_opening)
     self.save!
   end
 
