@@ -29,4 +29,10 @@ ChessRate::Application.routes.draw do
       post :reset_stats
     end
   end
+
+  resources :plots, only: [] do
+    collection do
+      get :perfect
+    end
+  end
 end

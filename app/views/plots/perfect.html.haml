@@ -1,0 +1,5 @@
+= stylesheet_link_tag 'nv.d3.min'
+= javascript_include_tag 'd3.v3.min'
+= javascript_include_tag 'nv.d3.min'
+
+%svg{style: 'height: 600px;', data: { data: @data.to_json}}

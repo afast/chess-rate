@@ -12,6 +12,8 @@ class PgnFile < ActiveRecord::Base
   has_many :unprocessed_games, class_name: 'Game', conditions: {status: STATUS[:not_processed]}
   has_many :unprocessed_moves, through: :unprocessed_games, source: :moves
 
+  scope :processed, where(status: STATUS[:processed])
+
   before_create :init_status
 
   attr_accessible :description, :pgn_file, :status, :average_perfect, :average_distance,
