@@ -6,6 +6,7 @@
     %th= t('status')
     %th= t('avg_error')
     %th= t('perfect_rate')
+    %th= t('games_perfect_rate')
     %th= t('analysis time')
     %th
 
@@ -21,6 +22,7 @@
       - else
         %td= '%.2f' % pgn_file.avg_distance
         %td= '%.2f' % pgn_file.avg_perfect
+      %td= '%.2f' % pgn_file.game_avg_perfect
       %td= pgn_file.time
       %td
         = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn'

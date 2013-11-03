@@ -182,7 +182,7 @@ class Uci
     if move_string =~ /^bestmove/
       if move_string =~ /^bestmove\sa1a1/ # fruit and rybka
         raise EngineResignError, "Engine Resigns. Check Mate? #{move_string}"
-      elsif move_string =~ /^bestmove\sNULL/ # robbolita
+      elsif move_string =~ /^bestmove\sNULL/ # robbolita, Houdini
         raise NoMoveError, "No more moves: #{move_string}"
       elsif move_string =~ /^bestmove\s\(none\)\s/ #stockfish
         raise NoMoveError, "No more moves: #{move_string}"
@@ -200,8 +200,9 @@ class Uci
   # the internal chess board. This does *not* actiually execute a move, it
   # simply queries for and returns what the engine would consider to be the
   # best option available.
-  def bestmove
-    write_to_engine("go movetime #{@movetime}")
+  def bestmove(movetime=nil)
+    movetime ||= @movetime
+    write_to_engine("go movetime #{movetime}")
     until (move_string = read_from_engine).to_s.size > 1 && move_string =~ /^bestmove/
       sleep 0.25
     end

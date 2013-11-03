@@ -2,6 +2,7 @@
 %html
 %head
   %title Chess Rate
+  %link{rel: 'icon', type: 'image/ico', href: '/favicon.ico'}
   = stylesheet_link_tag    "application", :media => "all"
   = javascript_include_tag "application"
   = csrf_meta_tags
@@ -23,7 +24,7 @@
           %li
             %span.user-name= current_user.full_name
           %li= link_to t('sign_out'), destroy_session_path(current_user), method: :delete
-  .row.row-fluid.span9
+  .row.row-fluid
     - if notice
       %p.alert.alert-info= notice
     - if alert

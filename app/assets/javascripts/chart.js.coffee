@@ -1,18 +1,5 @@
-myData = () ->
-  series1 = []
-  for i in [1...100]
-    series1.push({
-      x: i, y: 100 / i
-    })
-
-  [{
-    key: "Series #1",
-    values: series1,
-    color: "#0000ff"
-  }]
-
 $ ->
-  if $('svg').size > 0
+  if $('svg').size() > 0
     nv.addGraph ()->
       chart = nv.models.scatterChart()
         .showDistX(true)
@@ -23,7 +10,7 @@ $ ->
       chart.yAxis.tickFormat(d3.format('.02f'))
 
       d3.select("svg")
-        .datum($('svg').data('data'))
+        .datum(data)
         .transition().duration(500)
         .call(chart)
 

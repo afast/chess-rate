@@ -11,6 +11,26 @@ module PlotsHelper
   end
 
   def pgn_file_perfect_plot_data(pgn_file)
-    pgn_file.games.processed.map { |g| game_perfect_plot_data(g) }.flatten
+    pgn_file.games.processed.select([:white_elo, :black_elo, :white_perfect_rate, :black_perfect_rate]).map { |g| game_perfect_plot_data(g) }.flatten
+  end
+
+  def pgn_file_distance_plot_data(pgn_file)
+    pgn_file.games.includes(:moves).processed.map { |g| game_distance_plot_data(g) }.flatten
+  end
+
+  def distance_plot_data(elo, moves)
+    distance = moves.pluck(:distance).sum
+    {x: elo, y: distance} if distance < 50
+  end
+
+  def game_distance_plot_data(game)
+    data = []
+    if game.white_elo
+      data << distance_plot_data(game.white_elo, game.moves.white.not_perfect.select(:distance))
+    end
+    if game.black_elo
+      data << distance_plot_data(game.black_elo, game.moves.black.not_perfect.select(:distance))
+    end
+    data.compact
   end
 end

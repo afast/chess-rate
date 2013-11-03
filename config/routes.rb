@@ -33,6 +33,7 @@ ChessRate::Application.routes.draw do
   resources :plots, only: [] do
     collection do
       get :perfect
+      get :distance
     end
   end
 end

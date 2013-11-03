@@ -103,14 +103,6 @@ class Game < ActiveRecord::Base
     black_std_deviation ||= standard_deviation(moves.non_opening.black)
   end
 
-  def white_perfect_rate
-    white_perfect_rate ||= perfect_rate(moves.non_opening.white)
-  end
-
-  def black_perfect_rate
-    black_perfect_rate ||= perfect_rate(moves.non_opening.black)
-  end
-
   def white_blunder_rate
     white_blunder_rate ||= blunder_rate(moves.non_opening.white, tie_threshold, blunder_threshold)
   end

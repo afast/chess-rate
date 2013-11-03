@@ -1,5 +1,6 @@
 class Move < ActiveRecord::Base
   OPENING_START = 12
+  PERFECT_TOLERANCE = 0.02
 
   attr_accessible :annotator_move, :annotator_value, :check, :comments, :lan, :mate,
     :number, :pgn, :player_value, :side, :game, :distance
@@ -12,7 +13,9 @@ class Move < ActiveRecord::Base
   scope :black, where(side: false)
   scope :white, where(side: true)
   scope :with_distance, where(Move.arel_table[:distance].not_eq(nil))
+  scope :not_perfect, with_distance.where('distance > 0')
   scope :perfect, with_distance.where(distance: 0)
+  scope :perfect_with_tolerance, with_distance.where('distance < ?', PERFECT_TOLERANCE)
   scope :not_null, lambda { |attr| where(Move.arel_table[attr].not_eq(nil)) }
   scope :non_opening, not_null(:number).where('number > ?', OPENING_START)
 

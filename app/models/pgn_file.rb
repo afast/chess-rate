@@ -27,7 +27,7 @@ class PgnFile < ActiveRecord::Base
   def avg_distance
     return average_distance if average_distance
 
-    avg = moves.non_opening.with_distance.average(:distance)
+    avg = moves.non_opening.not_perfect.average(:distance)
     self.update_attributes average_distance: avg
     avg || 0
   end
@@ -35,7 +35,7 @@ class PgnFile < ActiveRecord::Base
   def avg_perfect
     return average_perfect if average_perfect
     avg = if moves.non_opening.with_distance.size > 0
-      moves.non_opening.perfect.size / moves.non_opening.with_distance.size.to_f
+      moves.non_opening.perfect_with_tolerance.size / moves.non_opening.with_distance.size.to_f
     else
       0
     end
@@ -43,11 +43,19 @@ class PgnFile < ActiveRecord::Base
     avg
   end
 
+  def game_avg_perfect
+    values = games.collect(&:total_perfect_rate).compact
+    discard = values.size * 0.1
+    puts discard
+    values = values[discard..(-discard-1)]
+    values.sum / values.size.to_f
+  end
+
   def reset_stats
-    avg = moves.non_opening.with_distance.average(:distance)
+    avg = moves.non_opening.not_perfect.average(:distance)
     self.update_attributes average_distance: avg
     avg = if moves.non_opening.with_distance.size > 0
-      moves.non_opening.perfect.size / moves.non_opening.with_distance.size.to_f
+      moves.non_opening.perfect_with_tolerance.size / moves.non_opening.with_distance.size.to_f
     else
       0
     end
