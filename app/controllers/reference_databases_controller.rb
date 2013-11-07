@@ -2,7 +2,7 @@ class ReferenceDatabasesController < ApplicationController
   # GET /reference_databases
   # GET /reference_databases.json
   def index
-    @reference_databases = ReferenceDatabase.all
+    @reference_databases = ReferenceDatabase.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

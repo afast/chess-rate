@@ -2,7 +2,7 @@ class PgnFilesController < ApplicationController
   # GET /pgn_files
   # GET /pgn_files.json
   def index
-    @pgn_files = PgnFile.all
+    @pgn_files = PgnFile.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

@@ -9,22 +9,29 @@
 
 %body
   - if current_user
-    .navbar
-      .navbar-inner
+    .navbar.navbar-default
+      .navbar-header
+        %button.navbar-toggle{data: {toggle: 'collapse', target: '#bs-example-navbar-collapse-1'}}
+          %span.sr-only
+            Toggle navigation
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        %a.navbar-brand{href: '#'}
+          Chess Rate
+      .collapse.navbar-collapse
         %a.brand{href: "#"}
-        %ul.nav
-          %li= link_to t('home'), :root
-          %li= link_to t('users'), users_path
-          %li= link_to t('games'), games_path
-          %li= link_to t('moves.list'), moves_path
-          %li= link_to t('pgn_files'), pgn_files_path
-          %li= link_to t('players'), players_path
-          %li= link_to t('ref_db'), reference_databases_path
-        %ul.nav.pull-right
+        %ul.nav.navbar-nav
+          %li{class: (controller_name == 'games' ? 'active' : '')}= link_to t('home'), :root
+          %li{class: (controller_name == 'users' ? 'active' : '')}= link_to t('users'), users_path
+          %li{class: (controller_name == 'pgn_files' ? 'active' : '')}= link_to t('pgn_files'), pgn_files_path
+          %li{class: (controller_name == 'players' ? 'active' : '')}= link_to t('players'), players_path
+          %li{class: (controller_name == 'reference_databases' ? 'active' : '')}= link_to t('ref_db'), reference_databases_path
+        %ul.nav.navbar-nav.pull-right
           %li
             %span.user-name= current_user.full_name
-          %li= link_to t('sign_out'), destroy_session_path(current_user), method: :delete
-  .row.row-fluid
+          %li=link_to t('sign_out'), destroy_session_path(current_user), method: :delete
+  .content
     - if notice
       %p.alert.alert-info= notice
     - if alert

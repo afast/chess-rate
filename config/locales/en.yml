@@ -11,10 +11,23 @@ en:
     list: Listing games
     new: New Game
     edit: Edit Game
+  user:
+    list: Listing Users
+  move:
+    list: Listing Moves
+  pgn_file:
+    list: Listing pgn files
+  player:
+    list: Listing Players
+  reference_database:
+    list: Listing Reference Databases
+  new: new
   sure: Are you sure?
-  perfect_rate: Perfect Rate
+  perfect_rate: Perfect %
+  games_perfect_rate: Games Avg Perfect %
   avg_error: Average Error
   time:
     label: Time
   process: Process
   save: Save
+  number: Number

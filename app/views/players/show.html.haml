@@ -1,90 +1,89 @@
-%p#notice= notice
+.container
+  .row
+    .page-header
+      %h1
+        = @player.name
+    %p#notice= notice
 
-%p
-  %b= t('name')
-  = @player.name
-
-%ul.nav.nav-tabs
-  %li{class: (params[:collection] ? '' : 'active')}
-    %a{data: {toggle: 'tab'}, href: '#tournaments'}= t('tournaments')
-  %li{class: (params[:collection] ? 'active' : '')}
-    %a{data: {toggle: 'tab'}, href: '#collection'}= t('collection')
-  %li
-    %a{data: {toggle: 'tab'}, href: '#games'}= t('game.all')
+    %ul.nav.nav-tabs
+      %li{class: (params[:collection] ? '' : 'active')}
+        %a{data: {toggle: 'tab'}, href: '#tournaments'}= t('tournaments')
+      %li{class: (params[:collection] ? 'active' : '')}
+        %a{data: {toggle: 'tab'}, href: '#collection'}= t('collection')
+      %li
+        %a{data: {toggle: 'tab'}, href: '#games'}= t('game.all')
 
 
-.tab-content
-  #tournaments.tab-pane{class: (params[:collection] ? '' : 'active')}
-    %table.table.table-condensed.table-striped.table-hover
-      %tr
-        %th= t('tournament')
-        %th= t('start')
-        %th= t('end')
-        %th= t('avg_error')
-        %th= t('avg_deviation')
-        %th= t('perfect_rate')
-        %th= t('blunder_rate')
-      - @tournaments.each do |t|
-        %tr
-          %td= t[:name]
-          %td= t[:start_date]
-          %td= t[:end_date]
-          %td= t[:avg_error]
-          %td= t[:avg_deviation]
-          %td= t[:perfect_rate]
-          %td= t[:blunder_rate]
-  #collection.tab-pane{class: (params[:collection] ? 'active' : '')}
-    = form_tag player_path(@player), method: :get do
-      = select_tag :collection, options_from_collection_for_select(@collections, :id, :description, @collection.id)
-    %table.table.table-condensed.table-striped.table-hover
-      %tr
-        %th= t('tournament')
-        %th= t('start')
-        %th= t('end')
-        %th= t('color')
-        %th= t('elo')
-        %th= t('rival')
-        %th= t('rival_elo')
-        %th= t('result')
-        %th= t('avg_error')
-        %th= t('avg_deviation')
-        %th= t('perfect_rate')
-        %th= t('blunder_rate')
-      - @collection.games.each do |game|
-        - g = game.get_info_for(@player.name)
-        %tr
-          %td= g[:name]
-          %td= g[:start_date]
-          %td= g[:end_date]
-          %td= g[:color]
-          %td= g[:elo]
-          %td= g[:rival]
-          %td= g[:rival_elo]
-          %td= g[:result]
-          %td= g[:avg_err]
-          %td= g[:std_dev]
-          %td= g[:perfect]
-          %td= g[:blunders]
-  #games.tab-pane
-    %table.table.table-condensed.table-striped.table-hover
-      %tr
-        %th= t('tournament')
-        %th= t('start')
-        %th= t('end')
-        %th= t('avg_error')
-        %th= t('avg_deviation')
-        %th= t('perfect_rate')
-        %th= t('blunder_rate')
-      - @games.each do |g|
-        %tr
-          %td= g[:name]
-          %td= g[:start_date]
-          %td= g[:end_date]
-          %td= g[:avg_err]
-          %td= g[:std_dev]
-          %td= g[:perfect]
-          %td= g[:blunders]
+    .tab-content
+      #tournaments.tab-pane{class: (params[:collection] ? '' : 'active')}
+        %table.table.table-condensed.table-striped.table-hover
+          %tr
+            %th= t('tournament')
+            %th= t('start')
+            %th= t('end')
+            %th= t('avg_error')
+            %th= t('avg_deviation')
+            %th= t('perfect_rate')
+            %th= t('blunder_rate')
+          - @tournaments.each do |t|
+            %tr
+              %td= t[:name]
+              %td= t[:start_date]
+              %td= t[:end_date]
+              %td= '%.2f' % t[:avg_error]
+              %td= '%.2f' % t[:avg_deviation]
+              %td= '%.2f' % t[:perfect_rate]
+              %td= '%.2f' % t[:blunder_rate]
+      #collection.tab-pane{class: (params[:collection] ? 'active' : '')}
+        = form_tag player_path(@player), method: :get do
+          = select_tag :collection, options_from_collection_for_select(@collections, :id, :description, @collection.id)
+        %table.table.table-condensed.table-striped.table-hover
+          %tr
+            %th= t('tournament')
+            %th= t('start')
+            %th= t('end')
+            %th= t('color')
+            %th= t('elo')
+            %th= t('rival')
+            %th= t('rival_elo')
+            %th= t('result')
+            %th= t('avg_error')
+            %th= t('avg_deviation')
+            %th= t('perfect_rate')
+            %th= t('blunder_rate')
+          - @collection.games.each do |game|
+            - g = game.get_info_for(@player.name)
+            %tr
+              %td= g[:name]
+              %td= g[:start_date]
+              %td= g[:end_date]
+              %td= g[:color]
+              %td= g[:elo]
+              %td= g[:rival]
+              %td= g[:rival_elo]
+              %td= g[:result]
+              %td= '%.2f' % g[:avg_err]
+              %td= '%.2f' % g[:std_dev]
+              %td= '%.2f' % g[:perfect]
+              %td= '%.2f' % g[:blunders]
+      #games.tab-pane
+        %table.table.table-condensed.table-striped.table-hover
+          %tr
+            %th= t('tournament')
+            %th= t('start')
+            %th= t('end')
+            %th= t('avg_error')
+            %th= t('avg_deviation')
+            %th= t('perfect_rate')
+            %th= t('blunder_rate')
+          - @games.each do |g|
+            %tr
+              %td= g[:name]
+              %td= g[:start_date]
+              %td= g[:end_date]
+              %td= '%.2f' % g[:avg_err]
+              %td= '%.2f' % g[:std_dev]
+              %td= '%.2f' % g[:perfect]
+              %td= '%.2f' % g[:blunders]
 
-= link_to t('edit'), edit_player_path(@player), class: 'btn'
-\|
-= link_to t('back'), players_path, class: 'btn'
+    = link_to t('back'), players_path, class: 'btn btn-primary'

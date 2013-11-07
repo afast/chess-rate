@@ -1,35 +1,41 @@
-%h1= t('pgn_file.list')
+.container
+  .row
+    .page-header
+      %h1
+        = t('pgn_file.list')
+        %small= link_to t('pgn_file.new'), new_pgn_file_path, class: 'btn btn-primary btn-sm'
 
-%table.table.table-condensed.table-striped.table-hover
-  %tr
-    %th= t('description')
-    %th= t('status')
-    %th= t('avg_error')
-    %th= t('perfect_rate')
-    %th= t('games_perfect_rate')
-    %th= t('analysis time')
-    %th
+    %table.table.table-condensed.table-striped.table-hover
+      %tr
+        %th= t('description')
+        %th= t('status')
+        %th= t('avg_error')
+        %th= t('perfect_rate')
+        %th= t('games_perfect_rate')
+        %th
+          = t('analysis time')
+          %span.label.label-default
+            (ms)
+        %th
 
-  - @pgn_files.each do |pgn_file|
-    %tr
-      %td= pgn_file.description
-      %td= pgn_file.status_to_s
-      - if pgn_file.processing?
-        %td
-          = "#{'%.2f' % pgn_file.progress_percentage} % processed"
-        %td
-          = "ETA: #{(DateTime.now + pgn_file.eta.seconds).strftime('%m/%d - %H:%M')}"
-      - else
-        %td= '%.2f' % pgn_file.avg_distance
-        %td= '%.2f' % pgn_file.avg_perfect
-      %td= '%.2f' % pgn_file.game_avg_perfect
-      %td= pgn_file.time
-      %td
-        = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn'
-        = link_to t('reset'), reset_stats_pgn_file_path(pgn_file), method: :post, class: 'btn'
-        = link_to t('edit'), edit_pgn_file_path(pgn_file), class: 'btn'
-        = link_to t('destroy'), pgn_file, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn'
+      - @pgn_files.each do |pgn_file|
+        %tr
+          %td= pgn_file.description
+          %td= pgn_file.status_to_s
+          - if pgn_file.processing?
+            %td
+              = "#{'%.2f' % pgn_file.progress_percentage} % processed"
+            %td
+              = "ETA: #{(DateTime.now + pgn_file.eta.seconds).strftime('%m/%d - %H:%M')}"
+          - else
+            %td= '%.2f' % pgn_file.avg_distance
+            %td= '%.2f' % ((pgn_file.avg_perfect || 0)*100)
+          %td= '%.2f' % ((pgn_file.game_avg_perfect || 0)*100)
+          %td= pgn_file.time
+          %td
+            = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn btn-primary btn-xs'
+            = link_to t('reset'), reset_stats_pgn_file_path(pgn_file), method: :post, class: 'btn btn-info btn-xs'
+            = link_to t('edit'), edit_pgn_file_path(pgn_file), class: 'btn btn-default btn-xs'
+            = link_to t('destroy'), pgn_file, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn btn-danger btn-xs'
 
-%br
-
-= link_to t('pgn_file.new'), new_pgn_file_path, class: 'btn btn-primary'
+    = will_paginate @pgn_files, renderer: BootstrapPagination::Rails

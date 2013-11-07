@@ -1,15 +1,21 @@
-%h1= t('user.list')
+.container
+  .row
+    .page-header
+      %h1= t('user.list')
 
-%table.table.table-condensed.table-striped.table-hover
-  %tr
-    %th= t('email')
-    %th= t('name')
-    %th
+    .col-md-6
+      %table.table.table-condensed.table-striped.table-hover
+        %tr
+          %th= t('email')
+          %th= t('name')
+          %th
 
-  - @users.each do |user|
-    %tr
-      %td= user.email
-      %td= user.name
-      %td
-        = link_to t('edit'), edit_user_path(user), class: 'btn btn-primary'
-        = link_to t('destroy'), user, method: :delete, data: { confirm: t('sure') }, class: 'btn'
+        - @users.each do |user|
+          %tr
+            %td= user.email
+            %td= user.name
+            %td
+              = link_to t('edit'), edit_user_path(user), class: 'btn btn-primary btn-xs'
+              = link_to t('destroy'), user, method: :delete, data: { confirm: t('sure') }, class: 'btn btn-danger btn-xs'
+  .row
+    = will_paginate @users, renderer: BootstrapPagination::Rails

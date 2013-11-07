@@ -2,7 +2,7 @@ class PlayersController < ApplicationController
   # GET /players
   # GET /players.json
   def index
-    @players = Player.all
+    @players = Player.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,7 +15,7 @@ class PlayersController < ApplicationController
   def show
     @player = Player.find(params[:id])
     @collections = @player.pgn_files
-    @collection = PgnFile.find_by_id(params[:collection]) || @collections.first
+    @collection = PgnFile.find_by_id(params[:collection]) || @collections.first || PgnFile.new
     @tournaments = @player.tournaments.map do |t|
       t.get_info_for(@player.id)
     end

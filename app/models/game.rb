@@ -122,26 +122,30 @@ class Game < ActiveRecord::Base
     result[:start_date] = start_date
     result[:end_date] = end_date
     if white.name == player_name
-      result[:avg_err] = white_avg_error
-      result[:std_dev] = white_std_deviation
-      result[:perfect] = white_perfect_rate
-      result[:blunders] = white_blunder_rate
+      result[:avg_err] = white_avg_error || 0
+      result[:std_dev] = white_std_deviation || 0
+      result[:perfect] = white_perfect_rate || 0
+      result[:blunders] = white_blunder_rate || 0
       result[:color] = 'color.white'
       result[:elo] = white_elo
       result[:rival] = black.name
       result[:rival_elo] = black_elo
       result[:result] = self.result.split('-').first
     elsif black.name == player_name
-      result[:avg_err] = black_avg_error
-      result[:std_dev] = black_std_deviation
-      result[:perfect] = black_perfect_rate
-      result[:blunders] = black_blunder_rate
+      result[:avg_err] = black_avg_error || 0
+      result[:std_dev] = black_std_deviation || 0
+      result[:perfect] = black_perfect_rate || 0
+      result[:blunders] = black_blunder_rate || 0
       result[:color] = 'color.black'
       result[:elo] = black_elo
       result[:rival] = white.name
       result[:rival_elo] = white_elo
       result[:result] = self.result.split('-').last
     end
+    result[:avg_err] ||= 0
+    result[:std_dev] ||= 0
+    result[:perfect] ||= 0
+    result[:blunders] ||= 0
     result
   end
 

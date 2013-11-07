@@ -1,6 +1,6 @@
 %td= '%.2f' % game.white_std_deviation
 %td= '%.2f' % game.black_std_deviation
-%td= '%.2f%' % game.white_perfect_rate
-%td= '%.2f%' % game.black_perfect_rate
-%td= '%.2f%' % game.black_blunder_rate
-%td= '%.2f%' % game.white_blunder_rate
+%td= '%.2f%' % ((game.white_perfect_rate || 0)*100)
+%td= '%.2f%' % ((game.black_perfect_rate || 0)*100)
+%td= '%.2f%' % ((game.black_blunder_rate || 0)*100)
+%td= '%.2f%' % ((game.white_blunder_rate || 0)*100)

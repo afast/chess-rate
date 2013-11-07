@@ -13,6 +13,8 @@ gem 'carrierwave'
 gem 'slim', ">= 1.3.0"
 gem 'mysql2'
 
+gem 'will_paginate-bootstrap'
+
 gem 'spawnling'
 gem 'treetop'
 gem 'uci', path: 'vendor/uci-0.0.2/'

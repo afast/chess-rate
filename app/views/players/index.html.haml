@@ -1,19 +1,21 @@
-%h1= t('player.list')
+.container
+  .row
+    .page-header
+      %h1
+        = t('player.list')
+    .col-md-5
+      %table.table.table-condensed.table-striped.table-hover
+        %tr
+          %th= t('name')
+          %th
 
-%table.table.table-condensed.table-striped.table-hover
-  %tr
-    %th= t('name')
-    %th
-    %th
-    %th
+        - @players.each do |player|
+          %tr
+            %td= player.name
+            %td
+              = link_to t('show'), player, class: 'btn btn-primary btn-xs'
+              = link_to t('edit'), edit_player_path(player), class: 'btn btn-default btn-xs'
+              = link_to t('destroy'), player, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn btn-danger btn-xs'
 
-  - @players.each do |player|
-    %tr
-      %td= player.name
-      %td= link_to t('show'), player, class: 'btn btn-primary'
-      %td= link_to t('edit'), edit_player_path(player), class: 'btn'
-      %td= link_to t('destroy'), player, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn btn-danger'
-
-%br
-
-= link_to t('player.new'), new_player_path, class: 'btn btn-primary'
+  .row
+    = will_paginate @players, renderer: BootstrapPagination::Rails

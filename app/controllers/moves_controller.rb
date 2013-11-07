@@ -2,7 +2,7 @@ class MovesController < ApplicationController
   # GET /moves
   # GET /moves.json
   def index
-    @moves = Move.all
+    @moves = Move.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

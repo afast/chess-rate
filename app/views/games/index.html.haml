@@ -1,66 +1,56 @@
-%h1= t('game.list')
+.page-header
+  %h1= t('game.list')
 
 %table.table.table-condensed.table-striped.table-hover
-  %tr
-    %th= t('white')
-    %th= t('black')
-    %th= t('annotator')
-    %th= t('white_avg_error')
-    %th= t('black_avg_error')
-    %th= t('tournament')
-    %th= t('site')
-    %th= t('start_date')
-    %th= t('round')
-    %th= t('result')
-    %th= t('status')
-    %th= t('end_date')
-    %th= t('white_std_deviation')
-    %th= t('black_std_deviation')
-    %th= t('white_perfect_rate')
-    %th= t('black_perfect_rate')
-    %th= t('black_blunder_rate')
-    %th= t('white_blunder_rate')
-    %th= t('black_blunder_rate')
-    %th= t('player_out_dbref')
-    %th= t('move_out_dbref')
-    %th= t('value_out_dbref')
-    %th= t('best_value_out_dbref')
-    %th= t('deviation_out_dbref')
-    %th
+  %thead
+    %tr
+      %th
+      %th
+        %th{colspan: 2}= t('error')
+      %th
+      %th
+      %th
+      %th
+      %th{colspan: 2}= t('std_deviation')
+      %th{colspan: 2}= t('perfect_rate')
+      %th{colspan: 2}= t('blunder_rate')
+      %th
+    %tr
+      %th= t('white')
+      %th= t('black')
+      %th= t('white')
+      %th= t('black')
+      %th= t('tournament')
+      %th= t('start_date')
+      %th= t('round')
+      %th= t('result')
+      %th= t('white')
+      %th= t('black')
+      %th= t('white')
+      %th= t('black')
+      %th= t('white')
+      %th= t('black')
+      %th
 
   - @games.each do |game|
     %tr{id: game.id}
       %td= game.white.try(:name)
       %td= game.black.try(:name)
-      %td= game.annotator
       %td= '%.2f' % game.white_avg_error
       %td= '%.2f' % game.black_avg_error
       %td= game.tournament.try(:name)
-      %td= game.site.try(:name)
       %td= game.start_date.try(:to_date)
       %td= game.round
-      %td= game.result
-      %td= game.status
-      %td= game.end_date.try(:to_date)
+      %td= humanize_result(game.result)
       - unless game.processing?
         = render 'statistics', game: game
       - else
         %td{colspan: 6}
           .progress.progress-striped.active
             .bar{style: "width: #{'%.2f' % game.progress_percentage}%;"}
-      %td= game.player_out_db_ref
-      %td= game.move_out_db_ref
-      %td= game.value_out_db_ref
-      %td= game.best_value_out_db_ref
-      %td= game.deviation_out_db_ref
       %td
-        = link_to t('re_analyze'), analyze_game_path(game), class: 'btn'
-        = link_to t('edit'), edit_game_path(game), class: 'btn'
-        = link_to t('destroy'), game, :method => :delete, :data => { :confirm => I18n.t('sure') }, class: 'btn'
-        = link_to t('download_pgn'), download_game_path(game), class: 'btn'
+        = link_to t('re_analyze'), analyze_game_path(game), class: 'btn btn-primary btn-xs'
+        = link_to t('destroy'), game, :method => :delete, :data => { :confirm => I18n.t('sure') }, class: 'btn btn-danger btn-xs'
+        = link_to t('pgn'), download_game_path(game), class: 'btn btn-info btn-xs'
 
-.digg_pagination
-  = will_paginate @games
-%br
-
-= link_to t('game.new'), new_game_path, class: 'btn btn-primary'
+= will_paginate @games, renderer: BootstrapPagination::Rails
