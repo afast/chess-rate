@@ -1,3 +1,39 @@
+= stylesheet_link_tag 'nv.d3.min'
+= javascript_include_tag 'd3.v3.min'
+= javascript_include_tag 'nv.d3.min'
+= javascript_include_tag 'chart'
+:javascript
+  $(function(){
+    $('ul.nav.nav-tabs').on('click', 'li.performance', function(){
+      var parseDate = d3.time.format("%Y-%m-%d").parse;
+      nv.addGraph(function() {
+        var chart = nv.models.lineChart();
+
+        chart.xAxis
+          .axisLabel('Date')
+          .tickFormat(function(d) { return d3.time.format('%Y-%m-%d')(new Date(d)); })
+
+        chart.yAxis
+          .axisLabel('ELO');
+
+        data = JSON.parse($('#performance svg').attr('data-elo'));
+        data[0].values = $.map(data[0].values, function(item, index){
+          if (typeof(item.x) != 'undefined' && item.x != null)
+            item.x = parseDate(item.x);
+          return item;
+        });
+        d3.select('#performance svg')
+          .datum(data)
+          .transition().duration(500)
+          .call(chart);
+
+        nv.utils.windowResize(function() { d3.select('#performance svg').call(chart) });
+
+        return chart;
+      });
+    });
+  });
+
 .container
   .row
     .page-header
@@ -12,6 +48,8 @@
         %a{data: {toggle: 'tab'}, href: '#collection'}= t('collection')
       %li
         %a{data: {toggle: 'tab'}, href: '#games'}= t('game.all')
+      %li.performance
+        %a{data: {toggle: 'tab'}, href: '#performance'}= t('performance')
 
 
     .tab-content
@@ -51,7 +89,7 @@
             %th= t('avg_deviation')
             %th= t('perfect_rate')
             %th= t('blunder_rate')
-          - @collection.games.each do |game|
+          - @collection.games.for_player(@player.id).each do |game|
             - g = game.get_info_for(@player.name)
             %tr
               %td= g[:name]
@@ -85,5 +123,7 @@
               %td= '%.2f' % g[:std_dev]
               %td= '%.2f' % g[:perfect]
               %td= '%.2f' % g[:blunders]
+      #performance.tab-pane
+        %svg#elo{style: 'height: 580px; width: 1170px', data: {elo: elo_data(@player).to_json}}
 
     = link_to t('back'), players_path, class: 'btn btn-primary'

@@ -1,5 +1,5 @@
 $ ->
-  if $('svg').size() > 0
+  if $('#chart svg').size() > 0
     nv.addGraph ()->
       chart = nv.models.scatterChart()
         .showDistX(true)

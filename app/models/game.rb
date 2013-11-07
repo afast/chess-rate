@@ -29,6 +29,7 @@ class Game < ActiveRecord::Base
   scope :not_processed, where('status IS NULL OR status = ?', STATUS[:not_processed])
   scope :processing, where(status: STATUS[:processing])
   scope :processed, where(status: STATUS[:processed])
+  scope :for_player, lambda { |player_id| where('black_id = :id OR white_id = :id', id: player_id) }
 
   def add_move(move)
     @cache_moves = [] if @cache_moves.nil?
@@ -114,6 +115,14 @@ class Game < ActiveRecord::Base
   def player_ratings
     "White - #{@white} - #{'%.2f' % self.white_avg_error}\n" +
     "Black - #{@black} - #{'%.2f' % self.black_avg_error}\n"
+  end
+
+  def get_elo_for(player_id)
+    if white_id == player_id
+      white_elo
+    elsif black_id == player_id
+      black_elo
+    end
   end
 
   def get_info_for(player_name)
