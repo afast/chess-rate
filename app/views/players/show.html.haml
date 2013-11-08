@@ -30,6 +30,31 @@
 
         return chart;
       });
+      $('ul.nav.nav-tabs').off('click', 'li.performance');
+    });
+    $('ul.nav.nav-tabs').on('click', 'li.game_performance', function(){
+      var parseDate = d3.time.format("%Y-%m-%d").parse;
+      nv.addGraph(function() {
+        var chart = nv.models.lineChart();
+
+        chart.xAxis
+          .axisLabel('Move');
+
+        chart.yAxis
+          .axisLabel('Avg. Distance')
+          .tickFormat(d3.format('.02f'));
+
+        data = JSON.parse($('#game_performance svg').attr('data-game-performance'));
+        d3.select('#game_performance svg')
+          .datum(data)
+          .transition().duration(500)
+          .call(chart);
+
+        nv.utils.windowResize(function() { d3.select('#game_performance svg').call(chart) });
+
+        return chart;
+      });
+      $('ul.nav.nav-tabs').off('click', 'li.game_performance');
     });
   });
 
@@ -49,6 +74,8 @@
         %a{data: {toggle: 'tab'}, href: '#games'}= t('game.all')
       %li.performance
         %a{data: {toggle: 'tab'}, href: '#performance'}= t('performance')
+      %li.game_performance
+        %a{data: {toggle: 'tab'}, href: '#game_performance'}= t('game_performance')
 
 
     .tab-content
@@ -124,5 +151,7 @@
               %td= '%.2f' % g[:blunders]
       #performance.tab-pane
         %svg#elo{style: 'height: 580px; width: 1170px', data: {elo: elo_data(@player).to_json}}
+      #game_performance.tab-pane
+        %svg#game{style: 'height: 580px; width: 1170px', data: {game_performance: game_performance_data(@player).to_json}}
 
     = link_to t('back'), players_path, class: 'btn btn-primary'
