@@ -47,56 +47,52 @@ class GameAnalyzer
 
         game.update_attributes! progress: (index+1)/move_count.to_f
 
-        # Ignore the move if it's an opening
+        # Ask our engine for the current score and best move
+        score, best_move = @uci.analyse_position
 
-        unless move.opening?
-          # Ask our engine for the current score and best move
-          score, best_move = @uci.analyse_position
+        # Correct score
+        if score.nil? # Assume the score did not change
+          score = old_score
+        else
+          score *= -1 if move.black? # Change to white's perspective
+        end
 
-          # Correct score
-          if score.nil? # Assume the score did not change
-            score = old_score
-          else
-            score *= -1 if move.black? # Change to white's perspective
-          end
+        # initialize first score
+        old_score = score if old_score.nil?
 
-          # initialize first score
-          old_score = score if old_score.nil?
-
-          # Stabilize score, bestmove results
-          if old_lan_move == old_bestmove
-            # The newest score is more reliable if the player matched the best move
-            old_score = score
-          elsif score > old_score && old_move.white? || score < old_score && old_move.black?
-            # If the new evaluation says that the user's move has a better score, it is the better move
-            old_bestmove = old_lan_move
-            old_score = score
-          end
-
-          if index > 0 # Start assigning after first move was scored
-            old_move.update_attributes! player_value: score, annotator_value: old_score, annotator_move: old_bestmove
-
-            if @db_ref
-              percentage, coincidences = @db_ref.getPercentage(@uci.fenstring)
-
-              if coincidences == 0 && first_time_here
-                player = nil
-                if old_move.side.eql? 'white'
-                  player = Player.where(id: game.white).first
-                else
-                  player = Player.where(id: game.black).first
-                end
-                game.update_attributes! player_out_db_ref: player.name, move_out_db_ref: (index+1)/2, value_out_db_ref: score,
-                                        best_value_out_db_ref: old_score, deviation_out_db_ref: (score-old_score).abs
-                first_time_here = false
-              elsif coincidences > 0
-                first_time_here = true
-              end
-            end
-          end
-
+        # Stabilize score, bestmove results
+        if old_lan_move == old_bestmove
+          # The newest score is more reliable if the player matched the best move
+          old_score = score
+        elsif score > old_score && old_move.white? || score < old_score && old_move.black?
+          # If the new evaluation says that the user's move has a better score, it is the better move
+          old_bestmove = old_lan_move
           old_score = score
         end
+
+        if index > 0 # Start assigning after first move was scored
+          old_move.update_attributes! player_value: score, annotator_value: old_score, annotator_move: old_bestmove
+
+          if @db_ref
+            percentage, coincidences = @db_ref.getPercentage(@uci.fenstring)
+
+            if coincidences == 0 && first_time_here
+              player = nil
+              if old_move.side.eql? 'white'
+                player = Player.where(id: game.white).first
+              else
+                player = Player.where(id: game.black).first
+              end
+              game.update_attributes! player_out_db_ref: player.name, move_out_db_ref: (index+1)/2, value_out_db_ref: score,
+                                      best_value_out_db_ref: old_score, deviation_out_db_ref: (score-old_score).abs
+              first_time_here = false
+            elsif coincidences > 0
+              first_time_here = true
+            end
+          end
+        end
+
+        old_score = score
 
         old_move = move
         old_lan_move = lan_move
