@@ -1,11 +1,11 @@
 .container
   .row
-    .page-header
-      %h1
-        = t('reference_database.list')
-        = link_to t('new'), new_reference_database_path, class: 'btn btn-primary'
-
     .col-md-6
+      .page-header
+        %h1
+          = t('reference_database.list')
+          = link_to t('new'), new_reference_database_path, class: 'btn btn-primary'
+
       %table.table.table-condensed.table-striped.table-hover
         %tr
           %th= t('name')

@@ -1,12 +1,14 @@
-%p#notice= notice
+.container
+  .row
+    .col-md-5
+      .page-header
+        %h1
+          = @reference_database.name
+      .panel.panel-default
+        .panel-heading
+          = t('path')
+        .panel-body
+          = @reference_database.path
 
-%p
-  %b= t('name')
-  = @reference_database.name
-%p
-  %b= t('path')
-  = @reference_database.path
 
-= link_to t('edit'), edit_reference_database_path(@reference_database), class: 'btn btn-primary'
-\|
-= link_to t('back'), reference_databases_path, class: 'btn'
+      = link_to t('edit'), edit_reference_database_path(@reference_database), class: 'btn btn-primary'

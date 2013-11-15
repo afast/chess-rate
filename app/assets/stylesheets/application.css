@@ -28,3 +28,6 @@ table.table thead tr:first-child th {
 table.table thead tr th {
   border-top: 0;
 }
+
+body { padding-top: 70px; }
+

@@ -20,6 +20,8 @@ class PgnFile < ActiveRecord::Base
     :time, :tie_threshold, :blunder_threshold, :ref_db_id
   attr_accessor :reference_database
 
+  self.per_page = 10
+
   def init_status
     status = STATUS[:not_processed]
   end

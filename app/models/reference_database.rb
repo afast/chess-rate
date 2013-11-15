@@ -3,6 +3,8 @@ class ReferenceDatabase < ActiveRecord::Base
   validates :path, :name, uniqueness: true
   attr_accessible :name, :path
 
+  mount_uploader :path, ReferenceDatabaseUploader
+
   before_validation :set_name
   after_create :generate
 
@@ -16,7 +18,7 @@ class ReferenceDatabase < ActiveRecord::Base
 
   private
   def generate
-    DbRef::DbFactory.generate_DB_REF(path,self.id)
+    DbRef::DbFactory.generate_DB_REF(path, self.id)
   end
 
   def set_name

@@ -7,9 +7,9 @@
   = javascript_include_tag "application"
   = csrf_meta_tags
 
-%body
+%body{style: 'padding-top: 70px;'}
   - if current_user
-    .navbar.navbar-default
+    .navbar.navbar-default.navbar-fixed-top
       .navbar-header
         %button.navbar-toggle{data: {toggle: 'collapse', target: '#bs-example-navbar-collapse-1'}}
           %span.sr-only
@@ -33,8 +33,8 @@
           %li=link_to t('sign_out'), destroy_session_path(current_user), method: :delete
   .content
     - if notice
-      %p.alert.alert-info= notice
+      .alert.alert-info= notice
     - if alert
-      %p.alert.alert-error= alert
+      .alert.alert-danger= alert
 
     = yield

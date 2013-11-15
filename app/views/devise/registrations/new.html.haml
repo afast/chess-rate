@@ -1,23 +1,26 @@
-%h2 Sign up
-= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-  = devise_error_messages!
+.container
+  .row
+    .col-md-6.col-md-offset-4
+      = image_tag 'chessrate.png', style: 'height: 162px; padding-bottom: 10px;'
+    .col-md-3.col-md-offset-4
+      .page-header
+        %h2 Sign up
+      = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+        = devise_error_messages!
 
-  %div
-    = f.label :email
-    %br
-    = f.email_field :email, :autofocus => true
+        .form-group
+          = f.label :email, class: 'sr-only'
+          = f.email_field :email, :autofocus => true, class: 'form-control', placeholder: t('email')
 
-  %div
-    = f.label :password
-    %br
-    = f.password_field :password
+        .form-group
+          = f.label :password, class: 'sr-only'
+          = f.password_field :password, class: 'form-control', placeholder: t('password')
 
-  %div
-    = f.label :password_confirmation
-    %br
-    = f.password_field :password_confirmation
+        .form-group
+          = f.label :password_confirmation, class: 'sr-only'
+          = f.password_field :password_confirmation, class: 'form-control', placeholder: t('password_confirmation')
 
-  %div
-    = f.submit "Sign up", class: 'btn btn-primary'
+        %div
+          = f.submit "Sign up", class: 'btn btn-primary'
 
-= render "devise/shared/links"
+      = render "devise/shared/links"

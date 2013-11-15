@@ -1,5 +1,7 @@
-%h1= t('pgn_file.new')
+.container
+  .row
+    .col-md-5
+      .page-header
+        %h1= t('pgn_file.new')
 
-= render 'form'
-
-= link_to t('back'), pgn_files_path, class: 'btn'
+      = render 'form'

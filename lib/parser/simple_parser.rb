@@ -11,6 +11,10 @@ class SimpleParser
     g.pgn_file_id = pgn_file_id
 
     IO.foreach(path) do |line|
+      line.gsub!(/\([^\)]*\)?/, ' ')
+      line.gsub!(/\(?[^\)]*\)/, ' ')
+      line.gsub!(/\{[^\}]*\}?/, ' ')
+      line.gsub!(/\{?[^\}]*\}/, ' ')
       line.strip!
       if line =~ /^\[/
         game_read = false
@@ -31,7 +35,7 @@ class SimpleParser
 
             # clean up
             pgn.gsub!(/\([^\)]*\)/, ' ')
-            pgn.gsub!(/{[^}]*}/, ' ')
+            pgn.gsub!(/\{[^\}]*\}/, ' ')
             pgn.gsub!(/\$[\d]+/, ' ')
             pgn.gsub!(/\s+/, ' ')
 
@@ -53,6 +57,18 @@ class SimpleParser
         pgn += ' ' + line.gsub('\n', ' ').gsub('\r', ' ').gsub(/\s+/, ' ')
       end
       raise "Game read error" if game_read && reading_pgns && reading_tags && read_pgns
+    end
+    unless game_read
+
+      # clean up
+      pgn.gsub!(/\([^\)]*\)/, ' ')
+      pgn.gsub!(/\{[^\}]*\}/, ' ')
+      pgn.gsub!(/\$[\d]+/, ' ')
+      pgn.gsub!(/\s+/, ' ')
+
+      # create game
+      assign_moves(g, pgn.split(/\d+\.+/).map { |a| a.strip.split(' ') }.flatten)
+      g.save
     end
   end
 

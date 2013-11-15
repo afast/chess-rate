@@ -3,6 +3,8 @@ en:
   home: Home
   users: Users
   games: Games
+  black: Black
+  white: White
   moves: Moves
   pgn_files: PGN Files
   players: Players
@@ -15,20 +17,35 @@ en:
     list: Listing Users
   move:
     list: Listing Moves
+    label: Move
   pgn_file:
     list: Listing pgn files
   player:
     list: Listing Players
   reference_database:
     list: Listing Reference Databases
+    label: Reference Database
+  email: Email
+  password: Password
+  password_confirmation: Password Confirmation
   new: new
+  distance: Distance
+  date: Date
   sure: Are you sure?
-  perfect_rate: Perfect %
-  games_perfect_rate: Games Avg Perfect %
+  perfect_rate: Perfect
+  games_perfect_rate: Games Avg Perfect
   avg_error: Average Error
   time:
     label: Time
+  color:
+    white: White
+    black: Black
+    label: Color
   process: Process
+  lost: Lost
+  won: Won
+  draw: Draw
+  search: Search
   save: Save
   number: Number
   elo_history: Elo History

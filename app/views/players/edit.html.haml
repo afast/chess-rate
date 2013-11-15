@@ -1,7 +1,7 @@
-%h1= t('player.edit')
+.container
+  .row
+    .col-md-5
+      .page-header
+        %h1= t('player.edit')
 
-= render 'form'
-
-= link_to t('show'), @player, class: 'btn'
-\|
-= link_to t('back'), players_path, class: 'btn'
+      = render 'form'

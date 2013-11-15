@@ -2,7 +2,9 @@ class PlayersController < ApplicationController
   # GET /players
   # GET /players.json
   def index
-    @players = Player.page(params[:page])
+    scope = Player
+    scope = scope.where('name LIKE :search', search: "%#{params[:search]}%") if params[:search]
+    @players = scope.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

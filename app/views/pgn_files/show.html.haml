@@ -1,12 +1,6 @@
-%p#notice= notice
+.page-header
+  %h1
+    = @pgn_file.description
+    %small= @pgn_file.status_to_s
 
-%p
-  %b= t('description')
-  = @pgn_file.description
-%p
-  %b= t('status')
-  = @pgn_file.status
-
-= link_to t('edit'), edit_pgn_file_path(@pgn_file), class: 'btn btn-primary'
-\|
-= link_to t('back'), pgn_files_path, class: 'btn'
+= render 'games/table', games: @games

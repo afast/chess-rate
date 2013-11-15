@@ -6,7 +6,7 @@ timeouts = {}
 
 updateProgress = ($div, id) ->
   $.get "/games/#{id}/progress", (data) ->
-    $div.find('div.bar').width("#{data}%")
+    $div.find('div.progress-bar').width("#{data}%")
     if data.indexOf('100') >= 0
       clearInterval timeouts[id]
       $.get "/games/#{id}/statistics", (data) ->

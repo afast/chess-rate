@@ -11,6 +11,14 @@ class Player < ActiveRecord::Base
     games.collect(&:moves).flatten
   end
 
+  def moves_white
+    games_as_white.collect(&:moves).flatten
+  end
+
+  def moves_black
+    games_as_black.collect(&:moves).flatten
+  end
+
   def tournaments
     games.collect(&:tournament).uniq
   end

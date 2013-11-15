@@ -31,6 +31,8 @@ class Game < ActiveRecord::Base
   scope :processed, where(status: STATUS[:processed])
   scope :for_player, lambda { |player_id| where('black_id = :id OR white_id = :id', id: player_id) }
 
+  self.per_page = 10
+
   def add_move(move)
     @cache_moves = [] if @cache_moves.nil?
     @cache_moves << move
@@ -135,7 +137,7 @@ class Game < ActiveRecord::Base
       result[:std_dev] = white_std_deviation || 0
       result[:perfect] = white_perfect_rate || 0
       result[:blunders] = white_blunder_rate || 0
-      result[:color] = 'color.white'
+      result[:color] = I18n.t('color.white')
       result[:elo] = white_elo
       result[:rival] = black.name
       result[:rival_elo] = black_elo
@@ -145,7 +147,7 @@ class Game < ActiveRecord::Base
       result[:std_dev] = black_std_deviation || 0
       result[:perfect] = black_perfect_rate || 0
       result[:blunders] = black_blunder_rate || 0
-      result[:color] = 'color.black'
+      result[:color] = I18n.t('color.black')
       result[:elo] = black_elo
       result[:rival] = white.name
       result[:rival_elo] = white_elo

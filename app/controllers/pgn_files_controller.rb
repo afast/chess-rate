@@ -2,7 +2,9 @@ class PgnFilesController < ApplicationController
   # GET /pgn_files
   # GET /pgn_files.json
   def index
-    @pgn_files = PgnFile.page(params[:page])
+    scope = PgnFile
+    scope = scope.where('description LIKE :search', search: "%#{params[:search]}%") if params[:search]
+    @pgn_files = scope.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +16,7 @@ class PgnFilesController < ApplicationController
   # GET /pgn_files/1.json
   def show
     @pgn_file = PgnFile.find(params[:id])
+    @games = @pgn_file.games.page(params[:page])
 
     respond_to do |format|
       format.html # show.html.erb

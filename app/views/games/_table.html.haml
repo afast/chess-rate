@@ -1,0 +1,57 @@
+- if games.any?
+  %table.table.table-condensed.table-striped.table-hover
+    %thead
+      %tr
+        %th
+        %th
+          %th{colspan: 2}= t('error')
+        %th
+        %th
+        %th
+        %th
+        %th{colspan: 2}= t('std_deviation')
+        %th{colspan: 2}= t('perfect_rate')
+        %th{colspan: 2}= t('blunder_rate')
+        %th
+      %tr
+        %th= t('white')
+        %th= t('black')
+        %th= t('white')
+        %th= t('black')
+        %th= t('tournament')
+        %th= t('start_date')
+        %th= t('round')
+        %th= t('result')
+        %th= t('white')
+        %th= t('black')
+        %th= t('white')
+        %th= t('black')
+        %th= t('white')
+        %th= t('black')
+        %th
+
+    - games.each do |game|
+      %tr{id: game.id}
+        %td= game.white.try(:name)
+        %td= game.black.try(:name)
+        %td= '%.2f' % game.white_avg_error
+        %td= '%.2f' % game.black_avg_error
+        %td= game.tournament.try(:name)
+        %td= game.start_date.try(:to_date)
+        %td= game.round
+        %td= humanize_result(game.result)
+        - unless game.processing?
+          = render 'games/statistics', game: game
+        - else
+          %td{colspan: 6}
+            .progress.progress-striped.active
+              .progress-bar{role: 'progress-bar', aria: {valuenow: '%.2f' % game.progress_percentage, valuemin: 0, valuemax: 100}, style: "width: #{'%.2f' % game.progress_percentage}%;"}
+        %td
+          = link_to t('re_analyze'), analyze_game_path(game), class: 'btn btn-primary btn-xs'
+          = link_to t('destroy'), game, :method => :delete, :data => { :confirm => I18n.t('sure') }, class: 'btn btn-danger btn-xs'
+          = link_to t('pgn'), download_game_path(game), class: 'btn btn-info btn-xs'
+
+  = will_paginate games, renderer: BootstrapPagination::Rails
+- else
+  %h3
+    = t('no_data')

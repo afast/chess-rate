@@ -1,18 +1,26 @@
-%h2 Sign in
+.container
+  .row
+    .col-md-6.col-md-offset-4
+      = image_tag 'chessrate.png', style: 'height: 162px; padding-bottom: 10px;'
+    .col-md-3.col-md-offset-4
+      .page-header
+        %h2
 
-= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-  %div
-    = f.label :email
-    = f.email_field :email
+      = form_for(resource, :as => resource_name, :url => session_path(resource_name), html: {role: 'form'}) do |f|
+        .form-group
+          = f.label :email, class: 'sr-only'
+          = f.email_field :email, class: 'form-control', placeholder: t('email')
 
-  %div
-    = f.label :password
-    = f.password_field :password
+        .form-group
+          = f.label :password, class: 'sr-only'
+          = f.password_field :password, class: 'form-control', placeholder: t('password')
 
-  - if devise_mapping.rememberable?
-    .remember-me= f.check_box :remember_me
-    = f.label :remember_me
+        - if devise_mapping.rememberable?
+          .checkbox
+            %label
+              = f.check_box :remember_me
+              = t('remember_me')
 
-  %div= f.submit "Sign in", class: 'btn btn-primary'
+        %div= f.submit "Sign in", class: 'btn btn-primary'
 
-= render "devise/shared/links"
+      = render "devise/shared/links"

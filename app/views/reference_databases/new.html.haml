@@ -1,5 +1,7 @@
-%h1= t('reference_database.new')
+.container
+  .row
+    .col-md-5
+      .page-header
+        %h1= t('reference_database.new')
 
-= render 'form'
-
-= link_to t('back'), reference_databases_path, class: 'btn'
+      = render 'form'

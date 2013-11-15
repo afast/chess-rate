@@ -6,11 +6,11 @@
         - @pgn_file.errors.full_messages.each do |msg|
           %li= msg
 
-  .field
+  .form-group
     = f.label :description, t('description')
-    = f.text_field :description
-  .field
+    = f.text_field :description, class: 'form-control'
+  .form-group
     = f.label :pgn_file, t('file')
     = f.file_field :pgn_file
   .actions
-    = f.submit t('save'), class: 'btn'
+    = f.submit t('save'), class: 'btn btn-primary'

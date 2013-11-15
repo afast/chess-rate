@@ -1,0 +1,20 @@
+.container
+  .row
+    .col-md-6.col-md-offset-4
+      = image_tag 'chessrate.png', style: 'height: 162px; padding-bottom: 10px;'
+    .col-md-3.col-md-offset-4
+      .page-header
+        %h2
+          Reset password?
+
+      = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+        = devise_error_messages!
+
+        .form-group
+          = f.label :email, class: 'sr-only'
+          = f.email_field :email, :autofocus => true, class: 'form-control', placeholder: t('email')
+
+        %div
+          = f.submit "Send me reset password instructions", class: 'btn btn-primary'
+
+      = render "devise/shared/links"

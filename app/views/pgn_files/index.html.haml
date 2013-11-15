@@ -4,18 +4,32 @@
       %h1
         = t('pgn_file.list')
         %small= link_to t('pgn_file.new'), new_pgn_file_path, class: 'btn btn-primary btn-sm'
-
+    = form_tag pgn_files_path, method: :get, class: 'navbar-form navbar-left', role: 'search' do
+      .form-group
+        = label_tag :search, t('search'), class: 'sr-only'
+        = text_field_tag :search, params[:search], class: 'form-control', placeholder: t('search')
+      %button.btn.btn-default
+        = t('submit')
     %table.table.table-condensed.table-striped.table-hover
       %tr
         %th= t('description')
         %th= t('status')
-        %th= t('avg_error')
-        %th= t('perfect_rate')
-        %th= t('games_perfect_rate')
+        %th
+          = t('avg_error')
+          %span.label.label-default
+            cp
+        %th
+          = t('perfect_rate')
+          %span.label.label-default
+            \%
+        %th
+          = t('games_perfect_rate')
+          %span.label.label-default
+            \%
         %th
           = t('analysis time')
           %span.label.label-default
-            (ms)
+            ms
         %th
 
       - @pgn_files.each do |pgn_file|
@@ -36,6 +50,7 @@
             = link_to t('process'), analyze_pgn_file_path(pgn_file), class: 'btn btn-primary btn-xs'
             = link_to t('reset'), reset_stats_pgn_file_path(pgn_file), method: :post, class: 'btn btn-info btn-xs'
             = link_to t('edit'), edit_pgn_file_path(pgn_file), class: 'btn btn-default btn-xs'
+            = link_to t('show'), pgn_file_path(pgn_file), class: 'btn btn-default btn-xs'
             = link_to t('destroy'), pgn_file, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn btn-danger btn-xs'
 
     = will_paginate @pgn_files, renderer: BootstrapPagination::Rails

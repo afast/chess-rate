@@ -6,8 +6,8 @@
         - @reference_database.errors.full_messages.each do |msg|
           %li= msg
 
-  .field
+  .form-group
     = f.label :path, t('path')
-    = f.text_field :path
+    = f.file_field :path
   .actions
     = f.submit t('save'), class: 'btn btn-primary'

@@ -32,7 +32,7 @@ class GameAnalyzer
 
       old_move = game.moves.non_opening.first
       old_lan_move = old_bestmove = old_score = nil
-      move_count = game.moves.non_opening.size
+      move_count = game.moves.size
 
       first_time_here = true
 
