@@ -51,7 +51,7 @@
           = link_to t('destroy'), game, :method => :delete, :data => { :confirm => I18n.t('sure') }, class: 'btn btn-danger btn-xs'
           = link_to t('pgn'), download_game_path(game), class: 'btn btn-info btn-xs'
 
-  = will_paginate games, renderer: BootstrapPagination::Rails
+  = will_paginate games
 - else
   %h3
     = t('no_data')

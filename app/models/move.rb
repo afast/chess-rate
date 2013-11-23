@@ -86,9 +86,9 @@ class Move < ActiveRecord::Base
   end
 
   def deviation # Calculate deviation for this move
-    # SCIDvsPC using Houdini returns the advantage calculation for whites
+    # Houdini returns the advantage calculation for whites
     # So a greater number is better for white and a lower number is better
-    # for black. With 0 being the balance
+    # for black. With 0 being tied
     return player_value || 0 unless annotator_value
     case
     when white? then annotator_value - player_value

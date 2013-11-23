@@ -24,4 +24,4 @@
               = link_to t('destroy'), player, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn btn-danger btn-xs'
 
   .row
-    = will_paginate @players, renderer: BootstrapPagination::Rails
+    = will_paginate @players

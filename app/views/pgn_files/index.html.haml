@@ -53,4 +53,4 @@
             = link_to t('show'), pgn_file_path(pgn_file), class: 'btn btn-default btn-xs'
             = link_to t('destroy'), pgn_file, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn btn-danger btn-xs'
 
-    = will_paginate @pgn_files, renderer: BootstrapPagination::Rails
+    = will_paginate @pgn_files

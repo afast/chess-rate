@@ -18,4 +18,4 @@
               = link_to t('edit'), edit_user_path(user), class: 'btn btn-primary btn-xs'
               = link_to t('destroy'), user, method: :delete, data: { confirm: t('sure') }, class: 'btn btn-danger btn-xs'
   .row
-    = will_paginate @users, renderer: BootstrapPagination::Rails
+    = will_paginate @users

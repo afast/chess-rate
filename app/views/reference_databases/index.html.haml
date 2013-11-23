@@ -21,4 +21,4 @@
               = link_to t('edit'), edit_reference_database_path(reference_database), class: 'btn btn-primary btn-xs'
               = link_to t('destroy'), reference_database, :method => :delete, :data => { :confirm => t('sure') }, class: 'btn btn-danger btn-xs'
   .row
-    = will_paginate @reference_databases, renderer: BootstrapPagination::Rails
+    = will_paginate @reference_databases
