@@ -1,3 +1,4 @@
+require 'will_paginate-bootstrap'
 module ApplicationHelper
   # Always use the Twitter Bootstrap pagination renderer
   def will_paginate(collection_or_options = nil, options = {})
