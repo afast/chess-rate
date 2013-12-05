@@ -5,7 +5,7 @@
     .col-md-3.col-md-offset-4
       .page-header
         %h2
-          Reset password?
+          = t('reset_password')
 
       = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
         = devise_error_messages!
@@ -15,6 +15,6 @@
           = f.email_field :email, :autofocus => true, class: 'form-control', placeholder: t('email')
 
         %div
-          = f.submit "Send me reset password instructions", class: 'btn btn-primary'
+          = f.submit t('reset_password_instructions'), class: 'btn btn-primary'
 
       = render "devise/shared/links"

@@ -8,31 +8,48 @@ es:
   players: Jugadores
   player:
     new: Nuevo Jugador
-    list: Listando Jugadores
+    list: Jugadores
   ref_db: Referencias
   game:
-    list: Listando Partidas
+    list: Partidas
     new: Nueva Partida
+    edit: Editar Partida
     all: Todas las Partidas
   reference_database:
     edit: Editando Referencia
-    list: Listando Referencias
+    list: Referencias
     title: Base de Referencia
     new: Nueva Base de Referencia
+    label: Base de Referencia
+  submit: Enviar
   user:
-    list: Listando Usuarios
+    list: Usuarios
     edit: Editar Usuario
     new: Nuevo Usuario
-  moves:
+  move:
     new: Nueva Movida
     list: Movidas
+    label: Movida
   pgn_file:
     new: Nuevo Archivo PGN
     list: Archivos PGN
     edit: Editar archivo PGN
+  email: Email
+  password: Contraseña
+  password_confirmation: Confirmación
+  new: nuevo
+  distance: Distancia
+  date: Fecha
+  sure: Está seguro?
   description: Descripción
   file: Archivo
   sure: Estas seguro?
+  remember_me: Recordarme
+  reset_password_instructions: Restablecer contraseña
+  reset_password: Restablecer Contraseña?
+  sign_up: Registrar
+  forgot_password: Olvide mi contraseña
+  sign_in: Entrar
   white: Blanco
   black: Negro
   annotator: Anotador
@@ -40,8 +57,8 @@ es:
   black_avg_error: Error Prom Negro
   avg_error: Error Promedio
   avg_deviation: Desviación Promedio
-  perfect_rate: '% Perfectas'
-  blunder_rate: '% Blunder'
+  perfect_rate: Perfectas
+  blunder_rate: Blunder
   tournament: Torneo
   tournaments: Torneos
   collection: Colección
@@ -50,15 +67,16 @@ es:
   site: Sitio
   start_date: Comienzo
   round: Ronda
+  search: Buscar
   result: Resultado
   status: Estado
   end_date: Fin
   white_std_deviation: Desv. Est Blanco
   black_std_deviation: Desv. Est Negro
-  white_perfect_rate: '% Perfectas Blanco'
-  black_perfect_rate: '% Perfectas negro'
-  black_blunder_rate: '% Blunder Negro'
-  white_blunder_rate: '% Blunder Blanco'
+  white_perfect_rate: Perfectas Blanco
+  black_perfect_rate: Perfectas negro
+  black_blunder_rate: Blunder Negro
+  white_blunder_rate: Blunder Blanco
   player_out_dbref: Jugador Salio DB-Ref
   move_out_dbref: Movida Salio
   value_out_dbref: Valor de Salida
@@ -94,3 +112,27 @@ es:
   save: Guardar
   time:
     label: Tiempo
+  color:
+    white: Blanco
+    black: Negro
+    label: Color
+  performance: Desempeño
+  game_performance: Desempeño en Partidas
+  process: Procesar
+  not_yet_processed: Sin procesar
+  processing: Procesando
+  processed: Procesado
+  reset: Reset
+  std_deviation: Desv. Estándar
+  lost: Perdido
+  won: Ganado
+  draw: Empate
+  search: Buscar
+  save: Guardar
+  number: Number
+  analysis_time: Tiempo de Análisis
+  elo_history: Elo History
+  games_perfect_rate: Promedio Perfectas
+  will_paginate:
+    previous_label: Anterior
+    next_label: Siguiente

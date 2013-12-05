@@ -86,10 +86,22 @@
             %th= t('tournament')
             %th= t('start')
             %th= t('end')
-            %th= t('avg_error')
-            %th= t('avg_deviation')
-            %th= t('perfect_rate')
-            %th= t('blunder_rate')
+            %th
+              = t('avg_error')
+              %span.label.label-default
+                cp
+            %th
+              = t('avg_deviation')
+              %span.label.label-default
+                cp
+            %th
+              = t('perfect_rate')
+              %span.label.label-default
+                \%
+            %th
+              = t('blunder_rate')
+              %span.label.label-default
+                \%
           - @tournaments.each do |t|
             %tr
               %td= t[:name]
@@ -112,10 +124,22 @@
             %th= t('rival')
             %th= t('rival_elo')
             %th= t('result')
-            %th= t('avg_error')
-            %th= t('avg_deviation')
-            %th= t('perfect_rate')
-            %th= t('blunder_rate')
+            %th
+              = t('avg_error')
+              %span.label.label-default
+                cp
+            %th
+              = t('avg_deviation')
+              %span.label.label-default
+                cp
+            %th
+              = t('perfect_rate')
+              %span.label.label-default
+                \%
+            %th
+              = t('blunder_rate')
+              %span.label.label-default
+                \%
           - @collection.games.for_player(@player.id).each do |game|
             - g = game.get_info_for(@player.name)
             %tr
@@ -137,10 +161,22 @@
             %th= t('tournament')
             %th= t('start')
             %th= t('end')
-            %th= t('avg_error')
-            %th= t('avg_deviation')
-            %th= t('perfect_rate')
-            %th= t('blunder_rate')
+            %th
+              = t('avg_error')
+              %span.label.label-default
+                cp
+            %th
+              = t('avg_deviation')
+              %span.label.label-default
+                cp
+            %th
+              = t('perfect_rate')
+              %span.label.label-default
+                \%
+            %th
+              = t('blunder_rate')
+              %span.label.label-default
+                \%
           - @games.each do |g|
             %tr
               %td= g[:name]

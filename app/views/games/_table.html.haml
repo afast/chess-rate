@@ -4,14 +4,26 @@
       %tr
         %th
         %th
-          %th{colspan: 2}= t('error')
+        %th{colspan: 2}
+          = t('error')
+          %span.label.label-default
+            cp
         %th
         %th
         %th
         %th
-        %th{colspan: 2}= t('std_deviation')
-        %th{colspan: 2}= t('perfect_rate')
-        %th{colspan: 2}= t('blunder_rate')
+        %th{colspan: 2}
+          = t('std_deviation')
+          %span.label.label-default
+            cp
+        %th{colspan: 2}
+          = t('perfect_rate')
+          %span.label.label-default
+            \%
+        %th{colspan: 2}
+          = t('blunder_rate')
+          %span.label.label-default
+            \%
         %th
       %tr
         %th= t('white')

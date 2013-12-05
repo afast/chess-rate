@@ -9,6 +9,8 @@ en:
   pgn_files: PGN Files
   players: Players
   ref_db: Ref-DB
+  performance: Performance
+  game_performance: Game Performance
   game:
     list: Listing games
     new: New Game
@@ -27,13 +29,20 @@ en:
     label: Reference Database
   email: Email
   password: Password
+  sign_in: Sign In
   password_confirmation: Password Confirmation
   new: new
   distance: Distance
+  remember_me: Remember Me
+  reset_password_instructions: Send me reset password instructions
+  reset_password: Reset Password?
+  sign_up: Sign Up
+  forgot_password: Forgot Password?
   date: Date
   sure: Are you sure?
   perfect_rate: Perfect
   games_perfect_rate: Games Avg Perfect
+  analysis_time: Analysis Time
   avg_error: Average Error
   time:
     label: Time
@@ -42,6 +51,10 @@ en:
     black: Black
     label: Color
   process: Process
+  not_yet_processed: Not yet processed
+  std_deviation: Std Deviation
+  processing: Processing
+  processed: Processed
   lost: Lost
   won: Won
   draw: Draw
@@ -49,3 +62,6 @@ en:
   save: Save
   number: Number
   elo_history: Elo History
+  will_paginate:
+    previous_label: Previous
+    next_label: Next

@@ -3,7 +3,7 @@ class PgnFile < ActiveRecord::Base
   belongs_to :reference_database, foreign_key: :ref_db_id
 
   STATUS = {not_processed: 0, processing: 1, processed: 2}
-  STATUS_TEXT = {0 => 'Not yet Processed', 1 => 'Processing', 2 => 'Processed'}
+  STATUS_TEXT = {0 => 'not_yet_processed', 1 => 'processing', 2 => 'processed'}
 
   mount_uploader :pgn_file, PgnFileUploader
 
@@ -65,7 +65,7 @@ class PgnFile < ActiveRecord::Base
   end
 
   def status_to_s
-    STATUS_TEXT[status || 0]
+    I18n.t(STATUS_TEXT[status || 0])
   end
 
   def not_processed?

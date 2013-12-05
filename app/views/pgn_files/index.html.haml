@@ -27,7 +27,7 @@
           %span.label.label-default
             \%
         %th
-          = t('analysis time')
+          = t('analysis_time')
           %span.label.label-default
             ms
         %th
@@ -38,7 +38,7 @@
           %td= pgn_file.status_to_s
           - if pgn_file.processing?
             %td
-              = "#{'%.2f' % pgn_file.progress_percentage} % processed"
+              = "#{'%.2f' % pgn_file.progress_percentage} % #{t('processed')}"
             %td
               = "ETA: #{(DateTime.now + pgn_file.eta.seconds).strftime('%m/%d - %H:%M')}"
           - else
