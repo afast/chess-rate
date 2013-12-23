@@ -11,6 +11,7 @@ en:
   ref_db: Ref-DB
   performance: Performance
   game_performance: Game Performance
+  no_data: No Data
   game:
     list: Listing games
     new: New Game
