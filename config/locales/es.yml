@@ -47,8 +47,8 @@ es:
   remember_me: Recordarme
   reset_password_instructions: Restablecer contraseña
   reset_password: Restablecer Contraseña?
-  sign_up: Registrar
-  forgot_password: Olvide mi contraseña
+  sign_up: Registro
+  forgot_password: Olvidé mi contraseña
   sign_in: Entrar
   white: Blanco
   black: Negro
@@ -110,6 +110,7 @@ es:
   mate: Mate
   show: Ver
   save: Guardar
+  no_data: No hay datos
   time:
     label: Tiempo
   color:
